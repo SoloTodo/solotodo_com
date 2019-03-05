@@ -1,0 +1,3 @@
+[submodule "react-utils"]
+	path = react-utils
+	url = git@github.com:SoloTodo/solotodo_react_utils.git
