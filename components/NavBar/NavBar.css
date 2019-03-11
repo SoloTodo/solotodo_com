@@ -1,0 +1,57 @@
+.navbar-brand {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+#navbar {
+    background-color: #315e85 !important;
+    min-height: 60px;
+    padding: 0 1rem;
+}
+
+img.navbar-brand {
+    height: 60px;
+}
+
+a.navbar-icon-item {
+    padding-bottom: 3px;
+    padding-top: 6px;
+    font-size: 19px;
+}
+
+#navbar-section-categories {
+    position: fixed;
+    top: 60px;
+    background-color: white;
+    box-shadow: 0 0 7px 0 rgba(0, 0, 0, 0.75);
+    font-size: 12px;
+    z-index: 3;
+}
+
+#navbar-section-categories a {
+    color: #495057;
+}
+
+#navbar-section-categories .category-header {
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+#navbar-departments .nav-link {
+  color: white;
+}
+
+.navbar-dropdown-link {
+  color: #333;
+  display: block;
+}
+
+.navbar-dropdown-link:hover {
+  color: black;
+  text-decoration: none;
+}
+
+img.navbar-brand {
+  padding-top: 0;
+  padding-bottom: 0;
+}

@@ -1,0 +1,7 @@
+#preferred_stores .modal-dialog{
+    overflow-y: initial !important
+}
+#preferred_stores .modal-body{
+    max-height: calc(100vh - 250px);
+    overflow-y: auto;
+}

@@ -1,1 +1,77 @@
+$theme-colors: (
+        "primary": #355887,
+);
+
+$grid-breakpoints: (
+        xs: 0,
+        sm: 576px,
+        md: 768px,
+        lg: 992px,
+        xl: 1200px,
+        xxl: 1500px
+);
+
+$container-max-widths: (
+        sm: 540px,
+        md: 720px,
+        lg: 960px,
+        xl: 1140px,
+        xxl: 1420px
+);
+
+@import "~bootstrap/scss/bootstrap";
 @import '~react-toastify/dist/ReactToastify.min.css';
+@import '~@fortawesome/fontawesome-free/css/all.min.css';
+@import './components/Footer/Footer.css';
+@import './components/NavBar/NavBar.css';
+@import './components/NavBar/NavBarPreferredStores.css';
+@import './components/NavBar/StoreCheckBox.css';
+@import './components/Account/AccountLogin.css';
+
+body {
+  font-family: 'Roboto', sans-serif;
+  color: gray("800");
+  font-size: 14px;
+  background-color: #f5f5f5;
+}
+
+#main-container {
+  margin-top: 60px;
+}
+
+@include media-breakpoint-up(sm) {
+  .nav-link {
+    font-weight: bold;
+  }
+}
+
+h1 {
+  font-weight: 300;
+  font-size: 1.7rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.2rem;
+  font-weight: 300;
+  padding-bottom: 15px;
+}
+
+h4 {
+  font-size: 1.2rem;
+  font-weight: 300;
+}
+
+.toast-container {
+  top: 60px;
+}
+
+.content-card {
+  background-color: white;
+  border-radius: 3px;
+  padding: 15px;
+  border: 1px solid #ddd;
+}

@@ -1,5 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import NavBar from "../components/NavBar/NavBar";
+import SoloTodoHead from "../components/SoloTodoHead";
 
 class Index extends React.Component {
   static getInitialProps ({ reduxStore, res }) {
@@ -8,20 +10,10 @@ class Index extends React.Component {
     return {}
   }
 
-  componentDidMount() {
-    // document.cookie = 'authToken=8503c95504277ffa1a06d792c394a78ce24ed910'
-  }
-
   render () {
-    return <div>
-      <h1>Hola!</h1>
+    return <React.Fragment>
 
-      <ul>
-        {Object.keys(this.props.apiResourceObjects).map(apiResourceObjectUrl => <li key={apiResourceObjectUrl}>
-          {apiResourceObjectUrl}
-        </li>)}
-      </ul>
-    </div>
+    </React.Fragment>
   }
 }
 

@@ -4,7 +4,7 @@ import moment from "moment";
 import {
   fetchAuth,
   listToObject,
-  areListsEqual
+  areListsEqual, fetchJson
 } from '../react-utils/utils';
 import {
   ApiResourceObject,
@@ -44,6 +44,55 @@ const invalidateLocalUser = ctx => dispatch => {
   })
 };
 
+export const updatePreferredCountry = (country, user, authToken) => dispatch => {
+  if (user) {
+    const fullUser = ApiResourceObject(user, {});
+    fullUser.preferredCountry = country;
+    fullUser.save(authToken, dispatch)
+  } else {
+    dispatch({
+      type: 'setPreferredCountry',
+      preferredCountry: country.id
+    });
+  }
+
+  return dispatch(updateNavigation(country.url));
+};
+
+export const updatePreferredStores = (storeIds, user, authToken) => dispatch => {
+  if (user) {
+    const preferredStoreUrls = storeIds.map(storeId => `${settings.apiResourceEndpoints.stores}${storeId}/`);
+
+    const petition = {
+      preferred_stores: preferredStoreUrls
+    };
+
+    return fetchAuth(authToken, 'users/me/', {
+      method: 'PATCH',
+      body: JSON.stringify(petition)
+    }).then(
+      newUser => {
+        dispatch({
+          type: 'updateApiResourceObject',
+          apiResourceObject: newUser
+        });
+      })
+  } else {
+    return dispatch(setPreferredStores(storeIds))
+  }
+};
+
+export const setAuthToken = authToken => dispatch => {
+  dispatch({
+    type: 'setAuthToken',
+    authToken
+  });
+};
+
+//////////////////////////
+// Utility methods
+//////////////////////////
+
 const updateLocalUser = user => dispatch => {
   dispatch({
     type: 'updateApiResourceObject',
@@ -51,25 +100,34 @@ const updateLocalUser = user => dispatch => {
   })
 };
 
+const updateNavigation = countryUrl => dispatch => {
+  return fetchJson(countryUrl + 'navigation/').then(navigation => {
+    dispatch({
+      type: 'setNavigation',
+      navigation
+    });
+  })
+};
+
 /**************************************
  * Country validation utility actions *
  **************************************/
 
-const setSessionPreferredCountry = (preferredCountry, ctx) => dispatch => {
-  if (preferredCountry) {
-    setCookie(ctx, 'preferredCountry', preferredCountry, {})
+const setSessionPreferredCountry = (preferredCountryId, ctx) => dispatch => {
+  if (preferredCountryId) {
+    setCookie(ctx, 'preferredCountry', preferredCountryId, {})
   } else {
     destroyCookie(ctx, 'preferredCountry');
   }
 
   dispatch({
     type: 'setPreferredCountry',
-    preferredCountry: preferredCountry
+    preferredCountry: preferredCountryId
   })
 };
 
 
-const validatePreferredCountry = (authToken, state, ctx) => dispatch => {
+const validatePreferredCountry = (authToken, state, ctx) => async dispatch => {
   const user = state.apiResourceObjects[settings.ownUserUrl];
 
   const persistUserPreferredCountry = country => {
@@ -78,17 +136,24 @@ const validatePreferredCountry = (authToken, state, ctx) => dispatch => {
     return fullUser.save(authToken, dispatch);
   };
 
-  const sessionPreferredCountry = state.apiResourceObjects[state.preferredCountry] || null;
+  const sessionPreferredCountryUrl = state.preferredCountry ?
+    `${settings.apiResourceEndpoints.stores}${state.preferredCountry}/` :
+    null;
+  const sessionPreferredCountry = sessionPreferredCountryUrl ?
+    state.apiResourceObjects[sessionPreferredCountryUrl] :
+    null;
 
   // Valid DB user / session preferred country combination
   if (user && user.preferred_country && !sessionPreferredCountry) {
-    return;
+    return dispatch(updateNavigation(user.preferred_country));
   }
 
   // Annonymous user with a valid session preferred country
   if (!user && sessionPreferredCountry) {
-    return;
+    return dispatch(updateNavigation(sessionPreferredCountry.url));
   }
+
+  let preferredCountryUrl = null;
 
   // DB User with a session preferred country. This is an invalid combination
   // that happens when the user has just logged in.
@@ -98,25 +163,32 @@ const validatePreferredCountry = (authToken, state, ctx) => dispatch => {
 
     // If the preferred country of the DB user has not been set yet, use the
     // one in his current session.
-    if (!user.preferred_country) {
-      return persistUserPreferredCountry(sessionPreferredCountry);
+    if (user.preferred_country) {
+      preferredCountryUrl = user.preferred_country;
+    } else {
+      persistUserPreferredCountry(sessionPreferredCountry);
+      preferredCountryUrl = sessionPreferredCountry.url
     }
   } else {
     const clientIp = settings.customIp || ctx.req.headers['x-forwarded-for'] || ctx.req.connection.remoteAddress;
     const countryByIpUrl = `${settings.endpoint}countries/by_ip/?ip=${clientIp}`;
 
-    return fetch(countryByIpUrl)
+    preferredCountryUrl = await fetch(countryByIpUrl)
       .then(res => res.json())
       .then(json => {
         const preferredCountry = json.url ? json : state.apiResourceObjects[settings.defaultCountry];
 
         if (user) {
-          return persistUserPreferredCountry(preferredCountry);
+          persistUserPreferredCountry(preferredCountry);
         } else {
-          dispatch(setSessionPreferredCountry(preferredCountry.url, ctx))
+          dispatch(setSessionPreferredCountry(preferredCountry.id, ctx))
         }
+
+        return preferredCountry.url;
       })
   }
+
+  return dispatch(updateNavigation(preferredCountryUrl));
 };
 
 
@@ -125,13 +197,16 @@ const validatePreferredCountry = (authToken, state, ctx) => dispatch => {
  ************************************/
 
 const setPreferredStores = (preferredStoreUrls, ctx) => dispatch => {
+  console.log('settingPreferredStores')
+  // console.log(preferredStoreUrls.length)
+  // console.log(ctx)
   if (preferredStoreUrls) {
     setCookie(ctx, 'preferredStores', JSON.stringify(preferredStoreUrls), {})
   } else {
     destroyCookie(ctx, 'preferredStores');
   }
 
-  dispatch({
+  return dispatch({
     type: 'setPreferredStores',
     preferredStores: preferredStoreUrls
   });
@@ -151,14 +226,14 @@ const validatePreferredStores = (authToken, state, ctx) => dispatch => {
 
   const stores = filterApiResourceObjectsByType(state.apiResourceObjects, 'stores').filter(store => store.last_activation);
   const storesDict = listToObject(stores, 'url');
-  const sessionPreferredStores = state.preferredStores;
+  const sessionPreferredStoresIds = state.preferredStores;
 
   let currentPreferredStoreUrls = null;
 
   if (user && user.preferred_stores.length) {
     currentPreferredStoreUrls = user.preferred_stores
-  } else if (!user && sessionPreferredStores) {
-    currentPreferredStoreUrls = sessionPreferredStores
+  } else if (!user && sessionPreferredStoresIds) {
+    currentPreferredStoreUrls = sessionPreferredStoresIds.map(storeId => `${settings.apiResourceEndpoints.stores}${storeId}/`)
   }
 
   const validCurrentPreferredStoreUrls = currentPreferredStoreUrls &&
@@ -185,9 +260,7 @@ const validatePreferredStores = (authToken, state, ctx) => dispatch => {
     newPreferredStores = stores
   }
 
-  console.log(newPreferredStores);
-
-  if (user && sessionPreferredStores) {
+  if (user && sessionPreferredStoresIds) {
     dispatch(setPreferredStores(null, ctx))
   }
 
@@ -195,7 +268,7 @@ const validatePreferredStores = (authToken, state, ctx) => dispatch => {
     if (user) {
       persistUserPreferredStores(newPreferredStores);
     } else {
-      dispatch(setPreferredStores(newPreferredStores.map(store => store.url), ctx));
+      dispatch(setPreferredStores(newPreferredStores.map(store => store.id), ctx));
     }
   }
 };

@@ -1,14 +1,17 @@
 import React from 'react'
 import App, { Container } from 'next/app'
+import { parseCookies } from 'nookies'
+import {calculateResponsiveState} from 'redux-responsive'
 import { Provider } from 'react-redux'
 import {ToastContainer} from "react-toastify";
 import { loadRequiredResources } from '../react-utils/redux/actions'
 import { initializeUser } from '../redux/actions'
 import withReduxStore from '../lib/with-redux-store'
-import { parseCookies } from 'nookies'
-
+import NavBar from "../components/NavBar/NavBar";
 
 import '../styles.scss';
+import Footer from "../components/Footer/Footer";
+import SoloTodoHead from "../components/SoloTodoHead";
 
 class MyApp extends App {
   static async getInitialProps(appContext) {
@@ -32,11 +35,20 @@ class MyApp extends App {
     }
   }
 
+  componentDidMount() {
+    // Re-render on frontend due to varying window sizes
+
+    const store = this.props.reduxStore;
+    store.dispatch(calculateResponsiveState(window));
+  }
+
   render () {
     const { Component, pageProps, reduxStore } = this.props;
 
     return (
       <Container>
+        <SoloTodoHead />
+
         <ToastContainer
           position="top-right"
           type="default"
@@ -49,7 +61,13 @@ class MyApp extends App {
         />
 
         <Provider store={reduxStore}>
-          <Component {...pageProps} />
+          <React.Fragment>
+            <NavBar />
+            <div id="main-container">
+              <Component {...pageProps} />
+            </div>
+            <Footer />
+          </React.Fragment>
         </Provider>
       </Container>
     )

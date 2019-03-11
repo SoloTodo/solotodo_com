@@ -1,6 +1,9 @@
 import { combineReducers } from 'redux';
 import moment from "moment";
 import {
+  createResponsiveStateReducer
+} from "redux-responsive";
+import {
   apiResourceObjectsReducer,
   loadedBundleReducer
 } from '../react-utils/redux/reducers'
@@ -45,19 +48,35 @@ function preferredStoresLastUpdatedReducer(state, action) {
   return state
 }
 
-export const reducer = combineReducers({
-  // authToken: authTokenReducer,
+function navigationReducer(state, action) {
+  if (typeof state === 'undefined') {
+    return []
+  }
+
+  if (action.type === 'setNavigation') {
+    if (action.navigation) {
+      return action.navigation
+    } else {
+      return []
+    }
+  }
+
+  return state
+}
+
+export const createReducer = isMobile => combineReducers({
   preferredCountry: preferredCountryReducer,
   preferredStores: preferredStoresReducer,
   preferredStoresLastUpdated: preferredStoresLastUpdatedReducer,
   apiResourceObjects: apiResourceObjectsReducer,
-  // loadedResources: loadedResourcesReducer,
   loadedBundle: loadedBundleReducer,
-  // browser: createResponsiveStateReducer({
-  //   extraSmall: 575,
-  //   small: 767,
-  //   medium: 991,
-  //   large: 1199,
-  //   extraLarge: 1499
-  // }),
+  navigation: navigationReducer,
+  browser: createResponsiveStateReducer({
+    extraSmall: 575,
+    small: 767,
+    medium: 991,
+    large: 1199,
+  }, {
+    initialMediaType: isMobile ? 'extraSmall' : 'large'
+  })
 });

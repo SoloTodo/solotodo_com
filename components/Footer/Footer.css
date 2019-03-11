@@ -1,0 +1,24 @@
+#solotodo-footer {
+    background-color: #333333;
+    color: #eeeeee;
+}
+
+#solotodo-footer h3 {
+    font-size: 24px;
+    font-weight: 500;
+    padding-bottom: 9px;
+    margin: 20px 0 20px;
+    border-bottom: 1px solid #eee;
+}
+
+#solotodo-footer .logo-container {
+    text-align: center;
+}
+
+#solotodo-footer a {
+    color: white;
+}
+
+#solotodo-footer a:hover {
+    color: #eeeeee;
+}

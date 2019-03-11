@@ -1,0 +1,7 @@
+label.store_check_box {
+    width: 180px;
+}
+
+label.store_check_box.inactive{
+    color: #9eb4ca;
+}

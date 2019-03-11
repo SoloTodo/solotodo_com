@@ -1,12 +1,26 @@
-import { createStore, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware, compose } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
-import thunkMiddleware from 'redux-thunk'
-import {reducer} from './reducers';
+import thunk from 'redux-thunk'
+import {
+  createResponsiveStoreEnhancer
+} from "redux-responsive";
 
-export function initializeStore(initialState) {
+import {createReducer} from './reducers';
+
+export function initializeStore(initialState, isMobile=false) {
+  const enhancers = [
+    createResponsiveStoreEnhancer({calculateInitialState: false})
+  ];
+
+  const middleware = [thunk];
+  const composedEnhancers = compose(
+    applyMiddleware(...middleware),
+    ...enhancers
+  );
+
   return createStore(
-    reducer,
+    createReducer(isMobile),
     initialState,
-    composeWithDevTools(applyMiddleware(thunkMiddleware))
+    composeWithDevTools(composedEnhancers)
   )
 }
