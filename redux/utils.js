@@ -1,8 +1,8 @@
-import { settings } from './settings'
-import {convertIdToObjectUrl, listToObject} from "./react-utils/utils";
-import {filterApiResourceObjectsByType} from "./react-utils/ApiResource";
+import { settings } from '../settings'
+import {convertIdToUrl, listToObject} from "../react-utils/utils";
+import {filterApiResourceObjectsByType} from "../react-utils/ApiResource";
 
-export function solotodoStateToPropsUtils(state, ownProps) {
+export function solotodoStateToPropsUtils(state) {
   const user = state.apiResourceObjects[settings.ownUserUrl] || null;
   const countries = filterApiResourceObjectsByType(state.apiResourceObjects, 'countries');
   const stores = filterApiResourceObjectsByType(state.apiResourceObjects, 'stores').filter(store => store.last_activation);
@@ -11,11 +11,10 @@ export function solotodoStateToPropsUtils(state, ownProps) {
 
   const storesDict = listToObject(stores, 'url');
 
-  const preferredCountryUrl = user ? user.preferred_country : convertIdToObjectUrl(state.preferredCountry, 'countries');
+  const preferredCountryUrl = user ? user.preferred_country : convertIdToUrl(state.preferredCountryId, 'countries');
   const preferredCountry = state.apiResourceObjects[preferredCountryUrl];
 
-  const preferredStoresUrls = user ? user.preferred_stores : state.preferredStores.map(storeId => `${settings.apiResourceEndpoints.stores}${storeId}/`);
-  console.log(preferredStoresUrls);
+  const preferredStoresUrls = user ? user.preferred_stores : state.preferredStoreIds.map(storeId => convertIdToUrl(storeId, 'stores'));
   const preferredStores = preferredStoresUrls.map(storeUrl => storesDict[storeUrl]).filter(store => store);
 
   const preferredCountryStores = preferredStores.filter(store => store.country === preferredCountry.url);

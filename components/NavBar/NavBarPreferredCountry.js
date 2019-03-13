@@ -4,15 +4,16 @@ import {
   DropdownItem, DropdownMenu, DropdownToggle,
   UncontrolledDropdown
 } from "reactstrap";
-import {solotodoStateToPropsUtils} from "../../redux-utils";
+import {solotodoStateToPropsUtils} from "../../redux/utils";
 import {apiResourceStateToPropsUtils} from "../../react-utils/ApiResource";
 import {updatePreferredCountry} from "../../redux/actions";
+import {getAuthToken} from "../../utils";
 
 class NavBarPreferredCountry extends React.Component {
   handleCountryClick = (evt, country) => {
     evt.preventDefault();
 
-    this.props.updatePreferredCountry(country)
+    this.props.updatePreferredCountry(country, this.props.user)
   };
 
   render() {
@@ -32,22 +33,21 @@ class NavBarPreferredCountry extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const { ApiResourceObject, authToken } = apiResourceStateToPropsUtils(state);
+  const { ApiResourceObject } = apiResourceStateToPropsUtils(state);
   const { user, preferredCountry, countries } = solotodoStateToPropsUtils(state);
 
   return {
     ApiResourceObject,
-    authToken,
     user,
     preferredCountry,
     countries
   }
 }
 
-function mapDispatchToProps(dispatch, ownProps) {
+function mapDispatchToProps(dispatch) {
   return {
-    updatePreferredCountry: country => {
-      dispatch(updatePreferredCountry(country, ownProps.user, ownProps.authToken))
+    updatePreferredCountry: (country, user) => {
+      dispatch(updatePreferredCountry(country, user, getAuthToken()))
     }
   };
 }

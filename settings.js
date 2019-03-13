@@ -2,7 +2,7 @@ import {apiSettings} from "./react-utils/settings";
 
 export const settings = {
   ...apiSettings,
-  defaultCountry: apiSettings.apiResourceEndpoints.countries + '1/',
+  defaultCountryUrl: apiSettings.apiResourceEndpoints.countries + '1/',
   websiteId: 2,
   shortDescriptionPurposeId: 2,
   defaultDaysForOrdering: 3,
@@ -12,7 +12,6 @@ export const settings = {
   lgAdWordsConversionId: 'AW-3270351152',
   defaultDaysForPricingHistory: 20,
   facebookAppId: '567644670062006',
-  parisId : 11,
   // customIp: '179.5.217.178',
   benchmarkCategories: {
     1: [

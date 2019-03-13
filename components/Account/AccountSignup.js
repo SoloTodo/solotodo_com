@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
-import {solotodoStateToPropsUtils} from "../redux-utils";
+import {solotodoStateToPropsUtils} from "../../redux/utils";
 import {Link, Redirect} from "react-router-dom";
 import {toast} from 'react-toastify';
 import {fetchJson} from '../react-utils/utils'

@@ -17,12 +17,14 @@ class MyApp extends App {
   static async getInitialProps(appContext) {
     const reduxStore = appContext.ctx.reduxStore;
 
-    if (!reduxStore.getState().loadedBundle) {
-      await reduxStore.dispatch(loadRequiredResources(['countries', 'currencies', 'store_types', 'stores', 'number_formats', 'categories', 'category_templates']));
-    }
+    if (appContext.ctx.req) {
+      // Load the required resources and initialize the user only on the first request (on the server)
 
-    const { authToken } = parseCookies(appContext.ctx);
-    await reduxStore.dispatch(initializeUser(authToken, reduxStore.getState(), appContext.ctx));
+      await reduxStore.dispatch(loadRequiredResources(['countries', 'currencies', 'store_types', 'stores', 'number_formats', 'categories', 'category_templates']));
+
+      const {authToken} = parseCookies(appContext.ctx);
+      await reduxStore.dispatch(initializeUser(authToken, reduxStore.getState(), appContext.ctx));
+    }
 
     let pageProps = {};
 

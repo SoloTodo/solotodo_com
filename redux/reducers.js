@@ -8,25 +8,25 @@ import {
   loadedBundleReducer
 } from '../react-utils/redux/reducers'
 
-function preferredCountryReducer(state, action) {
+function preferredCountryIdReducer(state, action) {
   if (typeof state === 'undefined') {
     return null
   }
 
-  if (action.type === 'setPreferredCountry') {
-    return action.preferredCountry
+  if (action.type === 'setPreferredCountryId') {
+    return action.preferredCountryId
   }
 
   return state
 }
 
-function preferredStoresReducer(state, action) {
+function preferredStoreIdsReducer(state, action) {
   if (typeof state === 'undefined') {
     return []
   }
 
-  if (action.type === 'setPreferredStores') {
-    return action.preferredStores
+  if (action.type === 'setPreferredStoreIds') {
+    return action.preferredStoreIds
   }
 
   return state
@@ -37,8 +37,8 @@ function preferredStoresLastUpdatedReducer(state, action) {
     return null
   }
 
-  if (action.type === 'setPreferredStores') {
-    if (action.preferredStores) {
+  if (action.type === 'setPreferredStoreIds') {
+    if (action.preferredStoreIds) {
       return moment()
     } else {
       return null
@@ -65,8 +65,8 @@ function navigationReducer(state, action) {
 }
 
 export const createReducer = isMobile => combineReducers({
-  preferredCountry: preferredCountryReducer,
-  preferredStores: preferredStoresReducer,
+  preferredCountryId: preferredCountryIdReducer,
+  preferredStoreIds: preferredStoreIdsReducer,
   preferredStoresLastUpdated: preferredStoresLastUpdatedReducer,
   apiResourceObjects: apiResourceObjectsReducer,
   loadedBundle: loadedBundleReducer,

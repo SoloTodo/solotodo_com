@@ -7,7 +7,7 @@ import {
   UncontrolledDropdown
 } from "reactstrap";
 import classNames from 'classnames';
-import {solotodoStateToPropsUtils} from "../../redux-utils";
+import {solotodoStateToPropsUtils} from "../../redux/utils";
 import {parseBrowsePathToNextJs} from "../../utils";
 
 class NavBarDepartments extends React.Component {

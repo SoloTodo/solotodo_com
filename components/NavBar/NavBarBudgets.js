@@ -14,7 +14,7 @@ import {
   ModalFooter
 } from "reactstrap";
 import {apiResourceStateToPropsUtils} from "../../react-utils/ApiResource";
-import {solotodoStateToPropsUtils} from "../../redux-utils";
+import {solotodoStateToPropsUtils} from "../../redux/utils";
 
 class NavBarBudgets extends React.Component {
   constructor(props) {

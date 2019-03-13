@@ -6,7 +6,6 @@ import {
   apiResourceStateToPropsUtils
 } from "../../react-utils/ApiResource";
 import {settings} from "../../settings";
-import {setAuthToken} from "../../redux/actions";
 
 class AccountFacebookLogin extends React.Component {
   responseFacebook = response => {
@@ -19,7 +18,7 @@ class AccountFacebookLogin extends React.Component {
       }).then(res => {
         if (res.key) {
           toast.success('Inicio de sesión exitoso');
-          this.props.setAuthToken(res.key);
+          this.props.login(res.key);
         } else {
           // Something failed
           if (res.non_field_errors) {
@@ -51,8 +50,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    setAuthToken: authToken => {
-      dispatch(setAuthToken(authToken))
+    login: authToken => {
+      // dispatch(setAuthToken(authToken))
     }
   }
 }

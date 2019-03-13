@@ -10,10 +10,11 @@ import {
   ModalFooter
 } from 'reactstrap'
 import {toast} from 'react-toastify';
-import {solotodoStateToPropsUtils} from "../../redux-utils";
+import {solotodoStateToPropsUtils} from "../../redux/utils";
 import {apiResourceStateToPropsUtils} from "../../react-utils/ApiResource";
 import StoreCheckBox from './StoreCheckBox'
 import {updatePreferredStores} from "../../redux/actions";
+import {getAuthToken} from "../../utils";
 
 
 class NavBarPreferredStores extends React.Component {
@@ -47,14 +48,10 @@ class NavBarPreferredStores extends React.Component {
       .filter(store => newUnsortedPreferredStoreUrls.includes(store.url))
       .map(store => store.id);
 
-    this.props.updatePreferredStores(newPreferredStoreIds);
+    this.props.updatePreferredStores(newPreferredStoreIds, this.props.user);
     this.setState({
       preferredStoresModalIsActive: false
     })
-
-    // this.props.updatePreferredStores(newPreferredStoreUrls).then(() => {
-    //
-    // });
   };
 
   handleCheckBoxClick = store => {
@@ -141,10 +138,10 @@ function mapStateToProps(state) {
   }
 }
 
-function mapDispatchToProps(dispatch, ownProps) {
+function mapDispatchToProps(dispatch, user) {
   return {
-    updatePreferredStores: storeIds => {
-      return dispatch(updatePreferredStores(storeIds, ownProps.user, ownProps.authToken))
+    updatePreferredStores: async storeIds => {
+      return await dispatch(updatePreferredStores(storeIds, user, getAuthToken()))
     }
   }
 }

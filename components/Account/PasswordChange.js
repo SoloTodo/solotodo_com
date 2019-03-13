@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {addApiResourceStateToPropsUtils} from "../react-utils/ApiResource";
 import {toast} from 'react-toastify';
 import {Redirect} from "react-router-dom";
-import {solotodoStateToPropsUtils} from "../redux-utils";
+import {solotodoStateToPropsUtils} from "../../redux/utils";
 import {setTitle} from "../utils";
 import TopBanner from "../TopBanner";
 

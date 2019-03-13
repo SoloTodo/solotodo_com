@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import queryString from 'query-string';
 import {connect} from "react-redux";
-import {solotodoStateToPropsUtils} from "../redux-utils";
+import {solotodoStateToPropsUtils} from "../../redux/utils";
 import {addApiResourceStateToPropsUtils} from "../react-utils/ApiResource";
 import {toast} from 'react-toastify';
 import Loading from "../Loading";

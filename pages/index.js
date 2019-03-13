@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import NavBar from "../components/NavBar/NavBar";
-import SoloTodoHead from "../components/SoloTodoHead";
+import { solotodoStateToPropsUtils } from "../redux/utils";
 
 class Index extends React.Component {
   static getInitialProps ({ reduxStore, res }) {
@@ -12,14 +11,27 @@ class Index extends React.Component {
 
   render () {
     return <React.Fragment>
-
+      <div>
+        <h1>Preferred Country: {this.props.preferredCountry.name}</h1>
+        <h1>Preferred stores:</h1>
+        <ul>
+          {this.props.preferredStores.map(store => <li key={store.id}>
+            {store.name}
+          </li>)}
+        </ul>
+        
+      </div>
     </React.Fragment>
   }
 }
 
 function mapStateToProps(state) {
+  const {preferredCountry, preferredStores} = solotodoStateToPropsUtils(state);
+  
   return {
-    apiResourceObjects: state.apiResourceObjects
+    apiResourceObjects: state.apiResourceObjects,
+    preferredCountry,
+    preferredStores
   }
 }
 

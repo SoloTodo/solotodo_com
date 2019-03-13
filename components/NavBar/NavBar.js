@@ -16,13 +16,14 @@ import {
 import {
   apiResourceStateToPropsUtils
 } from "../../react-utils/ApiResource";
-import {solotodoStateToPropsUtils} from "../../redux-utils";
+import {solotodoStateToPropsUtils} from "../../redux/utils";
 import NavBarPreferredCountry from "./NavBarPreferredCountry";
 import NavBarPreferredStores from "./NavBarPreferredStores"
 import NavBarDepartments from "./NavBarDepartments";
 import NavBarSelectedDepartment from "./NavBarSelectedDepartment";
 import NavBarBudgets from "./NavBarBudgets"
 import SearchByKeywords from "./SearchByKeywords"
+import {initializeUser, invalidateLocalUser} from "../../redux/actions";
 
 class NavBar extends React.Component {
   constructor(props) {
@@ -84,7 +85,7 @@ class NavBar extends React.Component {
     this.props.fetchAuth('rest-auth/logout/', {
       method: 'POST'
     }).then(res => {
-      this.props.deleteAuthToken();
+      this.props.invalidateLocalUser(this.props.state);
     })
   };
 
@@ -160,17 +161,15 @@ function mapStateToProps(state) {
     fetchAuth,
     user,
     isSmallOrSmaller: state.browser.lessThan.medium,
-    mediaType: state.browser.mediaType
+    mediaType: state.browser.mediaType,
+    state
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    deleteAuthToken: () => {
-      dispatch({
-        type: 'setAuthToken',
-        authToken: null
-      })
+    invalidateLocalUser: state => {
+      dispatch(initializeUser(null, state))
     }
   }
 }
