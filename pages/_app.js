@@ -5,13 +5,14 @@ import {calculateResponsiveState} from 'redux-responsive'
 import { Provider } from 'react-redux'
 import {ToastContainer} from "react-toastify";
 import { loadRequiredResources } from '../react-utils/redux/actions'
-import { initializeUser } from '../redux/actions'
+import {initializeUser, updateNavigation} from '../redux/actions'
 import withReduxStore from '../lib/with-redux-store'
 import NavBar from "../components/NavBar/NavBar";
 
 import '../styles.scss';
 import Footer from "../components/Footer/Footer";
 import SoloTodoHead from "../components/SoloTodoHead";
+import {solotodoStateToPropsUtils} from "../redux/utils";
 
 class MyApp extends App {
   static async getInitialProps(appContext) {
@@ -24,6 +25,8 @@ class MyApp extends App {
 
       const {authToken} = parseCookies(appContext.ctx);
       await reduxStore.dispatch(initializeUser(authToken, reduxStore.getState(), appContext.ctx));
+      const {preferredCountry} = solotodoStateToPropsUtils(reduxStore.getState());
+      await reduxStore.dispatch(updateNavigation(preferredCountry.url))
     }
 
     let pageProps = {};

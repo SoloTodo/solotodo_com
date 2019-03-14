@@ -5,11 +5,13 @@ import {
   fetchJson,
   convertIdToUrl
 } from '../react-utils/utils';
-import {
-  ApiResourceObject,
-} from '../react-utils/ApiResource';
 import { settings } from '../settings'
 import {getPreferredCountry, getPreferredStores, persistUser} from "../utils";
+
+export const login = (authToken, state) => dispatch => {
+  setCookie(null, 'authToken', authToken, {});
+  return dispatch(initializeUser(authToken, state));
+};
 
 export const initializeUser = (authToken, state, ctx) => async dispatch => {
   let user = null;
@@ -32,16 +34,12 @@ export const initializeUser = (authToken, state, ctx) => async dispatch => {
       userChanges['preferred_country'] = preferredCountry.url;
     }
 
-    if (user.preferred_country !== preferredCountry.url || ctx.req) {
-      await dispatch(updateNavigation(preferredCountry.url));
-    }
-
     if (!areListsEqual(user.preferred_stores, preferredStores.map(store => store.url))) {
       userChanges['preferred_stores'] = preferredStores.map(store => store.url);
     }
 
     if (Object.keys(userChanges).length > 0) {
-      user = persistUser(authToken, userChanges);
+      user = await persistUser(authToken, userChanges);
     }
 
     // Update the local user BEFORE nullifying the session preferences so that
@@ -53,7 +51,6 @@ export const initializeUser = (authToken, state, ctx) => async dispatch => {
   } else {
     if (state.preferredCountryId !== preferredCountry.id) {
       dispatch(setSessionPreferredCountryId(preferredCountry.id, ctx));
-      await dispatch(updateNavigation(preferredCountry.url));
     }
 
     if (!areListsEqual(state.preferredStoreIds, preferredStores.map(store => store.id))) {
@@ -80,8 +77,9 @@ export const updatePreferredCountry = (country, user, authToken) => dispatch => 
       preferred_country: country.url
     };
 
-    const updatedUser = persistUser(authToken, userChanges);
-    dispatch(setLocalUser(updatedUser));
+    persistUser(authToken, userChanges).then(updatedUser => {
+      dispatch(setLocalUser(updatedUser));
+    });
   } else {
     dispatch(setSessionPreferredCountryId(country.id));
   }
@@ -120,7 +118,7 @@ const setLocalUser = user => dispatch => {
   })
 };
 
-const updateNavigation = countryUrl => dispatch => {
+export const updateNavigation = countryUrl => dispatch => {
   return fetchJson(countryUrl + 'navigation/').then(navigation => {
     dispatch({
       type: 'setNavigation',

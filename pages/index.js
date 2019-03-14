@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { solotodoStateToPropsUtils } from "../redux/utils";
+import Loading from "../components/Loading";
 
 class Index extends React.Component {
   static getInitialProps ({ reduxStore, res }) {
@@ -12,6 +13,7 @@ class Index extends React.Component {
   render () {
     return <React.Fragment>
       <div>
+        <Loading />
         <h1>Preferred Country: {this.props.preferredCountry.name}</h1>
         <h1>Preferred stores:</h1>
         <ul>

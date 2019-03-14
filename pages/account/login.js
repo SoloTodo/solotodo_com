@@ -3,14 +3,12 @@ import {connect} from "react-redux";
 import Head from 'next/head';
 import Link from 'next/link';
 import Router from 'next/router';
-import { setCookie } from 'nookies'
 import {toast} from 'react-toastify';
 import queryString from 'query-string';
 
 import {fetchJson} from '../../react-utils/utils'
-import {solotodoStateToPropsUtils} from "../../redux/utils";
 import AccountFacebookLogin from "../../components/Account/AccountFacebookLogin";
-import {initializeUser} from "../../redux/actions";
+import {login} from "../../redux/actions";
 import {settings} from "../../settings";
 import TopBanner from "../../components/TopBanner";
 
@@ -50,6 +48,15 @@ class Login extends React.Component {
     }
   }
 
+  componentDidMount() {
+    const params = queryString.parse(window.location.search);
+    const justVerifiedEmail = parseInt(params.post_verify, 10);
+
+    if (justVerifiedEmail) {
+      toast.info('Cuenta verificada, por favor ingrese con su correo y contraseña', {autoClose: false});
+    }
+  }
+
   handleEmailChange = evt => {
     this.setState({
       values: {
@@ -82,7 +89,7 @@ class Login extends React.Component {
     })
       .then(async response => {
         await this.props.login(response.key, this.props.state);
-
+        toast.success('Inicio de sesión exitoso');
         const parameters = queryString.parse(window.location.search);
         const redirectUrl = parameters.next || '/';
         Router.push(redirectUrl);
@@ -179,10 +186,7 @@ class Login extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const { user } = solotodoStateToPropsUtils(state);
-
   return {
-    user,
     state
   }
 }
@@ -190,8 +194,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     login: (authToken, state) => {
-      setCookie(null, 'authToken', authToken, {});
-      return dispatch(initializeUser(authToken, state));
+      return dispatch(login(authToken, state));
     }
   }
 }
