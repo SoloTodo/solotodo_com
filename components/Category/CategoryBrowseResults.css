@@ -1,0 +1,17 @@
+.category-browse-no-results {
+    color: gray;
+    font-size: 1.4rem;
+    font-weight: 300;
+    margin-bottom: 20px;
+}
+
+.category-browse-result-count {
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: gray;
+}
+
+/*.category-browse-results:after {*/
+  /*content: "";*/
+  /*flex: auto;*/
+/*}*/

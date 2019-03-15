@@ -1,0 +1,65 @@
+.category-browse-dummy {
+    width: 300px;
+    margin: 0 10px;
+    line-height: 0;
+}
+
+.category-browse-result {
+    width: 300px;
+    margin: 10px;
+    font-weight: 300;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.category-browse-result h3 {
+    font-size: 1.2rem;
+    height: 2.8rem;
+    overflow: hidden;
+    font-weight: 300;
+}
+
+.category-browse-result .image-container {
+    height: 300px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.category-browse-result img {
+    object-fit: contain;
+}
+
+.category-browse-result .description-container dl {
+    margin-bottom: 10px;
+}
+
+.category-browse-result .description-container dt {
+    float: left;
+    margin-right: 6px;
+}
+
+.category-browse-result .description-container dd {
+    margin-bottom: 0.1rem;
+}
+
+.category-browse-result .description-container ul {
+    clear: both;
+    list-style: none;
+    padding-left: 20px;
+    margin-bottom: 0;
+}
+
+.category-browse-result .price {
+    color: #ca0000;
+    font-size: 1.4rem;
+    font-weight: normal;
+}
+
+.category-browse-result a, .category-browse-result a:hover {
+    color: inherit;
+}
+
+.category-browse-result .sk-spinner {
+    color: #ddd;
+}

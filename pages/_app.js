@@ -9,10 +9,14 @@ import {initializeUser, updateNavigation} from '../redux/actions'
 import withReduxStore from '../lib/with-redux-store'
 import NavBar from "../components/NavBar/NavBar";
 
-import '../styles.scss';
 import Footer from "../components/Footer/Footer";
 import SoloTodoHead from "../components/SoloTodoHead";
 import {solotodoStateToPropsUtils} from "../redux/utils";
+import {DFPSlotsProvider} from "react-dfp";
+
+// Import theme here because ajax-loader.gif import breaks otherwise
+import 'slick-carousel/slick/slick-theme.scss';
+import '../styles.scss';
 
 class MyApp extends App {
   static async getInitialProps(appContext) {
@@ -66,13 +70,19 @@ class MyApp extends App {
         />
 
         <Provider store={reduxStore}>
-          <React.Fragment>
+          <DFPSlotsProvider
+            dfpNetworkId='/21667261583'
+            sizeMapping={[
+              {viewport: [1024, 768], sizes:[[728, 90], [300, 50]]},
+              {viewport: [900, 768], sizes:[[320, 50]] }
+            ]}
+            adSenseAttributes={{page_url: 'www.solotodo.com'}}>
             <NavBar />
             <div id="main-container">
               <Component {...pageProps} />
             </div>
             <Footer />
-          </React.Fragment>
+          </DFPSlotsProvider>
         </Provider>
       </Container>
     )

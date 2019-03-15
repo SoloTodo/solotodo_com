@@ -76,6 +76,7 @@ export const createReducer = isMobile => combineReducers({
     small: 767,
     medium: 991,
     large: 1199,
+    extraLarge: 1499
   }, {
     initialMediaType: isMobile ? 'extraSmall' : 'large'
   })

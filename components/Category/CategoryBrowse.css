@@ -1,0 +1,125 @@
+#category-browse-filters {
+    min-width: 300px;
+    margin-right: 20px;
+}
+
+.category-browse legend {
+    font-size: 1.2rem;
+    font-weight: 300;
+}
+
+.category-browse-ordering-container .Select-control {
+    width: 200px;
+}
+
+.category-browse-pagination ul {
+    margin-bottom: 0;
+}
+
+.category-browse-pagination .page-link {
+    border: 0;
+    color: inherit;
+    border-radius: 3px;
+    padding: 11px 15px;
+}
+
+.category-browse-pagination .page-link:hover {
+    color: inherit;
+}
+
+.category-browse-pagination .page-link:focus {
+    outline-style: none;
+}
+
+.category-browse-pagination .break {
+    padding-top: 5px;
+}
+
+.Collapsible__trigger.is-open .fa-angle-down {
+    color: blue;
+    transform: rotate(-180deg);
+}
+
+#category-browse-filters .react-sanfona-item {
+    margin-bottom: 10px
+}
+
+#category-browse-filters .react-sanfona-item-title::before {
+    display: inline-block;
+    font-family: "Font Awesome\ 5 Free";
+    content: "\f107";
+    font-weight: 900;
+    margin-right: 5px;
+    font-size: 16px;
+    transform: rotate(0deg);
+    transition: 0.3s;
+}
+
+#category-browse-filters .react-sanfona-item-expanded legend::before {
+    transform: rotate(-180deg);
+}
+
+#category-browse-filters-mobile {
+    font-weight: 300;
+}
+
+#category-browse-filters-mobile legend {
+    font-size: 1rem;
+}
+
+#category-browse-filters-mobile .react-sanfona-item {
+    margin-bottom: 10px
+}
+
+#category-browse-filters-mobile .react-sanfona-item-title::before {
+    display: inline-block;
+    font-family: "Font Awesome\ 5 Free";
+    content: "\f107";
+    font-weight: 900;
+    margin-right: 5px;
+    font-size: 16px;
+    transform: rotate(0deg);
+    transition: 0.3s;
+}
+
+#category-browse-filters-mobile .react-sanfona-item-expanded legend::before {
+    transform: rotate(-180deg);
+}
+
+#mobile-filter-and-ordering {
+    background-color: white;
+    font-weight: 300;
+    border-bottom: 1px solid rgb(223, 223, 223);
+    position: fixed;
+    top: 60px;
+    width: 100%;
+    z-index: 2;
+}
+
+#mobile-filter-and-ordering .btn {
+    font-weight: 300;
+    border: 1px solid rgb(223, 223, 223);
+}
+
+#mobile-filter-and-ordering .mobile-ordering {
+    width: 200px;
+}
+
+#category-browse-results-card {
+    max-width: 100%;
+}
+
+@media (max-width: 575px) {
+    #filters-and-results {
+        margin-top: 55px;
+    }
+}
+
+.rc-slider-tooltip {
+    z-index: 1101;
+}
+
+.mobile-top-banner-container {
+    margin-top: 65px;
+    margin-bottom: -55px;
+}

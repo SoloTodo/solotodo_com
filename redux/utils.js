@@ -35,5 +35,6 @@ export function solotodoStateToPropsUtils(state) {
     countryStores,
     preferredCurrency,
     numberFormat,
+    preferredNumberFormat: numberFormat
   };
 }

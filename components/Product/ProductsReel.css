@@ -1,0 +1,100 @@
+.products-reel .ribbon {
+    width: 48%;
+    float: left;
+    text-transform: uppercase;
+    color: white;
+    position: absolute;
+    top: 10px;
+    right: -9px;
+    text-align: right;
+}
+
+.products-reel .ordering-ribbon {
+    width: 130px;
+    height: 26px;
+    line-height: 28px;
+    padding-right: 13px;
+    position: absolute;
+    background: #315e85;
+    font-weight: bold;
+    font-size: 13px;
+    text-transform: none;
+    right: 10px;
+}
+
+.products-reel .ordering-ribbon:before, .ordering-ribbon:after {
+    content: "";
+    position: absolute;
+}
+
+.products-reel .ordering-ribbon:after {
+    height: 0;
+    width: 0;
+    bottom: -6px;
+    right: 0;
+    border-top: 6px solid #1b1b38;
+    border-right: 9px solid transparent;
+}
+
+.products-reel .ordering-ribbon:before {
+    height: 0;
+    width: 0;
+    left: -14.5px;
+    border-top: 13px solid transparent;
+    border-bottom: 13px solid transparent;
+    border-right: 14.5px solid #315e85;
+}
+
+.products-reel {
+    padding: 0 15px;
+}
+
+.products-reel .slick-track {
+    display: flex;
+    align-items: stretch;
+}
+
+.products-reel .slick-slide {
+    position: relative;
+    display: flex !important;
+    height: auto !important;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+}
+
+.products-reel .slick-slide > div {
+    height: 100%;
+    width: 100%;
+}
+
+.products-reel .slick-next, .slick-prev {
+    width: 25px;
+    height: 25px;
+}
+
+.products-reel .slick-next:before, .slick-prev:before {
+    color: black;
+    font-size: 25px;
+}
+.products-reel .short-description-product {
+    padding: 20px 15px 7px;
+    border: 1px solid #cccccc;
+    border-radius: 3px;
+}
+
+.products-reel .popular-product-container {
+    position: relative;
+}
+
+.products-reel__item {
+    height: 100%;
+}
+
+.products-reel__item a {
+    color: inherit;
+}
+
+.products-reel__item a:hover {
+    text-decoration: none;
+}

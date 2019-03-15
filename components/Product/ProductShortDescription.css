@@ -1,0 +1,30 @@
+.short-description-product {
+    background-color: white;
+    height: 100%;
+    width: 100%;
+}
+
+.short-description-product .image-container {
+    height: 200px;
+    width: 100%;
+    text-align: center;
+}
+
+.short-description-product .image-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    padding-bottom: 20px;
+    display: inline;
+}
+
+.short-description-product .price-container {
+    font-weight: bold;
+    font-size: 18px;
+    padding-top: 10px;
+}
+
+.short-description-product .description-container {
+    color: grey;
+    font-size: 12px;
+}

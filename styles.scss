@@ -22,10 +22,19 @@ $container-max-widths: (
 @import "~bootstrap/scss/bootstrap";
 @import '~react-toastify/dist/ReactToastify.min.css';
 @import '~@fortawesome/fontawesome-free/css/all.min.css';
+@import '~slick-carousel/slick/slick.scss';
+@import '~rc-slider/assets/index.css';
+@import '~rc-tooltip/assets/bootstrap.css';
 @import './components/Footer/Footer.css';
 @import './components/NavBar/NavBar.css';
 @import './components/NavBar/NavBarPreferredStores.css';
 @import './components/NavBar/StoreCheckBox.css';
+@import './components/Product/ProductsReel.css';
+@import './components/Product/ProductShortDescription.css';
+@import './components/Category/BurgerMenu.css';
+@import './components/Category/CategoryBrowse.css';
+@import './components/Category/CategoryBrowseResults.css';
+@import './components/Category/CategoryBrowseResult.css';
 
 body {
   font-family: 'Roboto', sans-serif;
@@ -73,4 +82,12 @@ h4 {
   border-radius: 3px;
   padding: 15px;
   border: 1px solid #ddd;
+}
+
+.price-container {
+  color: #ca0000;
+}
+
+.price-container:hover {
+  color: #ca0000;
 }
