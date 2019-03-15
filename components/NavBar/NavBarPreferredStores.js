@@ -14,7 +14,7 @@ import {solotodoStateToPropsUtils} from "../../redux/utils";
 import {apiResourceStateToPropsUtils} from "../../react-utils/ApiResource";
 import StoreCheckBox from './StoreCheckBox'
 import {updatePreferredStores} from "../../redux/actions";
-import {getAuthToken} from "../../utils";
+import {getAuthToken} from "../../react-utils/utils";
 
 
 class NavBarPreferredStores extends React.Component {

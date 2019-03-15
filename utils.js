@@ -3,12 +3,7 @@ import {convertIdToUrl, fetchAuth} from "./react-utils/utils";
 import {settings} from "./settings";
 import {filterApiResourceObjectsByType} from "./react-utils/ApiResource";
 import moment from "moment";
-import {parseCookies} from "nookies";
 
-
-export const getAuthToken = ctx => {
-  return parseCookies(ctx)['authToken'];
-};
 
 export const parseBrowsePathToNextJs = path => {
   const nextRegex = /\/(?<category>[^?]+)\??(?<args>[^\/]*)/;

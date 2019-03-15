@@ -7,7 +7,7 @@ import {
 import {solotodoStateToPropsUtils} from "../../redux/utils";
 import {apiResourceStateToPropsUtils} from "../../react-utils/ApiResource";
 import {updatePreferredCountry} from "../../redux/actions";
-import {getAuthToken} from "../../utils";
+import {getAuthToken} from "../../react-utils/utils";
 
 class NavBarPreferredCountry extends React.Component {
   handleCountryClick = (evt, country) => {
