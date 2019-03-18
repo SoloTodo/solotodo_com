@@ -100,7 +100,7 @@ class CategoryBrowseResult extends React.Component {
 function mapStateToProps(state, ownProps) {
   const category = state.apiResourceObjects[ownProps.bucket.product_entries[0].product.category];
   const category_templates = filterApiResourceObjectsByType(state.apiResourceObjects, 'category_templates');
-  const templateWebsiteUrl = convertIdToUrl(ownProps.websiteId, 'websites');
+  const templateWebsiteUrl = convertIdToUrl(settings.websiteId, 'websites');
 
   let template = category_templates.filter(categoryTemplate => {
     return categoryTemplate.category === category.url &&

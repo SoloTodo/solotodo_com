@@ -1,9 +1,11 @@
 import {apiSettings} from "./react-utils/settings";
+import {convertIdToUrl} from './react-utils/utils'
 
 export const settings = {
   ...apiSettings,
   defaultCountryUrl: apiSettings.apiResourceEndpoints.countries + '1/',
   websiteId: 2,
+  ownWebsiteUrl: convertIdToUrl(2, 'websites'),
   shortDescriptionPurposeId: 2,
   defaultDaysForOrdering: 3,
   categoryBrowseResultsPerPage: 12,

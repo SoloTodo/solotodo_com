@@ -17,7 +17,7 @@ class NavBarDepartments extends React.Component {
 
   departmentItems = department => {
     const links = [];
-    const nextRegex = /\/(?<category>[^?]+)\??(?<args>[^\/]*)/;
+    // const nextRegex = /\/(?<category>[^?]+)\??(?<args>[^\/]*)/;
 
     for (const section of department.sections) {
       if (section.path === '/') {
@@ -27,9 +27,9 @@ class NavBarDepartments extends React.Component {
           </Link>)
         }
       } else {
-        const nextParams = nextRegex.exec(section.path).groups;
+        // const nextParams = nextRegex.exec(section.path).groups;
 
-        links.push(<Link key={section.name} href={`/browse?category=${nextParams.category}&${nextParams.args}`} as={section.path}>
+        links.push(<Link key={section.name} {...parseBrowsePathToNextJs(section.path)}>
           <a className="dropdown-item">{section.name}</a>
         </Link>)
       }

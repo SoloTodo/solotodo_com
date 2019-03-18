@@ -6,11 +6,11 @@ import moment from "moment";
 
 
 export const parseBrowsePathToNextJs = path => {
-  const nextRegex = /\/(?<category>[^?]+)\??(?<args>[^\/]*)/;
-  const groups = nextRegex.exec(path).groups;
+  const nextRegex = /\/([^?]+)\??([^\/]*)/;
+  const groups = nextRegex.exec(path);
 
   return {
-    href: `/browse?category=${groups.category}&${groups.args}`,
+    href: `/browse?category_slug=${groups[1]}&${groups[2]}`,
     as: path
   }
 };

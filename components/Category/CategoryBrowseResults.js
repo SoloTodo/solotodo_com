@@ -14,8 +14,6 @@ export default class CategoryBrowseResults extends React.Component {
                 key={product.bucket}
                 bucket={product}
                 priceFormatter={this.props.priceFormatter}
-                websiteId={this.props.websiteId}
-                categoryBrowseParams={this.props.categoryBrowseParams}
             />
         ))}
 

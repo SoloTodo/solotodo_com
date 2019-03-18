@@ -1,18 +1,13 @@
 import React from 'react'
-import {connect} from "react-redux";
 import Head from 'next/head';
 import {solotodoStateToPropsUtils} from "../redux/utils";
-import {settings} from '../settings'
-import Loading from "../components/Loading";
 import CategoryBrowse from "../components/Category/CategoryBrowse";
-import TopBanner from "../components/TopBanner";
 
 class Browse extends React.Component {
   static async getInitialProps(ctx) {
     const { res, query, reduxStore } = ctx;
     const reduxState = reduxStore.getState();
-    const { categories } = solotodoStateToPropsUtils(reduxState);
-
+    const { categories, preferredCountry, preferredCountryStores, currencies } = solotodoStateToPropsUtils(reduxState);
     const category = categories.filter(localCategory => localCategory.slug === query.category_slug)[0];
 
     if (!category) {
@@ -27,14 +22,16 @@ class Browse extends React.Component {
       }
     }
 
+    const categoryBrowseProps = await CategoryBrowse.getInitialProps(category, reduxState);
+
     return {
-      category: category
+      category: category,
+      categoryBrowseProps
     }
   }
 
   render() {
     const category = this.props.category;
-    const topBanner = <TopBanner category={category.name} />;
 
     return <React.Fragment>
       <Head>
@@ -43,19 +40,7 @@ class Browse extends React.Component {
       <div className="container-fluid">
         <div className="row">
           <div className="col-12">
-
-            <CategoryBrowse
-              category={category}
-              loading={Loading}
-              stores={this.props.preferredCountryStores}
-              country={this.props.preferredCountry}
-              resultsPerPage={settings.categoryBrowseResultsPerPage}
-              categoryBrowseParams={settings.categoryBrowseParameters[category.id] || {}}
-              websiteId={settings.websiteId}
-              websiteUrl={settings.ownWebsiteURl}
-              setTitle={() => {}}
-              topBanner={topBanner}
-            />
+            <CategoryBrowse category={category} {...this.props.categoryBrowseProps} />
           </div>
         </div>
       </div>
@@ -63,13 +48,4 @@ class Browse extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
-  const {preferredCountryStores, preferredCountry} = solotodoStateToPropsUtils(state);
-
-  return {
-    preferredCountry,
-    preferredCountryStores
-  }
-}
-
-export default connect(mapStateToProps)(Browse);
+export default Browse;
