@@ -5,7 +5,7 @@ import CategoryBrowse from "../components/Category/CategoryBrowse";
 
 class Browse extends React.Component {
   static async getInitialProps(ctx) {
-    const { res, query, reduxStore } = ctx;
+    const { res, query, reduxStore, asPath } = ctx;
     const reduxState = reduxStore.getState();
     const { categories, preferredCountry, preferredCountryStores, currencies } = solotodoStateToPropsUtils(reduxState);
     const category = categories.filter(localCategory => localCategory.slug === query.category_slug)[0];
@@ -22,7 +22,7 @@ class Browse extends React.Component {
       }
     }
 
-    const categoryBrowseProps = await CategoryBrowse.getInitialProps(category, reduxState);
+    const categoryBrowseProps = await CategoryBrowse.getInitialProps(category, reduxState, asPath);
 
     return {
       category: category,

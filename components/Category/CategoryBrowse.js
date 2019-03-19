@@ -27,7 +27,7 @@ import {
   ApiFormPaginationFieldNext
 } from "../../react-utils/api_forms/ApiFormFieldsNext";
 
-const getFormLayout = async (category, country) => {
+const getFormLayout = async (category) => {
   // Obtain layout of the form fields
   const all_form_layouts = await fetchJson(settings.apiResourceEndpoints.category_specs_form_layouts + '?category=' + category.id + '&website=' + settings.websiteId);
   const processed_form_layouts = all_form_layouts
@@ -194,13 +194,12 @@ const processFormLayout = (formLayout, priceRange, usdCurrency, conversionCurren
 
       fieldSetFilters.push({
         ...filter,
-        component: filterComponent,
+        ...filterComponent,
       })
     }
 
     filtersLayout.push({
-      id: fieldset.id,
-      label: fieldset.label,
+      ...fieldset,
       filters: fieldSetFilters
     })
   }
@@ -257,9 +256,17 @@ const processFormLayout = (formLayout, priceRange, usdCurrency, conversionCurren
     }
   };
 
+  const paginationComponent = {
+    component: ApiFormPaginationFieldNext,
+    props: {
+      pageSize: {id: settings.categoryBrowseResultsPerPage},
+    }
+  };
+
   return {
     filtersLayout: filtersLayout,
-    ordering: orderingComponent
+    ordering: orderingComponent,
+    pagination: paginationComponent
   };
 };
 
@@ -277,27 +284,31 @@ const getGlobalFieldRanges = async (category, stores) => {
 
 
 class CategoryBrowse extends React.Component {
-  static async getInitialProps(category, reduxState) {
+  static async getInitialProps(category, reduxState, asPath) {
     const {preferredCountry, preferredCountryStores, currencies, preferredNumberFormat} = solotodoStateToPropsUtils(reduxState);
 
     const promises = [
-      getFormLayout(category, preferredCountry),
+      getFormLayout(category),
       getGlobalFieldRanges(category, preferredCountryStores)
     ];
 
     const results = await Promise.all(promises);
 
-    const rawFormLayout = results[0];
+    const formLayout = results[0];
     const priceRange = results[1];
 
     const usdCurrency = currencies.filter(currency => currency.id === settings.usdCurrencyId)[0];
     const conversionCurrency = currencies.filter(currency => currency.url === preferredCountry.currencyUrl)[0];
 
-    const formLayout = processFormLayout(rawFormLayout, priceRange, usdCurrency, conversionCurrency, preferredNumberFormat);
+    const processedFormLayout = processFormLayout(formLayout, priceRange, usdCurrency, conversionCurrency, preferredNumberFormat);
+    const endpoint = this.apiEndpoint(category, preferredCountryStores);
+    const {initialFormData, initialSearchResults} = await ApiFormNext.getInitialProps(processedFormLayout, asPath, [endpoint], fetchJson);
 
     return {
       formLayout: formLayout,
-      priceRange: priceRange
+      priceRange: priceRange,
+      initialFormData,
+      initialProductsPageState: this.getNewProductsPageState(initialSearchResults[0])
     }
   }
 
@@ -307,10 +318,9 @@ class CategoryBrowse extends React.Component {
     this.state = {
       formLayout: props.formLayout,
       formValues: {},
-      productsPage: undefined,
-      resultsAggs: {},
       priceRange: props.priceRange,
-      isMobileMenuOpen: false
+      isMobileMenuOpen: false,
+      ...props.initialProductsPageState
     }
   }
 
@@ -331,23 +341,29 @@ class CategoryBrowse extends React.Component {
     })
   };
 
-  setProductsPage = json => {
+  static getNewProductsPageState(json) {
     if (json) {
-      this.setState({
+      return {
         productsPage: {
-          count: json.payload.count,
-          results: json.payload.results
+          count: json.count,
+          results: json.results
         },
-        resultsAggs: json.payload.aggs,
-        isMobileMenuOpen: false
-      })
+        resultsAggs: json.aggs,
+      }
     } else {
       // Only reset the actual results to keep the old filter aggregations
-      this.setState({
+      return {
         productsPage: null,
-        isMobileMenuOpen: false
-      })
+      }
     }
+  }
+
+  setProductsPage = json => {
+    const productsPageStateChanges = CategoryBrowse.getNewProductsPageState(json && json.payload);
+    this.setState({
+      ...productsPageStateChanges,
+      isMobileMenuOpen: false
+    });
   };
 
   static apiEndpoint = (category, stores) => {
@@ -369,8 +385,6 @@ class CategoryBrowse extends React.Component {
   componentDidMount() {
     const category = this.props.category;
     const country = this.props.country;
-
-
   }
 
   handleFieldsetChange = (fieldset, expanded) => {
@@ -392,22 +406,202 @@ class CategoryBrowse extends React.Component {
   };
 
   render() {
-    const country = this.props.ApiResourceObject(this.props.country);
+    const country = this.props.country;
     const categoryBrowseParams = settings.categoryBrowseParameters;
 
     const formLayout = this.state.formLayout;
+    const priceRange = this.state.priceRange;
+    const resultsAggs = this.state.resultsAggs;
+    const numberFormat = this.props.numberFormat;
+    const currencies = this.props.currencies;
+    const usdCurrency = currencies.filter(currency => currency.id === settings.usdCurrencyId)[0];
+    const conversionCurrency = currencies.filter(currency => currency.url === country.currency)[0];
 
-    // if (formLayout === null) {
-    //   return <Redirect to="/" />
-    // }
+    const {filtersLayout, ordering, pagination} = processFormLayout(formLayout, priceRange, usdCurrency, conversionCurrency, numberFormat);
+    const apiFormFields = ['ordering', 'page'];
+
+    for (const fieldset of filtersLayout) {
+      let fieldsetExpanded = false;
+
+      for (const filter of fieldset.filters) {
+        filter.props.initialValue = this.props.initialFormData[filter.props.name].fieldValues;
+        filter.props.searchable = !this.props.isExtraSmall;
+
+        apiFormFields.push(filter.name);
+
+        const filterChoiceIdToNameDict = {};
+        let originalFilterChoices = undefined;
+
+        if (filter.type === 'exact') {
+          originalFilterChoices = filter.choices || [{id: 0, name: 'No'}, {id: 1, name: 'Sí'}]
+        } else {
+          originalFilterChoices = filter.choices || []
+        }
+
+        for (const choice of originalFilterChoices) {
+          filterChoiceIdToNameDict[choice.id] = choice.name;
+        }
+
+        const filterDocCountsDict = {};
+
+        let filterAggs = [];
+        const rawFilterAggs = resultsAggs[filter.name];
+
+        if (rawFilterAggs) {
+          for (const filterDocCount of rawFilterAggs) {
+            filterDocCountsDict[filterDocCount.id] = filterDocCount.doc_count
+          }
+
+          for (const choice of originalFilterChoices) {
+            const choiceDocCount = filterDocCountsDict[choice.id];
+
+            if (!choiceDocCount) {
+              continue
+            }
+
+            filterAggs.push({
+              ...choice,
+              doc_count: choiceDocCount
+            })
+          }
+        } else {
+          filterAggs = originalFilterChoices
+        }
+
+        const value = this.state.formValues[filter.name];
+
+        if (filter.type === 'exact') {
+          let arrayValue = [];
+          if (Array.isArray(value)) {
+            arrayValue = value
+          } else if (value) {
+            arrayValue = [value]
+          } else {
+            arrayValue = null
+          }
+
+          let filterChoices = undefined;
+
+          if (arrayValue && arrayValue.length) {
+            fieldsetExpanded = true
+          }
+
+          if (filterAggs) {
+            filterChoices = filterAggs.map(choice => ({
+              ...choice,
+              name: filterChoiceIdToNameDict[choice.id],
+            }));
+
+            if (arrayValue) {
+              for (const selectedValue of arrayValue) {
+                let valueInChoices = Boolean(filterChoices.filter(choice => choice.id.toString() === selectedValue.id.toString()).length);
+                if (!valueInChoices) {
+                  filterChoices.push({
+                    ...selectedValue,
+                    doc_count: 0
+                  })
+                }
+              }
+            }
+          } else {
+            filterChoices = originalFilterChoices
+          }
+
+          filter.props['choices'] = filterChoices;
+        } else if (filter.type === 'lte') {
+          let filterChoices = undefined;
+
+          if (value) {
+            fieldsetExpanded = true
+          }
+
+          if (filterAggs) {
+            let ongoingResultCount = 0;
+
+            filterChoices = filterAggs.map(choice => {
+              ongoingResultCount += choice.doc_count;
+
+              return {
+                ...choice,
+                name: `${filterChoiceIdToNameDict[choice.id]}`,
+                doc_count: ongoingResultCount
+              };
+            });
+          } else {
+            filterChoices = originalFilterChoices
+          }
+
+          filter.props['choices'] = filterChoices;
+        } else if (filter.type === 'gte') {
+          let filterChoices = undefined;
+
+          if (value) {
+            fieldsetExpanded = true
+          }
+
+          if (filterAggs) {
+            let totalResultCount = filterAggs.reduce((acum, elem) => acum + elem.doc_count, 0);
+
+            filterChoices = filterAggs.map(choice => {
+              let result = {
+                ...choice,
+                name: `${filterChoiceIdToNameDict[choice.id]}`,
+                doc_count: totalResultCount
+              };
+
+              totalResultCount -= choice.doc_count;
+
+              return result
+            });
+          } else {
+            filterChoices = originalFilterChoices
+          }
+
+          filter.props['choices'] = filterChoices;
+        } else if (filter.type === 'range') {
+          if (filter.continuous_range_step) {
+            // Continous (weight....)
+            if (value && (value.startValue || value.endValue)) {
+              fieldsetExpanded = true
+            }
+
+            filter.props['choices'] = rawFilterAggs;
+          } else {
+            // Discrete (screen size...)
+            let filterChoices = undefined;
+
+            if (value && (value.startId || value.endId)) {
+              fieldsetExpanded = true
+            }
+
+            if (filterAggs) {
+              filterChoices = filterAggs.map(choice => ({
+                ...choice,
+                label: `${filterChoiceIdToNameDict[choice.id]}`,
+              }));
+            } else {
+              filterChoices = originalFilterChoices.map(choice => ({
+                ...choice,
+                label: choice.name,
+                value: parseFloat(choice.value)
+              }))
+            }
+
+            filter.choices = filterChoices
+          }
+        }
+      }
+
+      fieldset.expanded = fieldset.expanded || fieldsetExpanded
+    }
+
+    ordering.props.initialValue = this.props.initialFormData['ordering'].fieldValues;
 
     const products = this.state.productsPage || null;
-    const apiFormFields = ['ordering', 'offer_price_usd', 'search', 'page'];
-
     const endpoint = CategoryBrowse.apiEndpoint(this.props.category, this.props.stores);
 
     const filtersComponent = <Accordion allowMultiple={true}>
-      {processedFormLayout.map(fieldset => (
+      {filtersLayout.map(fieldset => (
         <AccordionItem
           key={fieldset.id}
           title={fieldset.label}
@@ -418,7 +612,7 @@ class CategoryBrowse extends React.Component {
         >
           {fieldset.filters.map(filter => (
             <div key={filter.name} className="pt-2">
-              {filter.component}
+              <filter.component {...filter.props}/>
             </div>
           ))}
         </AccordionItem>
@@ -426,33 +620,33 @@ class CategoryBrowse extends React.Component {
     </Accordion>;
 
     const priceFormatter = (value, currency) => {
-      return formatCurrency(value, currency, country.currency, numberFormat.thousandsSeparator, numberFormat.decimalSeparator)
+      return formatCurrency(value, currency, conversionCurrency, numberFormat.thousandsSeparator, numberFormat.decimalSeparator)
     };
 
     const topBanner = <TopBanner category={this.props.category.name} /> || null;
 
     return (
       <div className="row">
-        <div id="page-wrap" className="flex-grow">
-          {this.props.isExtraSmall &&
-          <Menu pageWrapId="page-wrap"
-                outerContainerId="outer-container"
-                isOpen={this.state.isMobileMenuOpen}
-                onStateChange={(state) => this.handleMenuStateChange(state)}
-          >
-            <div id="category-browse-filters-mobile">
-              {filtersComponent}
-            </div>
-          </Menu>
-          }
-
-          <ApiFormNext
-            endpoints={[endpoint]}
-            fields={apiFormFields}
-            onResultsChange={this.setProductsPage}
-            onFormValueChange={this.handleFormValueChange}
-            anonymous={true}
-          >
+        <ApiFormNext
+          endpoints={[endpoint]}
+          fields={apiFormFields}
+          onResultsChange={this.setProductsPage}
+          onFormValueChange={this.handleFormValueChange}
+          anonymous={true}
+          initialFormData={this.props.initialFormData}
+        >
+          <div id="page-wrap" className="flex-grow">
+            {this.props.isExtraSmall &&
+            <Menu pageWrapId="page-wrap"
+                  outerContainerId="outer-container"
+                  isOpen={this.state.isMobileMenuOpen}
+                  onStateChange={(state) => this.handleMenuStateChange(state)}
+            >
+              <div id="category-browse-filters-mobile">
+                {filtersComponent}
+              </div>
+            </Menu>
+            }
             {this.props.isExtraSmall &&
             <div className="pt-2 pb-2" id="mobile-filter-and-ordering">
               <div className="col-12 d-flex justify-content-between">
@@ -463,7 +657,7 @@ class CategoryBrowse extends React.Component {
                   </a>
                 </div>
                 <div className="mobile-ordering">
-                  {orderingComponent}
+                  <ordering.component {...ordering.props} />
                 </div>
               </div>
             </div>
@@ -498,7 +692,7 @@ class CategoryBrowse extends React.Component {
                     <div className="d-flex flex-column align-items-end flex-grow category-browse-ordering-container mr-2">
                       <span className="category-browse-result-count mb-1">Ordenar por</span>
                       <div className="flex-grow ml-2">
-                        {orderingComponent}
+                        <ordering.component {...ordering.props} />
                       </div>
                     </div>
                     }
@@ -512,8 +706,9 @@ class CategoryBrowse extends React.Component {
                   /> : <Loading type="light" />}
 
                   <div className="d-flex category-browse-pagination justify-content-around mt-2 mb-3">
-                    <ApiFormPaginationFieldNext
-                      pageSize={{id: settings.categoryBrowseResultsPerPage}}
+                    <pagination.component
+                      {...pagination.props}
+                      initialValue={this.props.initialFormData['page'].fieldValues}
                       resultCount={this.state.productsPage && this.state.productsPage.count}
                       previousLabel={this.props.isExtraSmall ? 'Ant' : 'Anterior'}
                       nextLabel={this.props.isExtraSmall ? 'Sig' : 'Siguiente'}
@@ -522,8 +717,8 @@ class CategoryBrowse extends React.Component {
                 </div>
               </div>
             </div>
-          </ApiFormNext>
-        </div>
+          </div>
+        </ApiFormNext>
       </div>
     )
   }
@@ -531,14 +726,15 @@ class CategoryBrowse extends React.Component {
 
 function mapStateToProps(state) {
   const {ApiResourceObject} = apiResourceStateToPropsUtils(state);
-  const {preferredCountryStores, preferredCountry} = solotodoStateToPropsUtils(state);
+  const {preferredCountryStores, preferredCountry, preferredNumberFormat} = solotodoStateToPropsUtils(state);
 
   return {
     ApiResourceObject,
     currencies: filterApiResourceObjectsByType(state.apiResourceObjects, 'currencies'),
     isExtraSmall: state.browser.is.extraSmall,
     stores: preferredCountryStores,
-    country: preferredCountry
+    country: preferredCountry,
+    numberFormat: preferredNumberFormat
   }
 }
 

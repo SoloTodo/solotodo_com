@@ -10,12 +10,13 @@ import Link from "next/link";
 import Select from 'react-select';
 import Img from 'react-image'
 import Handlebars from 'handlebars/dist/handlebars.min'
-import {convertIdToUrl} from "../../react-utils/utils";
+import {convertIdToUrl, isServer} from "../../react-utils/utils";
 
 
 class CategoryBrowseResult extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       selectedProductEntry: props.bucket.product_entries[0],
     }
@@ -56,7 +57,8 @@ class CategoryBrowseResult extends React.Component {
 
     const params = this.props.categoryBrowseParams || {};
     const bucketProductLabelField = params.bucketProductLabelField || 'unicode';
-    const thumbnailSize = Math.round(300 * window.devicePixelRatio);
+    const pixelRatio = isServer ? 1.0 : window.devicePixelRatio;
+    const thumbnailSize = Math.round(300 * pixelRatio);
     
     return <div className="d-flex flex-column category-browse-result">
       <h3><Link href={linkHref} as={linkAs}><a>{product.name}</a></Link></h3>
