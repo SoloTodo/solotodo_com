@@ -1,17 +1,11 @@
 import React from 'react'
 import {connect} from "react-redux";
-import {toast} from 'react-toastify';
+import Router from 'next/router';
 import { Accordion, AccordionItem } from 'react-sanfona';
 import Menu from 'react-burger-menu/lib/menus/slide'
 
 import {fetchJson} from "../../react-utils/utils";
-import {
-  apiResourceStateToPropsUtils,
-  filterApiResourceObjectsByType
-} from "../../react-utils/ApiResource";
-import ApiFormDiscreteRangeField from "../../react-utils/api_forms/ApiFormDiscreteRangeField";
 import ApiFormNext from "../../react-utils/api_forms/ApiFormNext";
-import ApiFormContinuousRangeField from "../../react-utils/api_forms/ApiFormContinouousRangeField";
 import CategoryBrowseResults from "../../components/Category/CategoryBrowseResults";
 import {formatCurrency} from "../../react-utils/utils";
 import {settings} from '../../settings'
@@ -24,263 +18,10 @@ import {
   ApiFormPriceRangeFieldNext,
   ApiFormTextFieldNext,
   ApiFormChoiceFieldNext,
-  ApiFormPaginationFieldNext
+  ApiFormPaginationFieldNext,
+  ApiFormDiscreteRangeFieldNext,
+  ApiFormContinuousRangeFieldNext
 } from "../../react-utils/api_forms/ApiFormFieldsNext";
-
-const getFormLayout = async (category) => {
-  // Obtain layout of the form fields
-  const all_form_layouts = await fetchJson(settings.apiResourceEndpoints.category_specs_form_layouts + '?category=' + category.id + '&website=' + settings.websiteId);
-  const processed_form_layouts = all_form_layouts
-    .map(layout => {
-      let priority = 0;
-      if (layout.website === settings.ownWebsiteUrl) {
-        priority = 2
-      } else if (layout.website === null) {
-        priority = 1
-      }
-      return {
-        ...layout,
-        priority
-      }
-    });
-
-  processed_form_layouts.sort((a, b) => b.priority - a.priority);
-
-  return processed_form_layouts[0] || null;
-};
-
-const processFormLayout = (formLayout, priceRange, usdCurrency, conversionCurrency, numberFormat) => {
-  formLayout.fieldsets = formLayout.fieldsets.map((fieldset, idx) => ({
-    id: fieldset.id,
-    label: fieldset.label,
-    expanded: idx === 0 ? true : undefined,
-    filters: fieldset.filters.filter(filter =>
-      !filter.country || filter.country === country.url
-    )
-  }));
-
-  const filtersLayout = [
-    {
-      id: 'offer_price_usd',
-      label: 'Precio',
-      expanded: true,
-      filters: [{
-        name: 'offer_price_usd',
-        component: ApiFormPriceRangeFieldNext,
-        props: {
-          key: "offer_price_usd",
-          name: "offer_price_usd",
-          min: priceRange.min,
-          max: priceRange.max,
-          p80th: priceRange.p80th,
-          currency: usdCurrency,
-          conversionCurrency: conversionCurrency,
-          numberFormat: numberFormat,
-        },
-        renderer: node => <div className="pl-2 pr-2">
-          {node}
-        </div>
-      }]
-    },
-    {
-      id: 'keywords',
-      label: 'Palabras clave',
-      expanded: true,
-      filters: [{
-        name: 'search',
-        component: ApiFormTextFieldNext,
-        props: {
-          key: "search",
-          name: "search",
-          placeholder: "Palabras clave",
-          debounceTimeout: 3000
-          // debounceTimeout: isExtraSmall ? 3000 : 1500
-        }
-      }]
-    }
-  ];
-
-  for (const fieldset of formLayout.fieldsets) {
-    const fieldSetFilters = [];
-    for (const filter of fieldset.filters) {
-      const filterChoiceIdToNameDict = {};
-      let originalFilterChoices = undefined;
-
-      if (filter.type === 'exact') {
-        originalFilterChoices = filter.choices || [{id: 0, name: 'No'}, {id: 1, name: 'Sí'}]
-      } else {
-        originalFilterChoices = filter.choices || []
-      }
-
-      for (const choice of originalFilterChoices) {
-        filterChoiceIdToNameDict[choice.id] = choice.name;
-      }
-
-      let filterComponent = null;
-
-      if (filter.type === 'exact') {
-        filterComponent = {
-          component: ApiFormChoiceFieldNext,
-          props: {
-            key: filter.id,
-            name: filter.name,
-            choices: originalFilterChoices,
-            placeholder: filter.label,
-            multiple: Boolean(filter.choices)
-          }
-        };
-      } else if (filter.type === 'lte') {
-        filterComponent = {
-          component: ApiFormChoiceFieldNext,
-          props: {
-            key: filter.id,
-            name: filter.name,
-            apiField: filter.name + '_1',
-            urlField: filter.name + '_end',
-            choices: originalFilterChoices,
-            placeholder: filter.label,
-          }
-        }
-      } else if (filter.type === 'gte') {
-        filterComponent = {
-          component: ApiFormChoiceFieldNext,
-          props: {
-            key: filter.id,
-            name: filter.name,
-            apiField: filter.name + '_0',
-            urlField: filter.name + '_start',
-            choices: originalFilterChoices,
-            placeholder: filter.label,
-          }
-        };
-      } else if (filter.type === 'range') {
-        if (filter.continuous_range_step) {
-          // Continous (weight....)
-          filterComponent = {
-            component: ApiFormContinuousRangeField,
-            props: {
-              key: filter.id,
-              name: filter.name,
-              label: filter.label,
-              choices: rawFilterAggs,
-              step: filter.continuous_range_step,
-              unit: filter.continuous_range_unit,
-              resultCountSuffix: "resultados"
-            },
-            renderer: node => <div className="pl-2 pr-2">{node}</div>
-          };
-        } else {
-          // Discrete (screen size...)
-
-          const filterChoices = originalFilterChoices.map(choice => ({
-            ...choice,
-            label: choice.name,
-            value: parseFloat(choice.value)
-          }));
-
-          filterComponent = {
-            component: ApiFormDiscreteRangeField,
-            props: {
-              key: filter.id,
-              name: filter.name,
-              label: filter.label,
-              choices: filterChoices,
-              resultCountSuffix: "resultados"
-            },
-            renderer: node => <div className="pl-2 pr-2">{node}</div>
-          }
-        }
-      }
-
-      fieldSetFilters.push({
-        ...filter,
-        ...filterComponent,
-      })
-    }
-
-    filtersLayout.push({
-      ...fieldset,
-      filters: fieldSetFilters
-    })
-  }
-
-  const orderingChoices = [
-    {
-      id: 'offer_price_usd',
-      name: 'Precio'
-    },
-    {
-      id: 'leads',
-      name: 'Popularidad'
-    }
-  ];
-
-  for (const orderingChoice of formLayout.orders) {
-    const use = orderingChoice.suggested_use;
-
-    if (use === 'ascending') {
-      orderingChoices.push({
-        id: orderingChoice.name,
-        name: orderingChoice.label
-      })
-    }
-
-    if (use === 'descending') {
-      orderingChoices.push({
-        id: '-' + orderingChoice.name,
-        name: orderingChoice.label
-      })
-    }
-
-    if (use === 'both') {
-      orderingChoices.push({
-        id: orderingChoice.name,
-        name: `${orderingChoice.label} (asc.)`
-      });
-
-      orderingChoices.push({
-        id: '-' + orderingChoice.name,
-        name: `${orderingChoice.label} (desc.)`
-      })
-    }
-  }
-
-  const orderingComponent = {
-    component: ApiFormChoiceFieldNext,
-    props: {
-      key: "ordering",
-      name: "ordering",
-      id: "ordering",
-      choices: orderingChoices,
-      required: true
-    }
-  };
-
-  const paginationComponent = {
-    component: ApiFormPaginationFieldNext,
-    props: {
-      pageSize: {id: settings.categoryBrowseResultsPerPage},
-    }
-  };
-
-  return {
-    filtersLayout: filtersLayout,
-    ordering: orderingComponent,
-    pagination: paginationComponent
-  };
-};
-
-const getGlobalFieldRanges = async (category, stores) => {
-  // Make an empty call to the endpoint to obtain the global min / max and 80th percentile values
-  const endpoint = CategoryBrowse.apiEndpoint(category, stores);
-
-  const json = await fetchJson(endpoint);
-  return {
-    min: Math.floor(parseFloat(json.price_ranges.normal_price_usd.min)),
-    max: Math.ceil(parseFloat(json.price_ranges.normal_price_usd.max)),
-    p80th: Math.floor(parseFloat(json.price_ranges.normal_price_usd['80th']))
-  };
-};
 
 
 class CategoryBrowse extends React.Component {
@@ -292,36 +33,46 @@ class CategoryBrowse extends React.Component {
       getGlobalFieldRanges(category, preferredCountryStores)
     ];
 
-    const results = await Promise.all(promises);
-
-    const formLayout = results[0];
-    const priceRange = results[1];
+    const [formLayout, priceRange] = await Promise.all(promises);
 
     const usdCurrency = currencies.filter(currency => currency.id === settings.usdCurrencyId)[0];
     const conversionCurrency = currencies.filter(currency => currency.url === preferredCountry.currencyUrl)[0];
-
     const processedFormLayout = processFormLayout(formLayout, priceRange, usdCurrency, conversionCurrency, preferredNumberFormat);
     const endpoint = this.apiEndpoint(category, preferredCountryStores);
+
+    // console.log(processedFormLayout);
+
     const {initialFormData, initialSearchResults} = await ApiFormNext.getInitialProps(processedFormLayout, asPath, [endpoint], fetchJson);
+
+    // console.log(initialFormData);
 
     return {
       formLayout: formLayout,
       priceRange: priceRange,
       initialFormData,
+      usdCurrency,
+      conversionCurrency,
       initialProductsPageState: this.getNewProductsPageState(initialSearchResults[0])
     }
   }
 
   constructor(props) {
     super(props);
+    this.state = {}
+  }
 
-    this.state = {
-      formLayout: props.formLayout,
-      formValues: {},
-      priceRange: props.priceRange,
-      isMobileMenuOpen: false,
-      ...props.initialProductsPageState
+  static getDerivedStateFromProps(props, state) {
+    if (!state.formLayout || state.formLayout.id !== props.formLayout.id) {
+      return {
+        ...state,
+        formLayout: props.formLayout,
+        formValues: {},
+        isMobileMenuOpen: false,
+        ...props.initialProductsPageState
+      }
     }
+
+    return state
   }
 
   handleFormValueChange = formValues => {
@@ -382,11 +133,6 @@ class CategoryBrowse extends React.Component {
     return endpoint;
   };
 
-  componentDidMount() {
-    const category = this.props.category;
-    const country = this.props.country;
-  }
-
   handleFieldsetChange = (fieldset, expanded) => {
     const newFieldsets = this.state.formLayout.fieldsets.map(stateFieldset => {
       const newExpanded = stateFieldset.id === fieldset.id ? expanded : stateFieldset.expanded;
@@ -406,16 +152,10 @@ class CategoryBrowse extends React.Component {
   };
 
   render() {
-    const country = this.props.country;
     const categoryBrowseParams = settings.categoryBrowseParameters;
 
-    const formLayout = this.state.formLayout;
-    const priceRange = this.state.priceRange;
-    const resultsAggs = this.state.resultsAggs;
-    const numberFormat = this.props.numberFormat;
-    const currencies = this.props.currencies;
-    const usdCurrency = currencies.filter(currency => currency.id === settings.usdCurrencyId)[0];
-    const conversionCurrency = currencies.filter(currency => currency.url === country.currency)[0];
+    const {formLayout, resultsAggs} = this.state;
+    const {numberFormat, priceRange, usdCurrency, conversionCurrency, category, stores, initialFormData, isExtraSmall} = this.props;
 
     const {filtersLayout, ordering, pagination} = processFormLayout(formLayout, priceRange, usdCurrency, conversionCurrency, numberFormat);
     const apiFormFields = ['ordering', 'page'];
@@ -424,8 +164,9 @@ class CategoryBrowse extends React.Component {
       let fieldsetExpanded = false;
 
       for (const filter of fieldset.filters) {
-        filter.props.initialValue = this.props.initialFormData[filter.props.name].fieldValues;
-        filter.props.searchable = !this.props.isExtraSmall;
+        // console.log(filter);
+        filter.props.initialValue = initialFormData[filter.props.name].fieldValues;
+        filter.props.searchable = !isExtraSmall;
 
         apiFormFields.push(filter.name);
 
@@ -587,7 +328,7 @@ class CategoryBrowse extends React.Component {
               }))
             }
 
-            filter.choices = filterChoices
+            filter.props['choices'] = filterChoices
           }
         }
       }
@@ -595,10 +336,10 @@ class CategoryBrowse extends React.Component {
       fieldset.expanded = fieldset.expanded || fieldsetExpanded
     }
 
-    ordering.props.initialValue = this.props.initialFormData['ordering'].fieldValues;
+    ordering.props.initialValue = initialFormData['ordering'].fieldValues;
 
     const products = this.state.productsPage || null;
-    const endpoint = CategoryBrowse.apiEndpoint(this.props.category, this.props.stores);
+    const endpoint = CategoryBrowse.apiEndpoint(category, stores);
 
     const filtersComponent = <Accordion allowMultiple={true}>
       {filtersLayout.map(fieldset => (
@@ -620,10 +361,16 @@ class CategoryBrowse extends React.Component {
     </Accordion>;
 
     const priceFormatter = (value, currency) => {
-      return formatCurrency(value, currency, conversionCurrency, numberFormat.thousandsSeparator, numberFormat.decimalSeparator)
+      return formatCurrency(value, currency, conversionCurrency, numberFormat.thousands_separator, numberFormat.decimal_separator)
     };
 
-    const topBanner = <TopBanner category={this.props.category.name} /> || null;
+    const topBanner = <TopBanner category={category.name} /> || null;
+
+    const handleApiFormPushUrl = search => {
+      const href = `/browse?category_slug=${category.slug}&${search}`;
+      const as = `/${category.slug}?${search}`;
+      Router.push(href, as).then(() => window.scrollTo(0, 0));
+    };
 
     return (
       <div className="row">
@@ -633,10 +380,11 @@ class CategoryBrowse extends React.Component {
           onResultsChange={this.setProductsPage}
           onFormValueChange={this.handleFormValueChange}
           anonymous={true}
-          initialFormData={this.props.initialFormData}
+          initialFormData={initialFormData}
+          onPushUrl={handleApiFormPushUrl}
         >
           <div id="page-wrap" className="flex-grow">
-            {this.props.isExtraSmall &&
+            {isExtraSmall &&
             <Menu pageWrapId="page-wrap"
                   outerContainerId="outer-container"
                   isOpen={this.state.isMobileMenuOpen}
@@ -647,7 +395,7 @@ class CategoryBrowse extends React.Component {
               </div>
             </Menu>
             }
-            {this.props.isExtraSmall &&
+            {isExtraSmall &&
             <div className="pt-2 pb-2" id="mobile-filter-and-ordering">
               <div className="col-12 d-flex justify-content-between">
                 <div>
@@ -663,11 +411,11 @@ class CategoryBrowse extends React.Component {
             </div>
             }
 
-            {this.props.isExtraSmall ?
+            {isExtraSmall ?
               <div className="mobile-top-banner-container">{topBanner}</div> : topBanner
             }
             <div className="d-flex pt-2 pl-2 pr-2" id="filters-and-results">
-              {this.props.isExtraSmall ||
+              {isExtraSmall ||
               <div id="category-browse-filters">
                 <div className="card">
                   <div
@@ -681,14 +429,14 @@ class CategoryBrowse extends React.Component {
                 <div className="card pl-1 pr-1 pt-2">
                   <div className="d-flex justify-content-between align-items-start font-weight-light">
                     <div className="pl-2">
-                      <h1 className="mb-0">{this.props.category.name}</h1>
+                      <h1 className="mb-0">{category.name}</h1>
                       <CategoryResultCount
                         resultCount={products && products.count}
                         page={this.state.formValues.page}
                         resultsPerPage={settings.categoryBrowseResultsPerPage}/>
                     </div>
 
-                    {this.props.isExtraSmall ||
+                    {isExtraSmall ||
                     <div className="d-flex flex-column align-items-end flex-grow category-browse-ordering-container mr-2">
                       <span className="category-browse-result-count mb-1">Ordenar por</span>
                       <div className="flex-grow ml-2">
@@ -708,10 +456,10 @@ class CategoryBrowse extends React.Component {
                   <div className="d-flex category-browse-pagination justify-content-around mt-2 mb-3">
                     <pagination.component
                       {...pagination.props}
-                      initialValue={this.props.initialFormData['page'].fieldValues}
+                      initialValue={initialFormData['page'].fieldValues}
                       resultCount={this.state.productsPage && this.state.productsPage.count}
-                      previousLabel={this.props.isExtraSmall ? 'Ant' : 'Anterior'}
-                      nextLabel={this.props.isExtraSmall ? 'Sig' : 'Siguiente'}
+                      previousLabel={isExtraSmall ? 'Ant' : 'Anterior'}
+                      nextLabel={isExtraSmall ? 'Sig' : 'Siguiente'}
                     />
                   </div>
                 </div>
@@ -725,17 +473,268 @@ class CategoryBrowse extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const {ApiResourceObject} = apiResourceStateToPropsUtils(state);
-  const {preferredCountryStores, preferredCountry, preferredNumberFormat} = solotodoStateToPropsUtils(state);
+  const {preferredCountryStores, preferredNumberFormat} = solotodoStateToPropsUtils(state);
 
   return {
-    ApiResourceObject,
-    currencies: filterApiResourceObjectsByType(state.apiResourceObjects, 'currencies'),
     isExtraSmall: state.browser.is.extraSmall,
     stores: preferredCountryStores,
-    country: preferredCountry,
     numberFormat: preferredNumberFormat
   }
 }
 
 export default connect(mapStateToProps)(CategoryBrowse);
+
+const getFormLayout = async (category) => {
+  // Obtain layout of the form fields
+  const all_form_layouts = await fetchJson(settings.apiResourceEndpoints.category_specs_form_layouts + '?category=' + category.id + '&website=' + settings.websiteId);
+  const processed_form_layouts = all_form_layouts
+    .map(layout => {
+      let priority = 0;
+      if (layout.website === settings.ownWebsiteUrl) {
+        priority = 2
+      } else if (layout.website === null) {
+        priority = 1
+      }
+      return {
+        ...layout,
+        priority
+      }
+    });
+
+  processed_form_layouts.sort((a, b) => b.priority - a.priority);
+
+  return processed_form_layouts[0] || null;
+};
+
+const processFormLayout = (formLayout, priceRange, usdCurrency, conversionCurrency, numberFormat) => {
+  formLayout.fieldsets = formLayout.fieldsets.map((fieldset, idx) => ({
+    id: fieldset.id,
+    label: fieldset.label,
+    expanded: idx === 0 ? true : undefined,
+    filters: fieldset.filters.filter(filter =>
+      !filter.country || filter.country === country.url
+    )
+  }));
+
+  const filtersLayout = [
+    {
+      id: 'offer_price_usd',
+      label: 'Precio',
+      expanded: true,
+      filters: [{
+        name: 'offer_price_usd',
+        component: ApiFormPriceRangeFieldNext,
+        props: {
+          key: "offer_price_usd",
+          name: "offer_price_usd",
+          min: priceRange.min,
+          max: priceRange.max,
+          p80th: priceRange.p80th,
+          currency: usdCurrency,
+          conversionCurrency: conversionCurrency,
+          numberFormat: numberFormat,
+        },
+        renderer: node => <div className="pl-2 pr-2">
+          {node}
+        </div>
+      }]
+    },
+    {
+      id: 'keywords',
+      label: 'Palabras clave',
+      expanded: true,
+      filters: [{
+        name: 'search',
+        component: ApiFormTextFieldNext,
+        props: {
+          key: "search",
+          name: "search",
+          placeholder: "Palabras clave",
+          debounceTimeout: 3000
+          // debounceTimeout: isExtraSmall ? 3000 : 1500
+        }
+      }]
+    }
+  ];
+
+  for (const fieldset of formLayout.fieldsets) {
+    const fieldSetFilters = [];
+    for (const filter of fieldset.filters) {
+      const filterChoiceIdToNameDict = {};
+      let originalFilterChoices = undefined;
+
+      if (filter.type === 'exact') {
+        originalFilterChoices = filter.choices || [{id: 0, name: 'No'}, {id: 1, name: 'Sí'}]
+      } else {
+        originalFilterChoices = filter.choices || []
+      }
+
+      for (const choice of originalFilterChoices) {
+        filterChoiceIdToNameDict[choice.id] = choice.name;
+      }
+
+      let filterComponent = null;
+
+      if (filter.type === 'exact') {
+        filterComponent = {
+          component: ApiFormChoiceFieldNext,
+          props: {
+            key: filter.id,
+            name: filter.name,
+            choices: originalFilterChoices,
+            placeholder: filter.label,
+            multiple: Boolean(filter.choices)
+          }
+        };
+      } else if (filter.type === 'lte') {
+        filterComponent = {
+          component: ApiFormChoiceFieldNext,
+          props: {
+            key: filter.id,
+            name: filter.name,
+            apiField: filter.name + '_1',
+            urlField: filter.name + '_end',
+            choices: originalFilterChoices,
+            placeholder: filter.label,
+          }
+        }
+      } else if (filter.type === 'gte') {
+        filterComponent = {
+          component: ApiFormChoiceFieldNext,
+          props: {
+            key: filter.id,
+            name: filter.name,
+            apiField: filter.name + '_0',
+            urlField: filter.name + '_start',
+            choices: originalFilterChoices,
+            placeholder: filter.label,
+          }
+        };
+      } else if (filter.type === 'range') {
+        if (filter.continuous_range_step) {
+          // Continous (weight....)
+          filterComponent = {
+            component: ApiFormContinuousRangeFieldNext,
+            props: {
+              key: filter.id,
+              name: filter.name,
+              label: filter.label,
+              choices: originalFilterChoices,
+              step: filter.continuous_range_step,
+              unit: filter.continuous_range_unit,
+              resultCountSuffix: "resultados"
+            },
+            renderer: node => <div className="pl-2 pr-2">{node}</div>
+          };
+        } else {
+          // Discrete (screen size...)
+
+          const filterChoices = originalFilterChoices.map(choice => ({
+            ...choice,
+            label: choice.name,
+            value: parseFloat(choice.value)
+          }));
+
+          filterComponent = {
+            component: ApiFormDiscreteRangeFieldNext,
+            props: {
+              key: filter.id,
+              name: filter.name,
+              label: filter.label,
+              choices: filterChoices,
+              resultCountSuffix: "resultados"
+            },
+            renderer: node => <div className="pl-2 pr-2">{node}</div>
+          }
+        }
+      }
+
+      fieldSetFilters.push({
+        ...filter,
+        ...filterComponent,
+      })
+    }
+
+    filtersLayout.push({
+      ...fieldset,
+      filters: fieldSetFilters
+    })
+  }
+
+  const orderingChoices = [
+    {
+      id: 'offer_price_usd',
+      name: 'Precio'
+    },
+    {
+      id: 'leads',
+      name: 'Popularidad'
+    }
+  ];
+
+  for (const orderingChoice of formLayout.orders) {
+    const use = orderingChoice.suggested_use;
+
+    if (use === 'ascending') {
+      orderingChoices.push({
+        id: orderingChoice.name,
+        name: orderingChoice.label
+      })
+    }
+
+    if (use === 'descending') {
+      orderingChoices.push({
+        id: '-' + orderingChoice.name,
+        name: orderingChoice.label
+      })
+    }
+
+    if (use === 'both') {
+      orderingChoices.push({
+        id: orderingChoice.name,
+        name: `${orderingChoice.label} (asc.)`
+      });
+
+      orderingChoices.push({
+        id: '-' + orderingChoice.name,
+        name: `${orderingChoice.label} (desc.)`
+      })
+    }
+  }
+
+  const orderingComponent = {
+    component: ApiFormChoiceFieldNext,
+    props: {
+      key: "ordering",
+      name: "ordering",
+      id: "ordering",
+      choices: orderingChoices,
+      required: true
+    }
+  };
+
+  const paginationComponent = {
+    component: ApiFormPaginationFieldNext,
+    props: {
+      pageSize: {id: settings.categoryBrowseResultsPerPage},
+    }
+  };
+
+  return {
+    filtersLayout: filtersLayout,
+    ordering: orderingComponent,
+    pagination: paginationComponent
+  };
+};
+
+const getGlobalFieldRanges = async (category, stores) => {
+  // Make an empty call to the endpoint to obtain the global min / max and 80th percentile values
+  const endpoint = CategoryBrowse.apiEndpoint(category, stores);
+
+  const json = await fetchJson(endpoint);
+  return {
+    min: Math.floor(parseFloat(json.price_ranges.normal_price_usd.min)),
+    max: Math.ceil(parseFloat(json.price_ranges.normal_price_usd.max)),
+    p80th: Math.floor(parseFloat(json.price_ranges.normal_price_usd['80th']))
+  };
+};

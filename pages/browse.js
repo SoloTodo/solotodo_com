@@ -7,7 +7,7 @@ class Browse extends React.Component {
   static async getInitialProps(ctx) {
     const { res, query, reduxStore, asPath } = ctx;
     const reduxState = reduxStore.getState();
-    const { categories, preferredCountry, preferredCountryStores, currencies } = solotodoStateToPropsUtils(reduxState);
+    const { categories } = solotodoStateToPropsUtils(reduxState);
     const category = categories.filter(localCategory => localCategory.slug === query.category_slug)[0];
 
     if (!category) {
