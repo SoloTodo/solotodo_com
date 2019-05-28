@@ -38,26 +38,26 @@ app.prepare()
       return handle(req, res)
     });
 
-    // server.listen(3000, (err) => {
-    //   if (err) throw err;
-    //   console.log('> Ready on http://localhost:3000')
-    // })
+    server.listen(3000, (err) => {
+      if (err) throw err;
+      console.log('> Ready on http://localhost:3000')
+    })
 
-    if (dev) {
-      devcert.certificateFor("local.solotodo.com", {installCertutil: true}).then((ssl) => {
-        https.createServer(ssl, server).listen(3000, (err) => {
-          if (err) throw err;
-          // eslint-disable-next-line
-          console.log(`> Ready on https://local.solotodo.com:3000`);
-        });
-      });
-    } else {
-      server.listen(3000, (err) => {
-        if (err) throw err;
-        // eslint-disable-next-line
-        console.log(`> Ready on http://localhost:3000`);
-      });
-    }
+    // if (dev) {
+    //   devcert.certificateFor("local.solotodo.com", {installCertutil: true}).then((ssl) => {
+    //     https.createServer(ssl, server).listen(3000, (err) => {
+    //       if (err) throw err;
+    //       // eslint-disable-next-line
+    //       console.log(`> Ready on https://local.solotodo.com:3000`);
+    //     });
+    //   });
+    // } else {
+    //   server.listen(3000, (err) => {
+    //     if (err) throw err;
+    //     // eslint-disable-next-line
+    //     console.log(`> Ready on http://localhost:3000`);
+    //   });
+    // }
   })
   .catch((ex) => {
     console.error(ex.stack);
