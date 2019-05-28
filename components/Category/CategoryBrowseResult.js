@@ -53,7 +53,7 @@ class CategoryBrowseResult extends React.Component {
     const formattedPrice = this.props.priceFormatter(offerPrice, currency);
 
     const linkAs = `/products/${product.id}-${product.slug}`;
-    const linkHref = `/products?product=${product.id}&slug=${product.slug}`;
+    const linkHref = `/products?id=${product.id}&slug=${product.slug}`;
 
     const params = this.props.categoryBrowseParams || {};
     const bucketProductLabelField = params.bucketProductLabelField || 'unicode';
