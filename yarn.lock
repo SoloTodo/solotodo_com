@@ -4048,6 +4048,11 @@ lodash.tail@^4.1.1:
   resolved "https://registry.yarnpkg.com/lodash.tail/-/lodash.tail-4.1.1.tgz#d2333a36d9e7717c8ad2f7cacafec7c32b444664"
   integrity sha1-0jM6NtnncXyK0vfKyv7HwytERmQ=
 
+lodash.throttle@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
+  integrity sha1-wj6RtxAkKscMN/HhzaknTMOb8vQ=
+
 lodash.tonumber@^4.0.3:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/lodash.tonumber/-/lodash.tonumber-4.0.3.tgz#0b96b31b35672793eb7f5a63ee791f1b9e9025d9"
@@ -5447,6 +5452,17 @@ react-facebook-login@^4.1.1:
   resolved "https://registry.yarnpkg.com/react-facebook-login/-/react-facebook-login-4.1.1.tgz#005121236a6ac0dee02099976fb1a3265f9d633e"
   integrity sha512-COnHEHlYGTKipz4963safFAK9PaNTcCiXfPXMS/yxo8El+/AJL5ye8kMJf23lKSSGGPgqFQuInskIHVqGqTvSw==
 
+react-image-gallery@^0.8.17:
+  version "0.8.17"
+  resolved "https://registry.yarnpkg.com/react-image-gallery/-/react-image-gallery-0.8.17.tgz#13dc22481193e8e5e904f0bd83ef6a9a9975e850"
+  integrity sha512-6uGclFvpLBJWooQ1VK09RZhzryL3KheMuBzEm0UrESzitEu2Stoi9O+NvIxo4R5p+1d1arMfUjmdOTllOxHstg==
+  dependencies:
+    lodash.debounce "^4.0.8"
+    lodash.throttle "^4.1.1"
+    prop-types "^15.5.8"
+    react-swipeable "^5.2.0"
+    resize-observer-polyfill "^1.5.0"
+
 react-image@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/react-image/-/react-image-2.0.0.tgz#c1d5f21351d3957ff54c9818b8adb26cd0d4204a"
@@ -5552,6 +5568,21 @@ react-spinners@^0.5.3:
     "@emotion/core" "^10.0.4"
     prop-types "^15.5.10"
     recompose "0.27.1 - 0.30.0"
+
+react-star-rating-component@^1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/react-star-rating-component/-/react-star-rating-component-1.4.1.tgz#74dc1c73493f088013331c234190b8cccad31f6b"
+  integrity sha512-i0YEvQzToS0s0GDkxn01Jy4EeLpVEyh023NXJTJ+/1+xkvhpACyD4d1YeBhYWZab53ppUnUxs5gmp75gJr3khA==
+  dependencies:
+    classnames "^2.2.5"
+    prop-types "^15.6.1"
+
+react-swipeable@^5.2.0:
+  version "5.2.3"
+  resolved "https://registry.yarnpkg.com/react-swipeable/-/react-swipeable-5.2.3.tgz#392d6cba328090d10fcb25a06047f5ad808f7e6c"
+  integrity sha512-J92RJNIZ7wE5czNWtVUTnTTOdgsnWXcj5fcKiEhf7ZU5JYSh5wOFosKWu8FyTFa6FXwmHKMzhaKUC/p9L2n2Lw==
+  dependencies:
+    prop-types "^15.6.2"
 
 react-toastify@^4.5.2:
   version "4.5.2"

@@ -31,7 +31,7 @@ class Products extends React.Component {
 
     return {
       product,
-      category
+      category,
     }
   }
 
