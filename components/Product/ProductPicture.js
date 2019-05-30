@@ -13,16 +13,16 @@ class ProductPicture extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps, nextContext) {
-    if(this.props.product.url !== nextProps.product.url){
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if(this.props.product.id !== prevProps.product.id){
       this.setState({
-        imageSrc: `${nextProps.product.url}picture/?width=1000&height=520`
+        imageSrc: `${this.props.product.url}picture/?width=1000&height=520`
       })
     }
   }
 
   handleScreenChange = fullscreenElement => {
-    const imageSrc = fullscreenElement ? this.props.product.pictureUrl :
+    const imageSrc = fullscreenElement ? this.props.product.picture_url :
         `${this.props.product.url}picture/?width=1000&height=520`;
 
     this.setState({

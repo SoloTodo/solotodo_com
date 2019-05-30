@@ -10,13 +10,13 @@ class ProductDetailRating extends React.Component {
      }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.componentUpdate(this.props.product)
   }
 
-  componentWillReceiveProps(nextProps, nextContext) {
-    if (this.props.product.id !== nextProps.product.id) {
-      this.componentUpdate(nextProps.product)
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevProps.product.id !== this.props.product.id) {
+      this.componentUpdate(this.props.product)
     }
   }
 
@@ -26,9 +26,10 @@ class ProductDetailRating extends React.Component {
     })
   }
 
-
   render() {
     const ratingsData = this.state.ratingsData;
+    const linkAs = `/products/${this.props.product.id}/ratings`;
+    const linkHref = `/product_ratings?id=${this.props.product.id}`;
 
     if (!ratingsData || !ratingsData.count) {
       return null
@@ -37,11 +38,11 @@ class ProductDetailRating extends React.Component {
     return <div className="d-flex flex-row mt-1">
       <ProductRatingStars
         value={ratingsData.average}
-        linkUrl={`/products/${this.props.product.id}/ratings`}
-      />
-      <div className="pl-1 text-muted product-rating-label">
-        {ratingsData.count} evaluaciones
-      </div>
+        linkHref={linkHref}
+        linkAs={linkAs}/>
+      <Link href={linkHref} as={linkAs}>
+        <a className="pl-1 text-muted product-rating-label">{ratingsData.count} evaluaciones</a>
+      </Link>
 
     </div>
   }

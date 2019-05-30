@@ -1,10 +1,12 @@
 import React from 'react'
 import Link from "next/link";
 
-import {settings} from '../../settings'
 import TopBanner from "../TopBanner";
 import ProductDetailRating from "./ProductDetailRating";
 import ProductPicture from "./ProductPicture";
+import ProductTechSpecs from "../../react-utils/components/Product/ProductTechSpecs";
+
+import {settings} from '../../settings';
 
 class ProductDetail extends React.Component {
   render() {
@@ -36,7 +38,28 @@ class ProductDetail extends React.Component {
             <ProductPicture product={product}/>
           </div>
         </div>
+        <div id="product-detail-specs" className="product-detail-cell">
+          <div id="technical-specifications-container" className="content-card">
+            <ProductTechSpecs product={product} websiteId={settings}/>
+          </div>
+        </div>
       </div>
+
+      <div id="product-detail-prices" className="product-detail-cell">
+        <div id="product-prices-table" className="content-card">
+          <div>Product Prices Table</div>
+          <div className="d-flex justify-content-end flex-wrap">
+            <div>Product Alert Button</div>
+          </div>
+        </div>
+      </div>
+
+      <Link href="/products?id=44843&slug=huawei-p20-lite-32-gb-4-gb-midnight-black" as="/products/44843-huawei-p20-lite-32-gb-4-gb-midnight-black">
+        <a>Celular</a>
+      </Link> <br/>
+      <Link href="/products?id=36165&slug=huawei-nintendo-switch-joy-con-neon-negra" as="/products/36165-nintendo-switch-joy-con-neon-negra">
+        <a>Switch</a>
+      </Link>
     </div>
   }
 }

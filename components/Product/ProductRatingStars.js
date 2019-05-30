@@ -9,13 +9,16 @@ class ProductRatingStars extends React.Component {
       return null;
     }
 
-    const renderStarIcon = (startIndex, rating, name) => {
-      const starsComponent = startIndex <= rating? <i className="fas fa-star"></i> : <i className="far fa-star"></i>;
+    const renderStarIcon = (startIndex, rating) => {
+      const starsComponent = startIndex <= rating?
+        <i className="fas fa-star"/> : <i className="far fa-star"/>;
 
-      if (this.props.linkUrl) {
-        return <div className="rating-stars">
-          {starsComponent}
-        </div>
+      if (this.props.linkAs) {
+        return <Link href={this.props.linkHref} as={this.props.linkAs}>
+          <div className="rating-stars">
+            {starsComponent}
+          </div>
+        </Link>
       } else {
         return <span className="rating-stars">
           {starsComponent}
@@ -23,16 +26,18 @@ class ProductRatingStars extends React.Component {
       }
     };
 
-    const renderStartIconHalf = (nextValue, prevValue, name) => {
+    const renderStartIconHalf = () => {
       const starsComponent = <span>
         <span style={{position: 'absolute'}}><i className="far fa-star" /></span>
         <span><i className="fas fa-star-half" /></span>
       </span>;
 
-      if (this.props.linkUrl) {
-        return <div className="rating-stars">
-          {starsComponent}
-        </div>
+      if (this.props.linkAs) {
+        return <Link href={this.props.linkHref} as={this.props.linkAs}>
+          <div className="rating-stars">
+            {starsComponent}
+          </div>
+        </Link>
       } else {
         return <span className="rating-stars">
           {starsComponent}
