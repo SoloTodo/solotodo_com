@@ -26,7 +26,7 @@ class ProductRatingStars extends React.Component {
       }
     };
 
-    const renderStartIconHalf = () => {
+    const renderStarIconHalf = () => {
       const starsComponent = <span>
         <span style={{position: 'absolute'}}><i className="far fa-star" /></span>
         <span><i className="fas fa-star-half" /></span>
@@ -50,7 +50,8 @@ class ProductRatingStars extends React.Component {
         name="rating"
         value={this.props.value}
         renderStarIcon={renderStarIcon}
-        renderStarIconHalf={renderStartIconHalf}
+        renderStarIconHalf={renderStarIconHalf}
+        editing={false}
       />
     </div>
   }

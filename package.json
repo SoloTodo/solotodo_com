@@ -41,6 +41,7 @@
     "react-spinners": "^0.5.3",
     "react-star-rating-component": "^1.4.1",
     "react-toastify": "^4.5.2",
+    "react-tooltip": "^3.10.0",
     "reactstrap": "^7.1.0",
     "redux": "^3.6.0",
     "redux-devtools-extension": "^2.13.2",

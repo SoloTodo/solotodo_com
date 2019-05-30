@@ -7,6 +7,7 @@ import ProductPicture from "./ProductPicture";
 import ProductTechSpecs from "../../react-utils/components/Product/ProductTechSpecs";
 
 import {settings} from '../../settings';
+import ProductPricesTable from "./ProductPricesTable";
 
 class ProductDetail extends React.Component {
   render() {
@@ -40,19 +41,25 @@ class ProductDetail extends React.Component {
         </div>
         <div id="product-detail-specs" className="product-detail-cell">
           <div id="technical-specifications-container" className="content-card">
-            <ProductTechSpecs product={product} websiteId={settings}/>
+            <ProductTechSpecs product={product} websiteId={settings.websiteId}/>
+          </div>
+        </div>
+        <div id="product-detail-prices" className="product-detail-cell">
+          <div id="product-prices-table" className="content-card">
+            <ProductPricesTable
+              entities={this.props.entities}
+              storeEntries={this.props.storeEntries}
+              numberFormat={this.props.numberFormat}
+              preferredCurrency={this.props.preferredCurrency}
+            />
+            <div className="d-flex justify-content-end flex-wrap">
+              <div>Product Alert Button</div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div id="product-detail-prices" className="product-detail-cell">
-        <div id="product-prices-table" className="content-card">
-          <div>Product Prices Table</div>
-          <div className="d-flex justify-content-end flex-wrap">
-            <div>Product Alert Button</div>
-          </div>
-        </div>
-      </div>
+
 
       <Link href="/products?id=44843&slug=huawei-p20-lite-32-gb-4-gb-midnight-black" as="/products/44843-huawei-p20-lite-32-gb-4-gb-midnight-black">
         <a>Celular</a>

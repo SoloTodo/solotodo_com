@@ -1,10 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux'
+import {withRouter} from 'next/router'
 import { formatCurrency } from "../react-utils/next_utils";
 import { solotodoStateToPropsUtils } from "../redux/utils";
 import ProductsReel from "../components/Product/ProductsReel";
 import TopBanner from "../components/TopBanner";
 import {settings} from '../settings';
+import {withSoloTodoTracker} from "../utils";
 
 class Index extends React.Component {
   static async getInitialProps({ reduxStore, res }) {
@@ -78,4 +80,11 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(Index)
+function mapPropsToGAField(props) {
+  return {
+    pageTitle: 'Cotiza y compara los precios de todas las tiendas'
+  }
+}
+
+const TrackedIndex = withSoloTodoTracker(Index, mapPropsToGAField);
+export default withRouter(connect(mapStateToProps)(TrackedIndex))

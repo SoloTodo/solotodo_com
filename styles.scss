@@ -104,3 +104,16 @@ h4 {
 .flex-grow {
   flex-grow: 1;
 }
+
+.rating-stars {
+  height: 21px;
+}
+
+.rating-stars label {
+  margin-bottom: 0;
+  cursor: inherit !important;
+}
+
+.fa-star, .fa-star-half {
+  color: #ffb700;
+}

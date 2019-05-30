@@ -2,6 +2,7 @@ import fetch from 'isomorphic-unfetch'
 import {convertIdToUrl, fetchAuth} from "./react-utils/utils";
 import {settings} from "./settings";
 import {filterApiResourceObjectsByType} from "./react-utils/ApiResource";
+import withTracker from './react-utils/components/GoogleAnalyticsNextJsTracker'
 import moment from "moment";
 
 
@@ -92,3 +93,29 @@ export const persistUser = async (authToken, userChanges) => {
     body: JSON.stringify(userChanges)
   });
 };
+
+export function withSoloTodoTracker(WrappedComponent, mapPropsToGAField){
+  const trackPageHandler = props => {
+    const analyticsParams = {
+      page_title: 'SoloTodo'
+    };
+
+    if (mapPropsToGAField) {
+        const soloTodoProps = mapPropsToGAField(props);
+
+        if (soloTodoProps.category) {
+          analyticsParams.dimension2 = soloTodoProps.category;
+        }
+        if (soloTodoProps.product) {
+          analyticsParams.dimension3 = soloTodoProps.product;
+        }
+        if (soloTodoProps.pageTitle) {
+          analyticsParams.page_title = `${soloTodoProps.pageTitle} - SoloTodo`;
+        }
+    }
+
+    window.gtag('config', settings.googleAnalyticsId, analyticsParams)
+  };
+
+  return withTracker(WrappedComponent, trackPageHandler, true)
+}
