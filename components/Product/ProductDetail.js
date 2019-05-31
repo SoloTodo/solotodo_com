@@ -47,11 +47,9 @@ class ProductDetail extends React.Component {
         <div id="product-detail-prices" className="product-detail-cell">
           <div id="product-prices-table" className="content-card">
             <ProductPricesTable
+              category={category}
               entities={this.props.entities}
-              storeEntries={this.props.storeEntries}
-              numberFormat={this.props.numberFormat}
-              preferredCurrency={this.props.preferredCurrency}
-            />
+              storeEntries={this.props.storeEntries}/>
             <div className="d-flex justify-content-end flex-wrap">
               <div>Product Alert Button</div>
             </div>
@@ -59,12 +57,10 @@ class ProductDetail extends React.Component {
         </div>
       </div>
 
-
-
       <Link href="/products?id=44843&slug=huawei-p20-lite-32-gb-4-gb-midnight-black" as="/products/44843-huawei-p20-lite-32-gb-4-gb-midnight-black">
         <a>Celular</a>
       </Link> <br/>
-      <Link href="/products?id=36165&slug=huawei-nintendo-switch-joy-con-neon-negra" as="/products/36165-nintendo-switch-joy-con-neon-negra">
+      <Link href="/products?id=36165&slug=nintendo-switch-joy-con-neon-negra" as="/products/36165-nintendo-switch-joy-con-neon-negra">
         <a>Switch</a>
       </Link>
     </div>

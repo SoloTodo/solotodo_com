@@ -1,6 +1,6 @@
 import React from 'react'
 import Head from "next/head";
-import {withRouter} from 'next/router'
+import Router, {withRouter} from 'next/router'
 import ProductDetail from "../components/Product/ProductDetail";
 import ProductPricesTable from "../components/Product/ProductPricesTable"
 import {solotodoStateToPropsUtils} from "../redux/utils";
@@ -13,21 +13,8 @@ class Products extends React.Component {
     const { res, query, reduxStore, asPath } = ctx;
     const reduxState = reduxStore.getState();
 
-    const {categories, preferredCountryStores, numberFormat, preferredCurrency} = solotodoStateToPropsUtils(reduxState);
+    const {categories, preferredCountryStores} = solotodoStateToPropsUtils(reduxState);
     const productId = query.id;
-    const productSlug = query.slug;
-
-    if (!productId || !productSlug) {
-      if (res) {
-        res.statusCode = 404;
-        res.end('Not found');
-        return
-      } else {
-        return {
-          statusCode: 404
-        }
-      }
-    }
 
     const productsUrl = settings.apiResourceEndpoints.products;
     let storesUrl = '';
@@ -35,7 +22,37 @@ class Products extends React.Component {
       storesUrl += `&stores=${store.id}`
     }
 
-    const product = await fetchJson(`${productsUrl}${productId}`);
+    let product;
+
+    try {
+      product = await fetchJson(`${productsUrl}${productId}`);
+    } catch (e) {
+      if (res) {
+        console.log('error');
+        res.statusCode=404;
+        res.end('Not found');
+        return
+      }
+    }
+
+    const givenSlug = query.slug;
+    const expectedSlug = product.slug;
+
+    if (givenSlug !== expectedSlug) {
+      if (res) {
+        res.writeHead(302, {
+          Location: `/products/${productId}-${expectedSlug}`
+        });
+        res.end()
+      } else {
+        const href = `/products?id=${productId}&slug=${expectedSlug}`;
+        const as = `/products/${productId}-${expectedSlug}`;
+
+        Router.push(href, as)
+      }
+    }
+
+
     const category = categories.filter(localCategory => localCategory.url === product.category)[0];
     const availableEntities = await fetchJson(`${productsUrl}available_entities/?ids=${productId}${storesUrl}`);
     const entities = availableEntities.results[0].entities.filter(entity => entity.active_registry.cell_monthly_payment === null);
@@ -47,8 +64,6 @@ class Products extends React.Component {
       category,
       entities,
       storeEntries,
-      numberFormat,
-      preferredCurrency
     }
   }
 
@@ -57,7 +72,6 @@ class Products extends React.Component {
     const category = this.props.category;
     const entities = this.props.entities;
     const storeEntries = this.props.storeEntries;
-    const preferredCountry = this.props.preferredCountry;
 
     return <React.Fragment>
       <Head>
@@ -70,9 +84,6 @@ class Products extends React.Component {
               category={category}
               entities={entities}
               storeEntries={storeEntries}
-              preferredCountry={preferredCountry}
-              numberFormat={this.props.numberFormat}
-              preferredCurrency={this.props.preferredCurrency}
             />
           </div>
         </div>

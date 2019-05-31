@@ -15,12 +15,12 @@ class ProductRatingStars extends React.Component {
 
       if (this.props.linkAs) {
         return <Link href={this.props.linkHref} as={this.props.linkAs}>
-          <div className="rating-stars">
+          <a className="rating-star">
             {starsComponent}
-          </div>
+          </a>
         </Link>
       } else {
-        return <span className="rating-stars">
+        return <span className="rating-star">
           {starsComponent}
         </span>
       }
@@ -34,12 +34,12 @@ class ProductRatingStars extends React.Component {
 
       if (this.props.linkAs) {
         return <Link href={this.props.linkHref} as={this.props.linkAs}>
-          <div className="rating-stars">
+          <a className="rating-star">
             {starsComponent}
-          </div>
+          </a>
         </Link>
       } else {
-        return <span className="rating-stars">
+        return <span className="rating-star">
           {starsComponent}
         </span>
       }

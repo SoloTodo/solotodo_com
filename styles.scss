@@ -31,6 +31,8 @@ $container-max-widths: (
 @import './components/NavBar/NavBarPreferredStores.css';
 @import './components/NavBar/StoreCheckBox.css';
 
+@import './react-utils/components/Product/ProductTechSpecs.css';
+
 @import './components/Product/ProductDetail.scss';
 @import './components/Product/ProductPicture.css';
 @import './components/Product/ProductsReel.css';
@@ -110,6 +112,7 @@ h4 {
 }
 
 .rating-stars label {
+  width: 17px;
   margin-bottom: 0;
   cursor: inherit !important;
 }

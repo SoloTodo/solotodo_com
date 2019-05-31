@@ -1,11 +1,13 @@
 import React from 'react'
-import ReactTooltip from 'react-tooltip'
-import ProductRatingStars from "./ProductRatingStars";
+import {connect} from "react-redux";
+
 import {fetchJson} from "../../react-utils/utils";
-import {settings} from "../../settings";
 import {listToObject} from "../../react-utils/utils";
-import {formatCurrency} from "../../react-utils/next_utils";
-import SoloTodoLeadLink from '../SoloTodoLeadLink'
+
+import {settings} from "../../settings";
+import {solotodoStateToPropsUtils} from "../../redux/utils";
+import ProductNormalPricesTable from "./ProductNormalPricesTable";
+import ProductCellPricesTable from "./ProductCellPricesTable";
 
 class ProductPricesTable extends React.Component {
   static async getInitialProps(preferredCountryStores, entities) {
@@ -28,80 +30,29 @@ class ProductPricesTable extends React.Component {
       storeEntries
     }
   }
+
   render() {
-    return <table className="table table-sm mb-0">
-      <thead>
-      <tr>
-        <th scope="col">Tienda</th>
-        <th scope="col">Rating</th>
-        <th scope="col" className="text-right">
-          <ReactTooltip id="offer-price" type="info" effect="solid" place="top">
-            <span>Con el medio de pago preferido de la tienda</span>
-          </ReactTooltip>
-          <span data-tip data-for="offer-price" className="tooltip-span">
-              P. oferta
-            </span>
-        </th>
-        <th scope="col" className="text-right">
-          <ReactTooltip id="normal-price" type="info" effect="solid" place="top">
-            <span>Con cualquier medio de pago</span>
-          </ReactTooltip>
-          <span data-tip data-for="normal-price" className="tooltip-span">
-              P. normal
-            </span>
-        </th>
-      </tr>
-      </thead>
-      <tbody>
-      {this.props.entities.length? this.props.entities.map(entity => {
-        const storeEntry = this.props.storeEntries[entity.store];
-        return <tr key={entity.id}>
-          <td>
-            {storeEntry.name}
-          </td>
-          <td>
-            <ProductRatingStars
-              value={storeEntry.rating}
-              linkHref={`/store_ratings?id=${storeEntry.id}`}
-              linkAs={`/stores/${storeEntry.id}/ratings`}/>
-          </td>
-          <td className="text-right">
-            <SoloTodoLeadLink
-              className="price-container"
-              entity={entity}
-              storeEntry={storeEntry}
-              product={entity.product}>
-              {formatCurrency(
-                entity.active_registry.offer_price,
-                this.props.preferredCurrency,
-                this.props.preferredCurrency,
-                this.props.numberFormat.thousands_separator,
-                this.props.numberFormat.decimal_separator)}
-            </SoloTodoLeadLink>
-          </td>
-          <td className="text-right">
-            <SoloTodoLeadLink
-              className="price-container"
-              entity={entity}
-              storeEntry={storeEntry}
-              product={entity.product}>
-              {formatCurrency(
-                entity.active_registry.normal_price,
-                this.props.preferredCurrency,
-                this.props.preferredCurrency,
-                this.props.numberFormat.thousands_separator,
-                this.props.numberFormat.decimal_separator)}
-            </SoloTodoLeadLink>
-          </td>
-        </tr>
-        }) :
-        <tr>
-          <td colSpan="4">Este producto no está disponible actualmente</td>
-        </tr>
-      }
-      </tbody>
-    </table>
+    const PricesTableComponent = this.props.category.id === settings.cellPhoneCategoryId?
+      ProductCellPricesTable :
+      ProductNormalPricesTable;
+
+    return <PricesTableComponent
+      entities={this.props.entities}
+      storeEntries={this.props.storeEntries}
+      preferredCurrency={this.props.preferredCurrency}
+      numberFormat={this.props.numberFormat}
+    />
   }
 }
 
-export default ProductPricesTable
+function mapStateToProps(state) {
+  const {preferredCurrency, numberFormat} = solotodoStateToPropsUtils(state);
+
+  return {
+    preferredCurrency,
+    numberFormat
+  }
+}
+
+
+export default connect(mapStateToProps)(ProductPricesTable);
