@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from "next/link";
+import ReactDisqusComments from 'react-disqus-comments';
 
 import TopBanner from "../TopBanner";
 import ProductDetailRating from "./ProductDetailRating";
@@ -8,6 +9,9 @@ import ProductTechSpecs from "../../react-utils/components/Product/ProductTechSp
 
 import {settings} from '../../settings';
 import ProductPricesTable from "./ProductPricesTable";
+import ProductAlertButton from "./ProductAlertButton";
+import ProductStaffActionsButton from "./ProductStaffActionsButton";
+import ProductBenchmarks from "./ProductBenchmarks";
 
 class ProductDetail extends React.Component {
   render() {
@@ -50,9 +54,39 @@ class ProductDetail extends React.Component {
               category={category}
               entities={this.props.entities}
               storeEntries={this.props.storeEntries}/>
+
             <div className="d-flex justify-content-end flex-wrap">
-              <div>Product Alert Button</div>
+              {this.props.user && this.props.user.is_staff &&
+              <ProductStaffActionsButton product={product}/>}
+              <ProductAlertButton
+                entity={this.props.entities[0]}
+                product={this.props.product}/>
+              <Link href={`/product_ratings/new?product_id=${product.id}`} as={`/products/${product.id}/ratings/new`}>
+                <a className="ml-2 mt-2 btn btn-info btn-large">
+                  ¿Lo compraste? ¡Danos tu opinión!
+                </a>
+              </Link>
             </div>
+          </div>
+        </div>
+        {settings.benchmarkCategories[category.id] &&
+        <div id="product-detail-benchmarks" className="product-detail-cell">
+          <div className="content-card">
+            <ProductBenchmarks product={product} category={category}/>
+          </div>
+        </div>
+        }
+      </div>
+
+      <div className="row">
+        <div className="col-12 mt-3">
+          <div className="content-card">
+            <ReactDisqusComments
+              shortname={settings.disqusShortName}
+              identifier={product.id.toString()}
+              title={product.name}
+              url={`https://www.solotodo.com/products/${product.id}`}
+            />
           </div>
         </div>
       </div>

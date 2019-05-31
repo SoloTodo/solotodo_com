@@ -13,7 +13,7 @@ class Products extends React.Component {
     const { res, query, reduxStore, asPath } = ctx;
     const reduxState = reduxStore.getState();
 
-    const {categories, preferredCountryStores} = solotodoStateToPropsUtils(reduxState);
+    const {user, categories, preferredCountryStores} = solotodoStateToPropsUtils(reduxState);
     const productId = query.id;
 
     const productsUrl = settings.apiResourceEndpoints.products;
@@ -64,6 +64,7 @@ class Products extends React.Component {
       category,
       entities,
       storeEntries,
+      user
     }
   }
 
@@ -84,6 +85,7 @@ class Products extends React.Component {
               category={category}
               entities={entities}
               storeEntries={storeEntries}
+              user={this.props.user}
             />
           </div>
         </div>
