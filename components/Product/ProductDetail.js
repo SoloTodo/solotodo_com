@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import Link from "next/link";
 import ReactDisqusComments from 'react-disqus-comments';
 
@@ -12,6 +12,7 @@ import ProductPricesTable from "./ProductPricesTable";
 import ProductAlertButton from "./ProductAlertButton";
 import ProductStaffActionsButton from "./ProductStaffActionsButton";
 import ProductBenchmarks from "./ProductBenchmarks";
+import ProductVariants from "./ProductVariants";
 
 class ProductDetail extends React.Component {
   render() {
@@ -42,6 +43,10 @@ class ProductDetail extends React.Component {
           <div id="image-container" className="content-card">
             <ProductPicture product={product}/>
           </div>
+          <ProductVariants
+            product={product}
+            category={category}
+            className="mt-3"/>
         </div>
         <div id="product-detail-specs" className="product-detail-cell">
           <div id="technical-specifications-container" className="content-card">
