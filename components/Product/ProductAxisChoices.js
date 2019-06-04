@@ -17,6 +17,14 @@ class AxisChoices extends React.Component {
     })
   };
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.props.product.id !== prevProps.product.id) {
+      this.setState({
+        otherVariantsModalIsActive: false
+      })
+    }
+  }
+
   render() {
     const labelAndOrderingValues = this.props.pricingEntries.map(pricingEntry => ({
       labelValue: pricingEntry.product.specs[this.props.axis.labelField],

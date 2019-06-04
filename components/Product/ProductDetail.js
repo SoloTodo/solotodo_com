@@ -13,11 +13,13 @@ import ProductAlertButton from "./ProductAlertButton";
 import ProductStaffActionsButton from "./ProductStaffActionsButton";
 import ProductBenchmarks from "./ProductBenchmarks";
 import ProductVariants from "./ProductVariants";
+import ProductAlternatives from "./ProductAlternatives";
 
 class ProductDetail extends React.Component {
   render() {
     const product = this.props.product;
     const category = this.props.category;
+    const cheapestEntity = this.props.entities[0];
 
     return <div>
       <div className="row">
@@ -64,7 +66,7 @@ class ProductDetail extends React.Component {
               {this.props.user && this.props.user.is_staff &&
               <ProductStaffActionsButton product={product}/>}
               <ProductAlertButton
-                entity={this.props.entities[0]}
+                entity={cheapestEntity}
                 product={this.props.product}/>
               <Link href={`/product_ratings/new?product_id=${product.id}`} as={`/products/${product.id}/ratings/new`}>
                 <a className="ml-2 mt-2 btn btn-info btn-large">
@@ -74,13 +76,17 @@ class ProductDetail extends React.Component {
             </div>
           </div>
         </div>
+
         {settings.benchmarkCategories[category.id] &&
         <div id="product-detail-benchmarks" className="product-detail-cell">
           <div className="content-card">
             <ProductBenchmarks product={product} category={category}/>
           </div>
-        </div>
-        }
+        </div>}
+
+        {cheapestEntity &&
+        <ProductAlternatives product={product} category={category} entity={cheapestEntity}/>}
+
       </div>
 
       <div className="row">
