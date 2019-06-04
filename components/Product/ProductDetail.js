@@ -14,6 +14,7 @@ import ProductStaffActionsButton from "./ProductStaffActionsButton";
 import ProductBenchmarks from "./ProductBenchmarks";
 import ProductVariants from "./ProductVariants";
 import ProductAlternatives from "./ProductAlternatives";
+import PricingHistory from "./PricingHistory";
 
 class ProductDetail extends React.Component {
   render() {
@@ -86,6 +87,10 @@ class ProductDetail extends React.Component {
 
         {cheapestEntity &&
         <ProductAlternatives product={product} category={category} entity={cheapestEntity}/>}
+
+        <div id="product-detail-pricing-history" className="content-card">
+          <PricingHistory product={product}/>
+        </div>
 
       </div>
 

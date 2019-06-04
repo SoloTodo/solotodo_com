@@ -83,8 +83,6 @@ class ProductAlternatives extends React.Component {
     const numberOfAlternativeProducts = alternativesPerSize[this.props.mediaType] || 2;
     const alternativesUrl = this.alternativesUrlCreator(this.props.product, this.props.category, this.props.entity, BUTTON_MODE);
 
-    console.log(alternativesUrl);
-
     return <div id="product-detail-alternatives" className="product-detail-cell">
       <div className="content-card">
         <div className="row">
