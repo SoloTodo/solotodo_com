@@ -4,12 +4,14 @@ import moment from 'moment';
 import {Line} from 'react-chartjs-2';
 
 import {convertToDecimal, fetchJson} from "../../react-utils/utils";
+import {chartColors, lightenDarkenColor} from "../../react-utils/colors";
 
 import {settings} from "../../settings";
 import {formatCurrency} from "../../react-utils/next_utils";
 import {solotodoStateToPropsUtils} from "../../redux/utils";
 import Loading from '../Loading'
-import {chartColors, lightenDarkenColor} from "../../react-utils/colors";
+import PricingHistoryModal from "./PricingHistoryModal";
+
 
 class PricingHistory extends React.Component {
   constructor(props) {
@@ -39,7 +41,6 @@ class PricingHistory extends React.Component {
 
     if (!this.state.startDate.isSame(prevState.startDate) ||
       !this.state.endDate.isSame(prevState.endDate)) {
-
       this.componentUpdate(this.props.preferredCountryStores, this.props.product)
     }
   }
@@ -224,7 +225,7 @@ class PricingHistory extends React.Component {
       datasets: datasets
     };
 
-    return <div id="product-pricing-history">
+    return <div className="product-pricing-history">
       <h3>Precio histórico</h3>
       <div className="form-inline prices-chart-container mb-3">
         <div className="form-group row ml-2">
@@ -250,6 +251,11 @@ class PricingHistory extends React.Component {
               max={moment().format('YYYY-MM-DD')}
               value = {this.state.endDate? this.state.endDate.clone().subtract(1, 'days').format('YYYY-MM-DD') : ''}
               onChange={this.handleDateChange}/>
+          </div>
+        </div>
+        <div className="form-group row ml-auto mr-2">
+          <div className="col-sm-12">
+            <PricingHistoryModal product={this.props.product}/>
           </div>
         </div>
       </div>
