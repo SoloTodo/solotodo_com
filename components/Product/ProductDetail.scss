@@ -263,3 +263,21 @@
     grid-row-start: 4;
   }
 }
+
+#variants-modal a:hover {
+    text-decoration: underline;
+}
+
+.axis-choices > a, .axis-choices > span, .axis-choices > button, .axis-choices > div {
+    margin: 5px 10px 5px 0;
+}
+
+
+#product-pricing-history .chart-container {
+    min-height: 400px;
+}
+
+#product-pricing-history .chart-prices-selector {
+    width: 200px;
+
+}

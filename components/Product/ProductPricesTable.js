@@ -21,7 +21,7 @@ class ProductPricesTable extends React.Component {
     for (const store of filteredStores) {
       storesRatingsUrl += 'ids=' + store.id + '&';
     }
-    const storesRatings = await fetchJson(`${settings.apiResourceEndpoints.stores}average_ratings?${storesRatingsUrl}`);
+    const storesRatings = await fetchJson(`${settings.apiResourceEndpoints.stores}average_ratings/?${storesRatingsUrl}`);
     for (const storeRating of storesRatings) {
       storeEntries[storeRating.store].rating = storeRating.rating;
     }

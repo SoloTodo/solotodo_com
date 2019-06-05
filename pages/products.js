@@ -17,15 +17,11 @@ class Products extends React.Component {
     const productId = query.id;
 
     const productsUrl = settings.apiResourceEndpoints.products;
-    let storesUrl = '';
-    for (let store of preferredCountryStores) {
-      storesUrl += `&stores=${store.id}`
-    }
 
     let product;
 
     try {
-      product = await fetchJson(`${productsUrl}${productId}`);
+      product = await fetchJson(`${productsUrl}${productId}/`);
     } catch (e) {
       if (res) {
         console.log('error');
@@ -52,6 +48,10 @@ class Products extends React.Component {
       }
     }
 
+    let storesUrl = '';
+    for (let store of preferredCountryStores) {
+      storesUrl += `&stores=${store.id}`
+    }
 
     const category = categories.filter(localCategory => localCategory.url === product.category)[0];
     const availableEntities = await fetchJson(`${productsUrl}available_entities/?ids=${productId}${storesUrl}`);
