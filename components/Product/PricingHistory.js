@@ -60,6 +60,10 @@ class PricingHistory extends React.Component {
       };
 
       for (const pricingEntry of pricingData){
+        if (pricingEntry.entity.condition !== 'https://schema.org/NewCondition') {
+          continue
+        }
+
         for (const historyPoint of pricingEntry.pricing_history){
           const timestamp = moment(historyPoint.timestamp).startOf('day');
           const normalPrice = convertToDecimal(historyPoint.normal_price);
@@ -141,7 +145,7 @@ class PricingHistory extends React.Component {
 
     const filledChartData = [
       this.preparePricingHistoryChartData(this.state.chart.data.normalPrices, 'normalPrice', 'Precio normal (cualquier medio de pago)'),
-      this.preparePricingHistoryChartData(this.state.chart.data.offerPrices, 'offerPrice', 'Precio oferta (tarjeta CMR, Cencosud, etc-)')
+      this.preparePricingHistoryChartData(this.state.chart.data.offerPrices, 'offerPrice', 'Precio oferta (tarjeta CMR, Cencosud, etc.)')
     ];
 
     const preferredCountry = this.props.preferredCountry;
@@ -170,7 +174,7 @@ class PricingHistory extends React.Component {
 
     const endDate = this.state.endDate.clone().subtract(1, 'days');
 
-    const datasets= filledChartData.map((dataset, idx) => {
+    const datasets = filledChartData.map((dataset, idx) => {
       const color = chartColors[idx % chartColors.length];
       const label = dataset.label;
 
@@ -197,7 +201,7 @@ class PricingHistory extends React.Component {
             min: this.state.startDate.format('YYYY-MM-DD'),
             max: endDate.format('YYYY-MM-DD'),
             displayFormats: {
-              day: 'MM-DD'
+              day: 'MMM DD'
             },
             unit: 'day'
           }
@@ -221,7 +225,7 @@ class PricingHistory extends React.Component {
       }
     };
 
-    const chartData ={
+    const chartData = {
       datasets: datasets
     };
 
@@ -236,7 +240,7 @@ class PricingHistory extends React.Component {
               id="startDate"
               className="form-control"
               required={true}
-              value = {this.state.startDate? this.state.startDate.format('YYYY-MM-DD') : ''}
+              value={this.state.startDate? this.state.startDate.format('YYYY-MM-DD') : ''}
               onChange={this.handleDateChange}/>
           </div>
         </div>
@@ -249,7 +253,7 @@ class PricingHistory extends React.Component {
               className="form-control"
               required={true}
               max={moment().format('YYYY-MM-DD')}
-              value = {this.state.endDate? this.state.endDate.clone().subtract(1, 'days').format('YYYY-MM-DD') : ''}
+              value={this.state.endDate? this.state.endDate.clone().subtract(1, 'days').format('YYYY-MM-DD') : ''}
               onChange={this.handleDateChange}/>
           </div>
         </div>
