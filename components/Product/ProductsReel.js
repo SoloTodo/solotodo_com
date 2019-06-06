@@ -29,12 +29,12 @@ class ProductsReel extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    const oldPreferredStores = this.props.preferredCountryStores;
-    const newPreferredStores = nextProps.preferredCountryStores;
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const newPreferredStores = this.props.preferredCountryStores;
+    const oldPreferredStores = prevProps.preferredCountryStores;
 
     if (!areObjectListsEqual(oldPreferredStores, newPreferredStores)) {
-      ProductsReel.getInitialProps(newPreferredStores, nextProps.ordering).then(updatedProducts => {
+      ProductsReel.getInitialProps(newPreferredStores, this.props.ordering).then(updatedProducts => {
         this.setState({
           productBuckets: updatedProducts.productBuckets
         })

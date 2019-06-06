@@ -70,9 +70,15 @@ class ProductVariants extends React.Component {
       return null
     }
 
-    const axes = bucketSettings.axes;
+    const axes = bucketSettings.axes.filter(axis => {
+      return (new Set(this.state.pricingEntries.map(pricingEntry => pricingEntry.product.specs[axis.labelField]))).size > 1
+    });
 
-    const labelFields = axes.map(axis => axis.labelField);
+    if (!axes.length) {
+      return null
+    }
+
+    const labelFields = bucketSettings.axes.map(axis => axis.labelField);
 
     return <div className={this.props.className}>
       <div className="content-card">

@@ -16,12 +16,20 @@ class ProductPricesTable extends React.Component {
     const filteredStores = preferredCountryStores.filter(store => storeUrls.includes(store.url));
     const storeEntries = listToObject(filteredStores, 'url');
 
+    if (!storeUrls.length) {
+      return {
+        storeEntries: {}
+      }
+    }
+
     // Get StoresRating
     let storesRatingsUrl = '';
     for (const store of filteredStores) {
       storesRatingsUrl += 'ids=' + store.id + '&';
     }
+
     const storesRatings = await fetchJson(`${settings.apiResourceEndpoints.stores}average_ratings/?${storesRatingsUrl}`);
+
     for (const storeRating of storesRatings) {
       storeEntries[storeRating.store].rating = storeRating.rating;
     }

@@ -35,8 +35,8 @@ class NavBar extends React.Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.router.asPath !== nextProps.router.asPath) {
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevProps.router.asPath !== this.props.router.asPath) {
       if (this.state.selectedDepartment) {
         this.undefSelectedDepartment();
       }
@@ -49,7 +49,7 @@ class NavBar extends React.Component {
     }
 
     if (this.state.selectedDepartment) {
-      if (!this.props.isSmallOrSmaller && nextProps.isSmallOrSmaller) {
+      if (!prevProps.isSmallOrSmaller && this.props.isSmallOrSmaller) {
         this.undefSelectedDepartment();
       }
     }
