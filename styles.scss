@@ -25,12 +25,20 @@ $container-max-widths: (
 @import '~slick-carousel/slick/slick.scss';
 @import '~rc-slider/assets/index.css';
 @import '~rc-tooltip/assets/bootstrap.css';
+@import '~react-image-gallery/styles/css/image-gallery.css';
 @import './components/Footer/Footer.css';
 @import './components/NavBar/NavBar.css';
 @import './components/NavBar/NavBarPreferredStores.css';
 @import './components/NavBar/StoreCheckBox.css';
+
+@import './react-utils/components/Product/ProductTechSpecs.css';
+
+@import './components/Product/ProductDetail.scss';
+@import './components/Product/ProductPicture.css';
 @import './components/Product/ProductsReel.css';
 @import './components/Product/ProductShortDescription.css';
+@import './components/Product/ProductBenchmarks.css';
+
 @import './components/Category/BurgerMenu.css';
 @import './components/Category/CategoryBrowse.css';
 @import './components/Category/CategoryBrowseResults.css';
@@ -98,4 +106,18 @@ h4 {
 
 .flex-grow {
   flex-grow: 1;
+}
+
+.rating-stars {
+  height: 21px;
+}
+
+.rating-stars label {
+  width: 17px;
+  margin-bottom: 0;
+  cursor: inherit !important;
+}
+
+.fa-star, .fa-star-half {
+  color: #ffb700;
 }

@@ -32,9 +32,8 @@ class ProductShortDescription extends React.Component {
       numberFormat.decimalSeparator);
 
     const product = this.props.productEntry.product;
-    const productUrl = '/products/' + product.id + '-' + product.slug;
 
-    return <Link href={productUrl}>
+    return <Link href={`/products?id=${product.id}&slug=${product.slug}`} as={`/products/${product.id}-${product.slug}`}>
       <a className="short-description-product d-flex flex-column">
         <div className="image-container">
           <img src={`${product.url}picture/?width=300&height=200`} alt={product.name}/>

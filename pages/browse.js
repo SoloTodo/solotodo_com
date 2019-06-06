@@ -1,7 +1,9 @@
 import React from 'react'
 import Head from 'next/head';
+import {withRouter} from 'next/router'
 import {solotodoStateToPropsUtils} from "../redux/utils";
 import CategoryBrowse from "../components/Category/CategoryBrowse";
+import {withSoloTodoTracker} from "../utils";
 
 class Browse extends React.Component {
   static async getInitialProps(ctx) {
@@ -48,4 +50,12 @@ class Browse extends React.Component {
   }
 }
 
-export default Browse;
+function mapPropsToGAField(props) {
+  return {
+    category: props.category.name,
+    pageTitle: props.category.name
+  }
+}
+
+const TrackedBrowse = withSoloTodoTracker(Browse, mapPropsToGAField);
+export default withRouter(TrackedBrowse);
