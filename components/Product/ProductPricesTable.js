@@ -10,16 +10,25 @@ import ProductNormalPricesTable from "./ProductNormalPricesTable";
 import ProductCellPricesTable from "./ProductCellPricesTable";
 
 class ProductPricesTable extends React.Component {
-  static async getInitialProps(preferredCountryStores, entities) {
+  constructor(props) {
+    super(props);
+    this.state = {
+      storeEntries: undefined
+    }
+  }
+
+  componentDidUpdate() {
+    if (!this.props.entities) {
+      return
+    }
+
     // Get Stores
-    const storeUrls = entities.map(entity => entity.store);
-    const filteredStores = preferredCountryStores.filter(store => storeUrls.includes(store.url));
+    const storeUrls = this.props.entities.map(entity => entity.store);
+    const filteredStores = this.props.preferredCountryStores.filter(store => storeUrls.includes(store.url));
     const storeEntries = listToObject(filteredStores, 'url');
 
     if (!storeUrls.length) {
-      return {
-        storeEntries: {}
-      }
+      return
     }
 
     // Get StoresRating
@@ -28,25 +37,27 @@ class ProductPricesTable extends React.Component {
       storesRatingsUrl += 'ids=' + store.id + '&';
     }
 
-    const storesRatings = await fetchJson(`${settings.apiResourceEndpoints.stores}average_ratings/?${storesRatingsUrl}`);
-
-    for (const storeRating of storesRatings) {
-      storeEntries[storeRating.store].rating = storeRating.rating;
-    }
-
-    return {
-      storeEntries
-    }
+    fetchJson(`${settings.apiResourceEndpoints.stores}average_ratings/?${storesRatingsUrl}`).then(storesRatings => {
+      for (const storeRating of storesRatings) {
+        storeEntries[storeRating.store].rating = storeRating.rating;
+      }
+      this.setState({
+        storeEntries
+      })
+    });
   }
 
   render() {
+    if (!this.props.entities || !this.state.storeEntries) {
+      return null
+    }
     const PricesTableComponent = this.props.category.id === settings.cellPhoneCategoryId?
       ProductCellPricesTable :
       ProductNormalPricesTable;
 
     return <PricesTableComponent
       entities={this.props.entities}
-      storeEntries={this.props.storeEntries}
+      storeEntries={this.state.storeEntries}
       preferredCurrency={this.props.preferredCurrency}
       numberFormat={this.props.numberFormat}
     />
@@ -54,10 +65,11 @@ class ProductPricesTable extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const {preferredCurrency, numberFormat} = solotodoStateToPropsUtils(state);
+  const {preferredCurrency, preferredCountryStores, numberFormat} = solotodoStateToPropsUtils(state);
 
   return {
     preferredCurrency,
+    preferredCountryStores,
     numberFormat
   }
 }

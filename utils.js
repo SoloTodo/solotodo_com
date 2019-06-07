@@ -81,7 +81,7 @@ export const getPreferredStores = (user, state) => {
   if (validCurrentPreferredStoreUrls) {
     newPreferredStores = stores.filter(store =>
       validCurrentPreferredStoreUrls.includes(store.url) ||
-      storesActivatedSinceLastVisitUrls.includes(store.url))
+      storesActivatedSinceLastVisitUrls.includes(store.url));
   } else {
     newPreferredStores = stores
   }

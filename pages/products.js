@@ -68,33 +68,49 @@ class Products extends React.Component {
     const categoryTemplates = filterApiResourceObjectsByType(reduxState.apiResourceObjects, 'category_templates');
     const description = getProductShortDescription(product, categoryTemplates);
 
-    let storesUrl = '';
-    for (let store of preferredCountryStores) {
-      storesUrl += `&stores=${store.id}`
-    }
-
     const category = categories.filter(localCategory => localCategory.url === product.category)[0];
-    const availableEntities = await fetchJson(`${productsUrl}available_entities/?ids=${productId}${storesUrl}`);
-    const entities = availableEntities.results[0].entities.filter(entity => entity.active_registry.cell_monthly_payment === null);
-
-    const {storeEntries} = await ProductPricesTable.getInitialProps(preferredCountryStores, entities);
 
     return {
       product,
       description,
       category,
-      entities,
-      storeEntries,
+      preferredCountryStores,
       currencies,
       user
     }
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      entities: undefined,
+      cheapestEntity: undefined
+    }
+  }
+
+  componentDidMount() {
+    const productsUrl = settings.apiResourceEndpoints.products;
+    let storesUrl = '';
+
+    for (let store of this.props.preferredCountryStores) {
+      storesUrl += `&stores=${store.id}`
+    }
+
+    fetchJson(`${productsUrl}available_entities/?ids=${this.props.product.id}${storesUrl}`).then(availableEntities => {
+      const entities = availableEntities.results[0].entities.filter(entity => entity.active_registry.cell_monthly_payment === null);
+      this.setState({
+        entities,
+        cheapestEntity:entities[0],
+      })
+    })
+  }
+
+
   render() {
     const product = this.props.product;
     const category = this.props.category;
-    const entities = this.props.entities;
-    const cheapestEntity = entities[0];
+    const entities = this.state.entities;
+    const cheapestEntity = this.state.cheapestEntity;
 
     return <React.Fragment>
       <Head>
@@ -107,7 +123,6 @@ class Products extends React.Component {
         <meta property="og:image" content={`${endpoint}products/${product.id}/picture/?image_format=JPEG&quality=80&width=1000&height=1000`} />
         <meta property="og:image:width" content="1000" />
         <meta property="og:image:height" content="1000" />
-        <meta property="product:availability" content={cheapestEntity? 'instock' : 'oos'} />
         <meta property="product:brand" content={product.specs.brand_unicode} />
         <meta property="product:condition" content="new" />
         <meta property="product:retailer_item_id" content={product.id} />
@@ -153,15 +168,14 @@ class Products extends React.Component {
                   <div id="product-prices-table" className="content-card">
                     <ProductPricesTable
                       category={category}
-                      entities={this.props.entities}
-                      storeEntries={this.props.storeEntries}/>
+                      entities={entities}/>
 
                     <div className="d-flex justify-content-end flex-wrap">
                       {this.props.user && this.props.user.is_staff &&
                       <ProductStaffActionsButton product={product}/>}
-                      <ProductAlertButton
+                      {cheapestEntity && <ProductAlertButton
                         entity={cheapestEntity}
-                        product={this.props.product}/>
+                        product={this.props.product}/>}
                       <Link href={`/product_ratings/new?product_id=${product.id}`} as={`/products/${product.id}/ratings/new`}>
                         <a className="ml-2 mt-2 btn btn-info btn-large">
                           ¿Lo compraste? ¡Danos tu opinión!

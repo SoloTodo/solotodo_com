@@ -138,9 +138,9 @@ function mapStateToProps(state) {
   }
 }
 
-function mapDispatchToProps(dispatch, user) {
+function mapDispatchToProps(dispatch) {
   return {
-    updatePreferredStores: async storeIds => {
+    updatePreferredStores: async (storeIds, user) => {
       return await dispatch(updatePreferredStores(storeIds, user, getAuthToken()))
     }
   }

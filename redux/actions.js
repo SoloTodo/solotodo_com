@@ -1,4 +1,5 @@
-import { setCookie, destroyCookie } from 'nookies'
+import { setCookie, destroyCookie, parseCookies } from 'nookies'
+import moment from 'moment'
 import {
   fetchAuth,
   areListsEqual,
@@ -23,7 +24,6 @@ export const initializeUser = (authToken, state, ctx) => async dispatch => {
       // The token is not valid, do nothing as user is already null
     }
   }
-
   const preferredCountry = await getPreferredCountry(user, state, ctx);
   const preferredStores = getPreferredStores(user, state);
 
@@ -133,7 +133,7 @@ export const updateNavigation = countryUrl => dispatch => {
 
 const setSessionPreferredCountryId = (preferredCountryId, ctx) => dispatch => {
   if (preferredCountryId) {
-    setCookie(ctx, 'preferredCountryId', preferredCountryId, {})
+    setCookie(ctx, 'preferredCountryId', preferredCountryId, {path: '/'})
   } else {
     destroyCookie(ctx, 'preferredCountryId');
   }
@@ -150,9 +150,11 @@ const setSessionPreferredCountryId = (preferredCountryId, ctx) => dispatch => {
 
 const setSessionPreferredStoreIds = (preferredStoreIds, ctx) => dispatch => {
   if (preferredStoreIds) {
-    setCookie(ctx, 'preferredStoreIds', JSON.stringify(preferredStoreIds), {})
+    setCookie(ctx, 'preferredStoreIds', JSON.stringify(preferredStoreIds), {path: '/'});
+    setCookie(ctx, 'preferredStoresLastUpdated', moment().format(), {path: '/'})
   } else {
     destroyCookie(ctx, 'preferredStoreIds');
+    destroyCookie(ctx, 'preferredStoresLastUpdated');
   }
 
   return dispatch({
