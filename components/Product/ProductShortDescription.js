@@ -1,35 +1,27 @@
 import React from 'react';
 import {connect} from "react-redux";
 import Link from 'next/link';
-import Handlebars from "handlebars/dist/handlebars.min";
+
 import {
-  apiResourceStateToPropsUtils,
   filterApiResourceObjectsByType
 } from "../../react-utils/ApiResource";
-import {settings} from "../../settings";
-import {convertIdToUrl, formatCurrency} from '../../react-utils/utils';
+import {formatCurrency} from "../../react-utils/next_utils";
+
 import {solotodoStateToPropsUtils} from "../../redux/utils";
+import {getProductShortDescription} from "../../utils";
 
 class ProductShortDescription extends React.Component {
-  formatShortDescription = () => {
-    let html = '';
-    if (this.props.template) {
-      html = this.props.template(this.props.productEntry.product.specs)
-    }
-
-    return {__html: html}
-  };
-
   render() {
-    const countryLocale = this.props.ApiResourceObject(this.props.preferredCountry);
-    const numberFormat = countryLocale.numberFormat;
+    const preferredCurrency = this.props.preferredCurrency;
+    const numberFormat = this.props.numberFormat;
 
-    const firstPrice = this.props.ApiResourceObject(this.props.productEntry.prices[0]);
+    const firstPrice = this.props.productEntry.prices[0];
+    const firstPriceCurrency = this.props.currencies.filter(currency => currency.url === firstPrice.currency)[0];
 
     const formattedPrice = formatCurrency(
-      firstPrice.minOfferPrice, firstPrice.currency,
-      countryLocale.currency, numberFormat.thousandsSeparator,
-      numberFormat.decimalSeparator);
+      firstPrice.min_offer_price, firstPriceCurrency,
+      preferredCurrency, numberFormat.thousands_separator,
+      numberFormat.decimal_separator);
 
     const product = this.props.productEntry.product;
 
@@ -41,7 +33,8 @@ class ProductShortDescription extends React.Component {
         <div className="name-container">
           {product.name}
         </div>
-        <div className="description-container" dangerouslySetInnerHTML={this.formatShortDescription()}></div>
+        <div className="description-container" dangerouslySetInnerHTML={{__html: this.props.productDescription}}>
+        </div>
         <div className="price-container mt-auto">
           {formattedPrice}
         </div>
@@ -50,28 +43,17 @@ class ProductShortDescription extends React.Component {
   }
 }
 
-
 function mapStateToProps(state, ownProps) {
-  const {ApiResourceObject} = apiResourceStateToPropsUtils(state);
-  const {preferredCountry} = solotodoStateToPropsUtils(state);
+  const {preferredCurrency, numberFormat, currencies} = solotodoStateToPropsUtils(state);
 
   const categoryTemplates = filterApiResourceObjectsByType(state.apiResourceObjects, 'category_templates');
-  const templateWebsiteUrl = convertIdToUrl(settings.websiteId, 'websites');
-
-  let template = categoryTemplates.filter(categoryTemplate => {
-    return categoryTemplate.category === ownProps.productEntry.product.category &&
-      categoryTemplate.purpose === settings.shortDescriptionPurposeUrl &&
-      categoryTemplate.website === templateWebsiteUrl
-  })[0] || null;
-
-  if (template) {
-    template = Handlebars.compile(template.body);
-  }
+  const productDescription = getProductShortDescription(ownProps.productEntry.product, categoryTemplates);
 
   return {
-    ApiResourceObject,
-    template,
-    preferredCountry
+    productDescription,
+    preferredCurrency,
+    currencies,
+    numberFormat,
   }
 }
 

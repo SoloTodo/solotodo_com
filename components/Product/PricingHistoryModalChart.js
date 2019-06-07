@@ -52,8 +52,8 @@ class PricingHistoryModalChart extends React.Component {
             price,
             this.props.preferredCurrency,
             null,
-            this.props.preferredCountry.number_format.thousandsSeparator,
-            this.props.preferredCountry.number_format.decimalSeparator
+            this.props.numberFormat.thousands_separator,
+            this.props.numberFormat.decimal_separator
           );
         }
         storePricingHistory.push({
@@ -77,7 +77,7 @@ class PricingHistoryModalChart extends React.Component {
     }
 
     const filledChartData = this.preparePricingHistoryChartData();
-    const preferredCountry = this.props.preferredCountry;
+    const numberFormat = this.props.numberFormat;
     const preferredCurrency = this.props.preferredCurrency;
 
     const yAxes = [
@@ -90,8 +90,8 @@ class PricingHistoryModalChart extends React.Component {
                 value,
                 preferredCurrency,
                 null,
-                preferredCountry.number_format.thousandsSeparator,
-                preferredCountry.number_format.decimalSeparator);
+                numberFormat.thousands_separator,
+                numberFormat.decimal_separator);
             } else {
               return value
             }
@@ -164,11 +164,11 @@ class PricingHistoryModalChart extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const {preferredCountry, preferredCurrency, stores} = solotodoStateToPropsUtils(state);
+  const {preferredCurrency, numberFormat, stores} = solotodoStateToPropsUtils(state);
 
   return {
-    preferredCountry,
     preferredCurrency,
+    numberFormat,
     stores
   }
 }

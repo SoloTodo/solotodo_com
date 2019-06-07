@@ -6,6 +6,7 @@ export const settings = {
   defaultCountryUrl: apiSettings.apiResourceEndpoints.countries + '1/',
   websiteId: 2,
   ownWebsiteUrl: convertIdToUrl(2, 'websites'),
+  domain: 'https://www.solotodo.com',
   shortDescriptionPurposeId: 2,
   defaultDaysForOrdering: 3,
   categoryBrowseResultsPerPage: 12,

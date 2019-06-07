@@ -1,10 +1,12 @@
 import fetch from 'isomorphic-unfetch'
+import moment from "moment";
+import Handlebars from "handlebars/dist/handlebars.min";
+
 import {convertIdToUrl, fetchAuth} from "./react-utils/utils";
-import {settings} from "./settings";
 import {filterApiResourceObjectsByType} from "./react-utils/ApiResource";
 import withTracker from './react-utils/components/GoogleAnalyticsNextJsTracker'
-import moment from "moment";
 
+import {settings} from "./settings";
 
 export const parseBrowsePathToNextJs = path => {
   const nextRegex = /\/([^?]+)\??([^\/]*)/;
@@ -118,4 +120,21 @@ export function withSoloTodoTracker(WrappedComponent, mapPropsToGAField){
   };
 
   return withTracker(WrappedComponent, trackPageHandler, true)
+}
+
+export function getProductShortDescription(product, categoryTemplates){
+  const templateWebsiteUrl = convertIdToUrl(settings.websiteId, 'websites');
+
+  let template = categoryTemplates.filter(categoryTemplate => {
+    return categoryTemplate.category === product.category &&
+      categoryTemplate.purpose === settings.shortDescriptionPurposeUrl &&
+      categoryTemplate.website === templateWebsiteUrl
+  })[0] || null;
+
+  if (!template) {
+    return ""
+  }
+
+  template = Handlebars.compile(template.body);
+  return template(product.specs)
 }

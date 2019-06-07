@@ -15,7 +15,6 @@ export default class SoloTodoHead extends React.Component {
 
   render() {
     return <Head>
-      <title>Cotiza y compara los precios de todas las tiendas - SoloTodo</title>
       <link rel="shortcut icon" href="/static/favicon.ico" />
 
       <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0" />

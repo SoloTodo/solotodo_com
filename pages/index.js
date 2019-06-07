@@ -1,4 +1,5 @@
 import React from 'react';
+import Head from "next/head";
 import { connect } from 'react-redux'
 import {withRouter} from 'next/router'
 import { formatCurrency } from "../react-utils/next_utils";
@@ -34,6 +35,9 @@ class Index extends React.Component {
     };
 
     return <React.Fragment>
+      <Head>
+        <title key="title">Cotiza y compara los precios de todas las tiendas - SoloTodo</title>
+      </Head>
       <div className="container-fluid">
         <div className="row">
           <TopBanner category="Any" />

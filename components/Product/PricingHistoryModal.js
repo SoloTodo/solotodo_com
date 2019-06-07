@@ -137,13 +137,10 @@ class PricingHistoryModal extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const {preferredCountryStores, preferredCountry, preferredCurrency, stores} = solotodoStateToPropsUtils(state);
+  const {preferredCountryStores} = solotodoStateToPropsUtils(state);
 
   return {
-    preferredCountryStores,
-    preferredCountry,
-    preferredCurrency,
-    stores
+    preferredCountryStores
   }
 }
 

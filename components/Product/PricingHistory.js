@@ -108,8 +108,8 @@ class PricingHistory extends React.Component {
           price,
           this.props.preferredCurrency,
           null,
-          this.props.preferredCountry.number_format.thousandsSeparator,
-          this.props.preferredCountry.number_format.decimalSeparator
+          this.props.numberFormat.thousands_separator,
+          this.props.numberFormat.decimal_separator
         );
       }
 
@@ -148,7 +148,7 @@ class PricingHistory extends React.Component {
       this.preparePricingHistoryChartData(this.state.chart.data.offerPrices, 'offerPrice', 'Precio oferta (tarjeta CMR, Cencosud, etc.)')
     ];
 
-    const preferredCountry = this.props.preferredCountry;
+    const numberFormat = this.props.numberFormat;
     const preferredCurrency = this.props.preferredCurrency;
 
     const yAxes = [
@@ -161,8 +161,8 @@ class PricingHistory extends React.Component {
                 value,
                 preferredCurrency,
                 null,
-                preferredCountry.number_format.thousandsSeparator,
-                preferredCountry.number_format.decimalSeparator
+                numberFormat.thousands_separator,
+                numberFormat.decimal_Separator
               )
             } else {
               return value
@@ -271,12 +271,12 @@ class PricingHistory extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const {preferredCountryStores, preferredCountry, preferredCurrency} = solotodoStateToPropsUtils(state);
+  const {preferredCountryStores, preferredCurrency, numberFormat} = solotodoStateToPropsUtils(state);
 
   return {
     preferredCountryStores,
-    preferredCountry,
-    preferredCurrency
+    preferredCurrency,
+    numberFormat
   }
 }
 
