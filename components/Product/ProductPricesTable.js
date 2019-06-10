@@ -1,7 +1,11 @@
 import React from 'react'
 import {connect} from "react-redux";
 
-import {fetchJson} from "../../react-utils/utils";
+import {
+  areObjectsEqual,
+  areValueListsEqual, areValuesEqual,
+  fetchJson
+} from "../../react-utils/utils";
 import {listToObject} from "../../react-utils/utils";
 
 import {settings} from "../../settings";
@@ -13,61 +17,91 @@ class ProductPricesTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      entities: undefined,
       storeEntries: undefined
     }
   }
 
-  componentDidUpdate() {
-    if (!this.props.entities) {
-      return
+  componentDidMount() {
+    this.componentUpdate(this.props.product)
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevProps.product.id !== this.props.product.id ||
+      !areValueListsEqual(prevProps.preferredCountryStores, this.props.preferredCountryStores) ||
+      !areObjectsEqual(prevProps.preferredCountry, this.props.preferredCountry)) {
+      this.componentUpdate(this.props.product)
+    }
+  }
+
+  componentUpdate(product){
+    const productsUrl = settings.apiResourceEndpoints.products;
+    let storesUrl = '';
+
+    for (let store of this.props.preferredCountryStores) {
+      storesUrl += `&stores=${store.id}`
     }
 
-    // Get Stores
-    const storeUrls = this.props.entities.map(entity => entity.store);
-    const filteredStores = this.props.preferredCountryStores.filter(store => storeUrls.includes(store.url));
-    const storeEntries = listToObject(filteredStores, 'url');
+    console.log(this.props.preferredCountryStores);
 
-    if (!storeUrls.length) {
-      return
-    }
+    fetchJson(`${productsUrl}available_entities/?ids=${product.id}${storesUrl}`).then(availableEntities => {
+      const entities = availableEntities.results[0].entities.filter(entity => entity.active_registry.cell_monthly_payment === null);
+      this.props.onEntitiesChange(entities);
 
-    // Get StoresRating
-    let storesRatingsUrl = '';
-    for (const store of filteredStores) {
-      storesRatingsUrl += 'ids=' + store.id + '&';
-    }
+      const storeUrls = entities.map(entity => entity.store);
+      const filteredStores = this.props.preferredCountryStores.filter(store => storeUrls.includes(store.url));
+      const storeEntries = listToObject(filteredStores, 'url');
 
-    fetchJson(`${settings.apiResourceEndpoints.stores}average_ratings/?${storesRatingsUrl}`).then(storesRatings => {
-      for (const storeRating of storesRatings) {
-        storeEntries[storeRating.store].rating = storeRating.rating;
+      if (!storeUrls.length || !this.props.preferredCountryStores.length) {
+        this.setState({
+          entities: [],
+          storeEntries: []
+        });
+        return
       }
-      this.setState({
-        storeEntries
-      })
-    });
+
+      console.log(storeUrls);
+
+      let storesRatingsUrl = '';
+      for (const store of filteredStores) {
+        storesRatingsUrl += 'ids=' + store.id + '&';
+      }
+
+      fetchJson(`${settings.apiResourceEndpoints.stores}average_ratings/?${storesRatingsUrl}`).then(storesRatings => {
+        for (const storeRating of storesRatings) {
+          storeEntries[storeRating.store].rating = storeRating.rating;
+        }
+        console.log(entities);
+        this.setState({
+          entities,
+          storeEntries
+        })
+      });
+    })
   }
 
   render() {
-    if (!this.props.entities || !this.state.storeEntries) {
+    if (!this.state.entities || !this.state.storeEntries) {
       return null
     }
+
     const PricesTableComponent = this.props.category.id === settings.cellPhoneCategoryId?
       ProductCellPricesTable :
       ProductNormalPricesTable;
 
     return <PricesTableComponent
-      entities={this.props.entities}
+      entities={this.state.entities}
       storeEntries={this.state.storeEntries}
       preferredCurrency={this.props.preferredCurrency}
-      numberFormat={this.props.numberFormat}
-    />
+      numberFormat={this.props.numberFormat}/>
   }
 }
 
 function mapStateToProps(state) {
-  const {preferredCurrency, preferredCountryStores, numberFormat} = solotodoStateToPropsUtils(state);
+  const {preferredCountry, preferredCurrency, preferredCountryStores, numberFormat} = solotodoStateToPropsUtils(state);
 
   return {
+    preferredCountry,
     preferredCurrency,
     preferredCountryStores,
     numberFormat

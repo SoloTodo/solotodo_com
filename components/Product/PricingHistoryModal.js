@@ -3,7 +3,12 @@ import {connect} from "react-redux";
 import moment from "moment";
 import {Modal, ModalHeader, ModalBody} from "reactstrap";
 
-import {convertToDecimal, fetchJson} from "../../react-utils/utils";
+import {
+  areObjectsEqual,
+  areValueListsEqual,
+  convertToDecimal,
+  fetchJson
+} from "../../react-utils/utils";
 
 import {settings} from "../../settings";
 import {solotodoStateToPropsUtils} from "../../redux/utils";
@@ -33,7 +38,9 @@ class PricingHistoryModal extends React.Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (!this.state.startDate.isSame(prevState.startDate) ||
-      !this.state.endDate.isSame(prevState.endDate)) {
+      !this.state.endDate.isSame(prevState.endDate) ||
+      !areValueListsEqual(prevProps.preferredCountryStores, this.props.preferredCountryStores) ||
+      !areObjectsEqual(prevProps.preferredCountry, this.props.preferredCountry)) {
       this.componentUpdate(this.props.preferredCountryStores, this.props.product)
     }
   }
@@ -137,9 +144,10 @@ class PricingHistoryModal extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const {preferredCountryStores} = solotodoStateToPropsUtils(state);
+  const {preferredCountry, preferredCountryStores} = solotodoStateToPropsUtils(state);
 
   return {
+    preferredCountry,
     preferredCountryStores
   }
 }

@@ -2,7 +2,11 @@ import React from 'react'
 import {connect} from "react-redux";
 import Link from "next/link";
 
-import {fetchJson} from "../../react-utils/utils";
+import {
+  areObjectsEqual,
+  areValueListsEqual,
+  fetchJson
+} from "../../react-utils/utils";
 
 import {settings} from "../../settings";
 import {solotodoStateToPropsUtils} from "../../redux/utils";
@@ -24,7 +28,9 @@ class ProductAlternatives extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.props.product.id !== prevProps.product.id) {
+    if (this.props.product.id !== prevProps.product.id ||
+      !areValueListsEqual(prevProps.preferredCountryStores, this.props.preferredCountryStores) ||
+      !areObjectsEqual(prevProps.preferredCountry, this.props.preferredCountry)) {
       this.componentUpdate(this.props.preferredCountryStores, this.props.product, this.props.category, this.props.entity)
     }
   }

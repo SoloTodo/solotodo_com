@@ -3,7 +3,12 @@ import {connect} from "react-redux";
 import moment from 'moment';
 import {Line} from 'react-chartjs-2';
 
-import {convertToDecimal, fetchJson} from "../../react-utils/utils";
+import {
+  areObjectsEqual,
+  areValueListsEqual,
+  convertToDecimal,
+  fetchJson
+} from "../../react-utils/utils";
 import {chartColors, lightenDarkenColor} from "../../react-utils/colors";
 
 import {settings} from "../../settings";
@@ -40,7 +45,9 @@ class PricingHistory extends React.Component {
     }
 
     if (!this.state.startDate.isSame(prevState.startDate) ||
-      !this.state.endDate.isSame(prevState.endDate)) {
+      !this.state.endDate.isSame(prevState.endDate) ||
+      !areValueListsEqual(prevProps.preferredCountryStores, this.props.preferredCountryStores) ||
+      !areObjectsEqual(prevProps.preferredCountry, this.props.preferredCountry)) {
       this.componentUpdate(this.props.preferredCountryStores, this.props.product)
     }
   }
@@ -271,9 +278,10 @@ class PricingHistory extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const {preferredCountryStores, preferredCurrency, numberFormat} = solotodoStateToPropsUtils(state);
+  const {preferredCountry, preferredCountryStores, preferredCurrency, numberFormat} = solotodoStateToPropsUtils(state);
 
   return {
+    preferredCountry,
     preferredCountryStores,
     preferredCurrency,
     numberFormat

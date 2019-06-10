@@ -41,7 +41,6 @@ class Products extends React.Component {
       product = await fetchJson(`${productsUrl}${productId}/`);
     } catch (e) {
       if (res) {
-        console.log('error');
         res.statusCode=404;
         res.end('Not found');
         return
@@ -83,33 +82,19 @@ class Products extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      entities: undefined,
       cheapestEntity: undefined
     }
   }
 
-  componentDidMount() {
-    const productsUrl = settings.apiResourceEndpoints.products;
-    let storesUrl = '';
-
-    for (let store of this.props.preferredCountryStores) {
-      storesUrl += `&stores=${store.id}`
-    }
-
-    fetchJson(`${productsUrl}available_entities/?ids=${this.props.product.id}${storesUrl}`).then(availableEntities => {
-      const entities = availableEntities.results[0].entities.filter(entity => entity.active_registry.cell_monthly_payment === null);
-      this.setState({
-        entities,
-        cheapestEntity:entities[0],
-      })
+  handleEntitiesChange = (entities) => {
+    this.setState({
+      cheapestEntity: entities[0]
     })
-  }
-
+  };
 
   render() {
     const product = this.props.product;
     const category = this.props.category;
-    const entities = this.state.entities;
     const cheapestEntity = this.state.cheapestEntity;
 
     return <React.Fragment>
@@ -167,9 +152,9 @@ class Products extends React.Component {
                 <div id="product-detail-prices" className="product-detail-cell">
                   <div id="product-prices-table" className="content-card">
                     <ProductPricesTable
+                      product={product}
                       category={category}
-                      entities={entities}/>
-
+                      onEntitiesChange={this.handleEntitiesChange}/>
                     <div className="d-flex justify-content-end flex-wrap">
                       {this.props.user && this.props.user.is_staff &&
                       <ProductStaffActionsButton product={product}/>}

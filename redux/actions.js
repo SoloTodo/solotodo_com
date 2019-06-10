@@ -8,6 +8,16 @@ import {
 } from '../react-utils/utils';
 import { settings } from '../settings'
 import {getPreferredCountry, getPreferredStores, persistUser} from "../utils";
+import {fetchRequiredResources} from "../react-utils/redux/utils";
+
+export const loadFilteredRequiredResources = resources => dispatch => {
+  return fetchRequiredResources(resources).then(bundle => {
+    dispatch({
+      type: 'addBundle',
+      apiResourceObjects: bundle
+    });
+  });
+};
 
 export const login = (authToken, state) => dispatch => {
   setCookie(null, 'authToken', authToken, {});

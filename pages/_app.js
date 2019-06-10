@@ -4,8 +4,11 @@ import { parseCookies } from 'nookies'
 import {calculateResponsiveState} from 'redux-responsive'
 import { Provider } from 'react-redux'
 import {ToastContainer} from "react-toastify";
-import { loadRequiredResources } from '../react-utils/redux/actions'
-import {initializeUser, updateNavigation} from '../redux/actions'
+import {
+  initializeUser,
+  loadFilteredRequiredResources,
+  updateNavigation
+} from '../redux/actions'
 import withReduxStore from '../lib/with-redux-store'
 import uuidv4 from "uuid/v4"
 import AppContext from '../react-utils/components/Context'
@@ -27,7 +30,7 @@ class MyApp extends App {
     if (appContext.ctx.req) {
       // Load the required resources and initialize the user only on the first request (on the server)
 
-      await reduxStore.dispatch(loadRequiredResources(['countries', 'currencies', 'store_types', 'stores', 'number_formats', 'categories', 'category_templates']));
+      await reduxStore.dispatch(loadFilteredRequiredResources(['countries', 'currencies', 'store_types', 'stores', 'number_formats', 'categories', 'category_templates']));
 
       const {authToken} = parseCookies(appContext.ctx);
       await reduxStore.dispatch(initializeUser(authToken, reduxStore.getState(), appContext.ctx));
