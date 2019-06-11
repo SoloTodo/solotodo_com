@@ -23,6 +23,8 @@ export function solotodoStateToPropsUtils(state) {
   const numberFormat = state.apiResourceObjects[preferredCountry.number_format];
   const preferredCurrency = state.apiResourceObjects[preferredCountry.currency];
 
+  // TODO Agregar funcion format currency
+
   return {
     user,
     countries,

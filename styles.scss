@@ -26,6 +26,7 @@ $container-max-widths: (
 @import '~rc-slider/assets/index.css';
 @import '~rc-tooltip/assets/bootstrap.css';
 @import '~react-image-gallery/styles/css/image-gallery.css';
+@import '~react-multi-toggle/style.css';
 @import './components/Footer/Footer.css';
 @import './components/NavBar/NavBar.css';
 @import './components/NavBar/NavBarPreferredStores.css';
@@ -120,4 +121,92 @@ h4 {
 
 .fa-star, .fa-star-half {
   color: #ffb700;
+}
+
+//Front page budget
+
+#front-page-budgets-table th, #front-page-budgets-table td {
+    padding: 0.4rem;
+    border-top: 0;
+}
+
+.budget-multi-toggle-container {
+    width: 100%;
+    max-width: 400px;
+}
+
+.cpu-multi-toggle-container {
+    min-width: 110px;
+    margin-left: 10px;
+}
+
+#front-page-budgets-options .toggleContainer .toggle {
+    background: #264c85;
+}
+
+// Budget View Table
+
+#budget-view-table a {
+    color: #264c85;
+}
+
+#budget-view-table a:hover {
+    text-decoration: underline;
+}
+
+#budget-view-table .price-column {
+    min-width: 100px;
+}
+
+#budget-view-table .btn.btn-outline-primary:hover {
+    color: white;
+    text-decoration: none;
+}
+
+// Budget Edit
+
+.budget-name {
+    display: inline-block;
+    padding: 0 10px;
+    border: 1px solid transparent;
+
+}
+
+.budget-name:hover {
+    background-color: white;
+    border: 1px solid #ddd;
+}
+
+#budget-edit-table td {
+    vertical-align: middle;
+}
+
+.budget-total-price {
+    color: #ca0000;
+    font-size: 22px;
+}
+
+.export-dropdown {
+    display: inline-block;
+}
+
+.more-budget-options-dropdown{
+    font-size: 1.7rem;
+}
+
+.exported-bbcode{
+    resize: none;
+    width: 100%;
+    height: 120px;
+}
+
+#exported-image-modal {
+    text-align: center;
+}
+
+#exported-image-modal .image-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: inline;
 }

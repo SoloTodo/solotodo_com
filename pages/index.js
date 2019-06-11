@@ -8,6 +8,7 @@ import ProductsReel from "../components/Product/ProductsReel";
 import TopBanner from "../components/TopBanner";
 import {settings} from '../settings';
 import {withSoloTodoTracker} from "../utils";
+import FrontPageBudgets from "../components/Budget/FrontPageBudgets";
 
 class Index extends React.Component {
   static async getInitialProps({ reduxStore, res }) {
@@ -54,8 +55,10 @@ class Index extends React.Component {
             />
           </div>
 
-          <div className="col-12 mt-3">
-            <h1>Ofertas del día</h1>
+          <div className="col-12 col-sm-12 col-md-10 col-lg-8 col-xl-7">
+            <div className="mt-3">
+              <h1>Ofertas del día</h1>
+            </div>
           </div>
 
           <div className="col-12">
@@ -64,6 +67,11 @@ class Index extends React.Component {
               ribbonFormatter={ribbonFormatter}
               ordering="discount"
             />
+          </div>
+
+          <div className="col-6 mt-3">
+            <h1>Cotizaciones gamer</h1>
+            <FrontPageBudgets/>
           </div>
         </div>
       </div>

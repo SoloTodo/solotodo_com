@@ -37,6 +37,7 @@
     "react-facebook-login": "^4.1.1",
     "react-image": "^2.0.0",
     "react-image-gallery": "^0.8.17",
+    "react-multi-toggle": "^1.1.0",
     "react-onclickoutside": "^6.8.0",
     "react-paginate": "^6.3.0",
     "react-redux": "^5.0.1",
