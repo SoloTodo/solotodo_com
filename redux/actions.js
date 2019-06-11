@@ -9,9 +9,22 @@ import {
 import { settings } from '../settings'
 import {getPreferredCountry, getPreferredStores, persistUser} from "../utils";
 import {fetchRequiredResources} from "../react-utils/redux/utils";
+import {filterApiResourceObjectsByType} from "../react-utils/ApiResource";
 
 export const loadFilteredRequiredResources = resources => dispatch => {
   return fetchRequiredResources(resources).then(bundle => {
+    const countries = filterApiResourceObjectsByType(bundle, 'countries');
+    const stores = filterApiResourceObjectsByType(bundle, 'stores').filter(store => store.last_activation);
+    const countriesToRemove = [];
+
+    for (const country of countries) {
+      if (!stores.some(store => store.country === country.url)) {
+        countriesToRemove.push(country.url)
+      }
+    }
+
+    bundle = bundle.filter(bundleItem => !countriesToRemove.includes(bundleItem.url));
+
     dispatch({
       type: 'addBundle',
       apiResourceObjects: bundle
