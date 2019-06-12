@@ -4,10 +4,10 @@ import Link from "next/link";
 import Big from 'big.js';
 import {Button} from "reactstrap";
 
+import {settings} from "../../settings";
 import {fetchJson} from "../../react-utils/utils";
 import {apiResourceStateToPropsUtils} from "../../react-utils/ApiResource";
 import {solotodoStateToPropsUtils} from "../../redux/utils";
-import {formatCurrency} from "../../react-utils/next_utils";
 import BudgetEntryViewRow from "./BudgetEntryViewRow";
 
 
@@ -38,10 +38,10 @@ class BudgetViewTable extends React.Component {
   componentUpdate(budget){
     const selectedProductUrls = budget.entries.map(entry => entry.selected_product).filter(productUrl => productUrl);
 
-    // TODO sacar ids de products pool
-
     if (selectedProductUrls.length) {
-      const productIds = selectedProductUrls.map(productUrl => productUrl.match(/(\d+)\/$/)[1]);
+      const productIds = budget.products_pool
+        .filter(product => selectedProductUrls.includes(product.url))
+        .map(product => product.id);
 
       let url = 'products/available_entities/?';
       for (const productId of productIds) {
@@ -132,12 +132,7 @@ class BudgetViewTable extends React.Component {
             </td>
         }
         <td className="budget-total-price text-right" colSpan="2">
-          {formatCurrency(
-            totalPrice,
-            this.props.preferredCurrency,
-            this.props.preferredCurrency,
-            this.props.numberFormat.thousands_separator,
-            this.props.numberFormat.decimal_separator)}
+          {this.props.formatCurrency(totalPrice, this.props.clpCurrency)}
         </td>
       </tr>
       </tbody>
@@ -146,14 +141,13 @@ class BudgetViewTable extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const {stores, preferredCountry, preferredCurrency, numberFormat} = solotodoStateToPropsUtils(state);
+  const {stores, currencies, formatCurrency} = solotodoStateToPropsUtils(state);
   const {fetchAuth} = apiResourceStateToPropsUtils(state);
 
   return {
     stores,
-    preferredCountry,
-    preferredCurrency,
-    numberFormat,
+    clpCurrency: currencies.filter(currency => currency.id === settings.clpCurrencyId)[0],
+    formatCurrency,
     fetchAuth,
     isExtraSmall: state.browser.is.extraSmall
   }

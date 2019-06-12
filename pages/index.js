@@ -2,13 +2,16 @@ import React from 'react';
 import Head from "next/head";
 import { connect } from 'react-redux'
 import {withRouter} from 'next/router'
-import { formatCurrency } from "../react-utils/next_utils";
-import { solotodoStateToPropsUtils } from "../redux/utils";
-import ProductsReel from "../components/Product/ProductsReel";
-import TopBanner from "../components/TopBanner";
+
 import {settings} from '../settings';
 import {withSoloTodoTracker} from "../utils";
+import { solotodoStateToPropsUtils } from "../redux/utils";
+
+import ProductsReel from "../components/Product/ProductsReel";
+import TopBanner from "../components/TopBanner";
 import FrontPageBudgets from "../components/Budget/FrontPageBudgets";
+
+
 
 class Index extends React.Component {
   static async getInitialProps({ reduxStore, res }) {
@@ -23,15 +26,8 @@ class Index extends React.Component {
   }
 
   render () {
-    const preferredCurrency = this.props.preferredCurrency;
-
     const ribbonFormatter = value => {
-      const localizedDiscount = formatCurrency(
-        value,
-        this.props.usdCurrency,
-        preferredCurrency,
-        this.props.preferredNumberFormat.thousands_separator,
-        preferredCurrency.decimal_separator);
+      const localizedDiscount = this.props.formatCurrency(value, this.props.usdCurrency);
       return `Bajó ${localizedDiscount}!`;
     };
 
@@ -80,14 +76,10 @@ class Index extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const {preferredCountry, preferredStores, preferredCurrency, preferredNumberFormat, currencies} = solotodoStateToPropsUtils(state);
+  const {currencies, formatCurrency} = solotodoStateToPropsUtils(state);
 
   return {
-    apiResourceObjects: state.apiResourceObjects,
-    preferredCountry,
-    preferredStores,
-    preferredCurrency,
-    preferredNumberFormat,
+    formatCurrency,
     usdCurrency: currencies.filter(currency => currency.id === settings.usdCurrencyId)[0]
   }
 }

@@ -45,6 +45,9 @@ $container-max-widths: (
 @import './components/Category/CategoryBrowseResults.css';
 @import './components/Category/CategoryBrowseResult.css';
 
+@import './components/Budget/FrontPageBudgets.css';
+@import './components/Budget/BudgetViewTable.css';
+
 body {
   font-family: 'Roboto', sans-serif;
   color: gray("800");
@@ -123,46 +126,6 @@ h4 {
   color: #ffb700;
 }
 
-//Front page budget
-
-#front-page-budgets-table th, #front-page-budgets-table td {
-    padding: 0.4rem;
-    border-top: 0;
-}
-
-.budget-multi-toggle-container {
-    width: 100%;
-    max-width: 400px;
-}
-
-.cpu-multi-toggle-container {
-    min-width: 110px;
-    margin-left: 10px;
-}
-
-#front-page-budgets-options .toggleContainer .toggle {
-    background: #264c85;
-}
-
-// Budget View Table
-
-#budget-view-table a {
-    color: #264c85;
-}
-
-#budget-view-table a:hover {
-    text-decoration: underline;
-}
-
-#budget-view-table .price-column {
-    min-width: 100px;
-}
-
-#budget-view-table .btn.btn-outline-primary:hover {
-    color: white;
-    text-decoration: none;
-}
-
 // Budget Edit
 
 .budget-name {
@@ -179,11 +142,6 @@ h4 {
 
 #budget-edit-table td {
     vertical-align: middle;
-}
-
-.budget-total-price {
-    color: #ca0000;
-    font-size: 22px;
 }
 
 .export-dropdown {

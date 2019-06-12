@@ -2,10 +2,9 @@ import React from 'react'
 import {connect} from "react-redux";
 import Link from "next/link";
 
-import {formatCurrency} from "../../react-utils/next_utils";
-
 import SoloTodoLeadLink from "../SoloTodoLeadLink";
 import {solotodoStateToPropsUtils} from "../../redux/utils";
+import {settings} from "../../settings";
 
 class BudgetEntryViewRow extends React.Component {
   render() {
@@ -50,12 +49,7 @@ class BudgetEntryViewRow extends React.Component {
         "N/A"}
       </td>
       <td className="text-right">{matchingEntity ?
-        formatCurrency(
-          matchingEntity.active_registry.offer_price,
-          this.props.preferredCurrency,
-          this.props.preferredCurrency,
-          this.props.numberFormat.thousands_separator,
-          this.props.numberFormat.decimal_separator):
+        this.props.formatCurrency(matchingEntity.active_registry.offer_price, this.props.clpCurrency):
         "N/A"}
       </td>
     </tr>
@@ -63,14 +57,13 @@ class BudgetEntryViewRow extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const {stores, categories, preferredCountry, preferredCurrency, numberFormat} = solotodoStateToPropsUtils(state);
+  const {stores, categories, currencies, formatCurrency} = solotodoStateToPropsUtils(state);
 
   return {
     stores,
     categories,
-    preferredCountry,
-    preferredCurrency,
-    numberFormat,
+    formatCurrency,
+    clpCurrency: currencies.filter(currency => currency.id === settings.clpCurrencyId)[0],
     isExtraSmall: state.browser.is.extraSmall
   }
 }

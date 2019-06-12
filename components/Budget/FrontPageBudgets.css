@@ -1,0 +1,18 @@
+#front-page-budgets-table th, #front-page-budgets-table td {
+    padding: 0.4rem;
+    border-top: 0;
+}
+
+.budget-multi-toggle-container {
+    width: 100%;
+    max-width: 400px;
+}
+
+.cpu-multi-toggle-container {
+    min-width: 110px;
+    margin-left: 10px;
+}
+
+#front-page-budgets-options .toggleContainer .toggle {
+    background: #264c85;
+}
