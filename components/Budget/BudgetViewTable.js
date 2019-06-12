@@ -122,7 +122,7 @@ class BudgetViewTable extends React.Component {
         {
           this.props.isFront? <td colSpan={this.props.isExtraSmall ? "1" : "2"}>
               <Link
-                href={`/budgets?id=${budget.id}`}
+                href={`/budgets/view?id=${budget.id}`}
                 as={`/budgets/${budget.id}`}>
                 <a className="btn btn-outline-primary">Comentar</a>
               </Link>

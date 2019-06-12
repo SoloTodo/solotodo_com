@@ -44,6 +44,13 @@ app.prepare()
       app.render(req, res, actualPage, queryParams)
     });
 
+    server.get(`/budgets/:id`, (req, res) => {
+      const actualPage = '/budgets/view';
+      const queryParams = {
+        id: req.params.id
+      };
+      app.render(req, res, actualPage, queryParams)
+    });
 
     server.get(`/:category_slug`, (req, res) => {
       const actualPage = '/browse';
