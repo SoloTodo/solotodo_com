@@ -8,7 +8,7 @@ import TopBanner from "../../components/TopBanner";
 import BudgetViewTable from "../../components/Budget/BudgetViewTable";
 
 
-class Budgets extends React.Component {
+class Budget extends React.Component {
   static async getInitialProps(ctx){
     const { res, query, reduxStore } = ctx;
     const reduxState = reduxStore.getState();
@@ -98,4 +98,4 @@ class Budgets extends React.Component {
   }
 }
 
-export default withRouter(Budgets)
+export default withRouter(Budget)
