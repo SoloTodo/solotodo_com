@@ -1,18 +1,23 @@
 import React from 'react'
 import Router, {withRouter} from 'next/router'
+import {Alert} from "reactstrap";
 import Big from 'big.js';
+
 import {apiResourceStateToPropsUtils} from "../../react-utils/ApiResource";
+import {areObjectListsEqual, areObjectsEqual, fetchJson} from "../../react-utils/utils";
+
 import {settings} from "../../settings";
 import {solotodoStateToPropsUtils} from "../../redux/utils";
-import Loading from "../../components/Loading";
-import {fetchJson} from "../../react-utils/utils";
 import TopBanner from "../../components/TopBanner";
-import {Alert} from "reactstrap";
+import Loading from "../../components/Loading";
+import BudgetEntryEditRow
+  from "../../components/Budget/BudgetEntryEditRow";
 
 class BudgetEdit extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      budget: undefined,
       pricingEntries: undefined,
       nameEditModalIsActive: false,
       budgetDeleteModalIsActive: false,
@@ -36,10 +41,10 @@ class BudgetEdit extends React.Component {
     const budgetId = query.id;
     const budgetUrl = `${settings.apiResourceEndpoints.budgets}${budgetId}`;
 
-    let budget;
+    let initialBudget;
 
     try{
-      budget = await fetchAuth(budgetUrl);
+      initialBudget = await fetchAuth(budgetUrl);
     } catch (e) {
       if (res) {
         res.statusCode=404;
@@ -48,7 +53,7 @@ class BudgetEdit extends React.Component {
       }
     }
 
-    if (!user || !user.is_superuser || budget.user.id !== user.id) {
+    if (!user || (!user.is_superuser && initialBudget.user.id !== user.id)) {
       if (res) {
         res.writeHead(302, {
           Location: '/'
@@ -62,17 +67,39 @@ class BudgetEdit extends React.Component {
 
     return {
       user,
-      budget,
+      initialBudget,
       budgetCategories: categories.filter(category => category.budget_ordering),
       preferredCountryStores
     }
   }
 
   componentDidMount() {
-    this.componentUpdate(this.props.budget, this.props.preferredCountryStores)
+    this.setState({
+      budget: this.props.initialBudget
+    }, () => this.componentUpdate());
   }
 
-  componentUpdate(budget, stores) {
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const oldPreferredStores = prevProps.preferredCountryStores;
+    const newPreferredStores = this.props.preferredCountryStores;
+
+    const oldBudget = prevProps.initialBudget;
+    const newBudget = this.props.initialBudget;
+
+    if (oldBudget.id !== newBudget.id) {
+      this.setState({
+        budget:newBudget
+      }, () => this.componentUpdate())
+    }
+
+    if (!areObjectListsEqual(oldPreferredStores, newPreferredStores)) {
+      this.componentUpdate();
+    }
+  }
+
+  componentUpdate() {
+    const budget = this.state.budget;
+    const stores = this.props.preferredCountryStores;
     if (budget.products_pool.length) {
       let url = 'products/available_entities/?';
       for (const product of budget.products_pool) {
@@ -98,15 +125,26 @@ class BudgetEdit extends React.Component {
         budgetEditName: budget.name
       })
     }
+  }
+
+  budgetUpdate() {
+
+  }
+
+  removeBudgetProduct(){
 
   }
 
   render() {
+    if (!this.state.budget) {
+      return null
+    }
+
     if (!this.state.pricingEntries) {
       return <Loading/>
     }
 
-    const budget = this.props.budget;
+    const budget = this.state.budget;
     let totalPrice = new Big(0);
 
     for (const budgetEntry of budget.entries) {
@@ -142,7 +180,7 @@ class BudgetEdit extends React.Component {
 
     return <div className="pl-3 pr-3">
       <div className="row">
-        <TopBanner category="Hardware"/>
+        {/*<TopBanner category="Hardware"/>*/}
         <div className="col-12">
           <h1 className="budget-name">{budget.name}</h1>
         </div>
@@ -167,6 +205,16 @@ class BudgetEdit extends React.Component {
                 <th scope="col">Quitar</th>
               </tr>
               </thead>
+              <tbody>
+              {budget.entries.map(budgetEntry => (
+                <BudgetEntryEditRow
+                  key={budgetEntry.id}
+                  budgetEntry={budgetEntry}
+                  pricingEntries={this.state.pricingEntries}
+                  budgetUpdate={this.budgetUpdate}
+                  removeBudgetProduct={this.removeBudgetProduct}/>
+              ))}
+              </tbody>
             </table>
           </div>
         </div>
