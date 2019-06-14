@@ -1,17 +1,18 @@
 import React from 'react'
+import {connect} from "react-redux";
 import Router, {withRouter} from 'next/router'
 import {Alert} from "reactstrap";
 import Big from 'big.js';
 
 import {apiResourceStateToPropsUtils} from "../../react-utils/ApiResource";
-import {areObjectListsEqual, areObjectsEqual, fetchJson} from "../../react-utils/utils";
+import {areObjectListsEqual, fetchJson} from "../../react-utils/utils";
 
 import {settings} from "../../settings";
 import {solotodoStateToPropsUtils} from "../../redux/utils";
 import TopBanner from "../../components/TopBanner";
 import Loading from "../../components/Loading";
-import BudgetEntryEditRow
-  from "../../components/Budget/BudgetEntryEditRow";
+import BudgetEntryEditRow from "../../components/Budget/BudgetEntryEditRow";
+import BudgetNameEditModal from "../../components/Budget/BudgetNameEditModal";
 
 class BudgetEdit extends React.Component {
   constructor(props) {
@@ -127,9 +128,20 @@ class BudgetEdit extends React.Component {
     }
   }
 
-  budgetUpdate() {
+  budgetUpdate = () => {
+    const budget = this.state.budget;
+    this.props.fetchAuth(budget.url).then(budget => {
+      this.setState({
+        budget
+      })
+    });
+  };
 
-  }
+  userUpdate = () => {
+    this.props.fetchAuth('users/me/').then(user => {
+      this.props.updateUser(user);
+    })
+  };
 
   removeBudgetProduct(){
 
@@ -182,7 +194,10 @@ class BudgetEdit extends React.Component {
       <div className="row">
         {/*<TopBanner category="Hardware"/>*/}
         <div className="col-12">
-          <h1 className="budget-name">{budget.name}</h1>
+          <BudgetNameEditModal
+            budget={budget}
+            budgetUpdate={this.budgetUpdate}
+            userUpdate={this.userUpdate}/>
         </div>
         {!this.state.pricingEntries.length && <div className="col-12">
           <div>
@@ -210,7 +225,9 @@ class BudgetEdit extends React.Component {
                 <BudgetEntryEditRow
                   key={budgetEntry.id}
                   budgetEntry={budgetEntry}
-                  pricingEntries={this.state.pricingEntries}
+                  pricingEntries={this.state.pricingEntries.filter(productEntry => (
+                    budgetEntry.category === productEntry.product.category
+                  ))}
                   budgetUpdate={this.budgetUpdate}
                   removeBudgetProduct={this.removeBudgetProduct}/>
               ))}
@@ -223,4 +240,23 @@ class BudgetEdit extends React.Component {
   }
 }
 
-export default withRouter(BudgetEdit)
+function mapStateToProps(state) {
+  const {fetchAuth} = apiResourceStateToPropsUtils(state);
+  return {
+    fetchAuth,
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatch: dispatch,
+    updateUser: user => {
+      return dispatch({
+        type: 'updateApiResourceObject',
+        apiResourceObject: user
+      })
+    }
+  }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(BudgetEdit))
