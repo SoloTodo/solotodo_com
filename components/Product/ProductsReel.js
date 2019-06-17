@@ -15,17 +15,17 @@ class ProductsReel extends Component {
     }
 
     let url = 'ordering=' + ordering + '&websites=' + settings.websiteId + storesUrl;
-    const productsResults = await fetchJson('products/browse/?' + url);
+    const productsResults = await fetchJson('products/es_browse/?' + url);
 
     return {
-      productBuckets: productsResults.results
+      productEntries: productsResults.results
     };
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      productBuckets: props.initialProductBuckets
+      productEntries: props.initialProductEntries
     }
   }
 
@@ -36,7 +36,7 @@ class ProductsReel extends Component {
     if (!areObjectListsEqual(oldPreferredStores, newPreferredStores)) {
       ProductsReel.getInitialProps(newPreferredStores, this.props.ordering).then(updatedProducts => {
         this.setState({
-          productBuckets: updatedProducts.productBuckets
+          productEntries: updatedProducts.productEntries
         })
       });
     }
@@ -64,11 +64,11 @@ class ProductsReel extends Component {
 
     return <div className="products-reel">
       <Slider {...sliderSettings}>
-        {this.state.productBuckets.map(bucket => {
-          return <div key={bucket.product_entries[0].product.id} className="products-reel__item">
-            <ProductShortDescription productEntry={bucket.product_entries[0]} />
+        {this.state.productEntries.map(productEntry => {
+          return <div key={productEntry.product.id} className="products-reel__item">
+            <ProductShortDescription productEntry={productEntry} />
             <div className="ribbon">
-              <span className="ordering-ribbon">{this.props.ribbonFormatter(bucket.product_entries[0].ordering_value)}</span>
+              <span className="ordering-ribbon">{this.props.ribbonFormatter(productEntry.metadata[this.props.ordering])}</span>
             </div>
           </div>
         })}

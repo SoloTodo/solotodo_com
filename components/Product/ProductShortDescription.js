@@ -15,7 +15,7 @@ class ProductShortDescription extends React.Component {
     const preferredCurrency = this.props.preferredCurrency;
     const numberFormat = this.props.numberFormat;
 
-    const firstPrice = this.props.productEntry.prices[0];
+    const firstPrice = this.props.productEntry.metadata.prices_per_currency[0];
     const firstPriceCurrency = this.props.currencies.filter(currency => currency.url === firstPrice.currency)[0];
 
     const formattedPrice = formatCurrency(

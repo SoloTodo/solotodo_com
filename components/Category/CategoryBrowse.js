@@ -120,7 +120,7 @@ class CategoryBrowse extends React.Component {
   static apiEndpoint = (category, stores) => {
     const categoryBrowseParams = settings.categoryBrowseParameters;
 
-    let endpoint = `categories/${category.id}/browse/?page_size=${settings.categoryBrowseResultsPerPage}`;
+    let endpoint = `categories/${category.id}/es_browse/?page_size=${settings.categoryBrowseResultsPerPage}`;
 
     if (categoryBrowseParams.bucketField) {
       endpoint += '&bucket_field=' + categoryBrowseParams.bucketField

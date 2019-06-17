@@ -45,7 +45,7 @@ class CategoryBrowseResult extends React.Component {
 
     const selectedProductEntry = this.state.selectedProductEntry;
     const product = selectedProductEntry.product;
-    const pricingData = selectedProductEntry.prices[0];
+    const pricingData = selectedProductEntry.metadata.prices_per_currency[0];
 
     const currency = this.props.ApiResourceObject(this.props.currencies.filter(currency => currency.url === pricingData.currency)[0]);
     const offerPrice = parseFloat(pricingData.min_offer_price);
