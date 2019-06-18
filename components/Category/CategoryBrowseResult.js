@@ -22,8 +22,8 @@ class CategoryBrowseResult extends React.Component {
     }
   }
 
-  handleVariantChange = evt => {
-    const newSelectedProductEntry = this.props.bucket.product_entries.filter(entry => entry.product.url === evt.value)[0];
+  handleVariantChange = selectedOption => {
+    const newSelectedProductEntry = this.props.bucket.product_entries.filter(entry => entry.product.url === selectedOption.value)[0];
     this.setState({
       selectedProductEntry: newSelectedProductEntry,
     });
@@ -48,7 +48,7 @@ class CategoryBrowseResult extends React.Component {
     const pricingData = selectedProductEntry.metadata.prices_per_currency[0];
 
     const currency = this.props.ApiResourceObject(this.props.currencies.filter(currency => currency.url === pricingData.currency)[0]);
-    const offerPrice = parseFloat(pricingData.min_offer_price);
+    const offerPrice = parseFloat(pricingData.offer_price);
 
     const formattedPrice = this.props.priceFormatter(offerPrice, currency);
 
@@ -59,7 +59,9 @@ class CategoryBrowseResult extends React.Component {
     const bucketProductLabelField = params.bucketProductLabelField || 'unicode';
     const pixelRatio = isServer ? 1.0 : window.devicePixelRatio;
     const thumbnailSize = Math.round(300 * pixelRatio);
-    
+
+    const choices = productEntries.map(entry => ({value: entry.product.url, label: entry.product.specs[bucketProductLabelField] }));
+
     return <div className="d-flex flex-column category-browse-result">
       <h3><Link href={linkHref} as={linkAs}><a>{product.name}</a></Link></h3>
       <div className="image-container d-flex flex-column justify-content-center">
@@ -86,9 +88,9 @@ class CategoryBrowseResult extends React.Component {
 
         {productEntries.length > 1 && <div className="variant-selector flex-grow">
           <Select
-              value={product.url}
+              value={{value: product.url, label: product.specs[bucketProductLabelField] }}
               onChange={this.handleVariantChange}
-              options={productEntries.map(entry => ({value: entry.product.url, label: entry.product.specs[bucketProductLabelField] }))}
+              options={choices}
               searchable={false}
               clearable={false}
           />

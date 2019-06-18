@@ -118,7 +118,7 @@ class CategoryBrowse extends React.Component {
   };
 
   static apiEndpoint = (category, stores) => {
-    const categoryBrowseParams = settings.categoryBrowseParameters;
+    const categoryBrowseParams = settings.categoryBrowseParameters[category.id] || {};
 
     let endpoint = `categories/${category.id}/es_browse/?page_size=${settings.categoryBrowseResultsPerPage}`;
 
@@ -152,10 +152,9 @@ class CategoryBrowse extends React.Component {
   };
 
   render() {
-    const categoryBrowseParams = settings.categoryBrowseParameters;
-
     const {formLayout, resultsAggs} = this.state;
     const {numberFormat, priceRange, usdCurrency, conversionCurrency, category, stores, initialFormData, isExtraSmall} = this.props;
+    const categoryBrowseParams = settings.categoryBrowseParameters[category.id];
 
     const {filtersLayout, ordering, pagination} = processFormLayout(formLayout, priceRange, usdCurrency, conversionCurrency, numberFormat);
     const apiFormFields = ['ordering', 'page'];

@@ -19,7 +19,7 @@ class ProductShortDescription extends React.Component {
     const firstPriceCurrency = this.props.currencies.filter(currency => currency.url === firstPrice.currency)[0];
 
     const formattedPrice = formatCurrency(
-      firstPrice.min_offer_price, firstPriceCurrency,
+      firstPrice.offer_price, firstPriceCurrency,
       preferredCurrency, numberFormat.thousands_separator,
       numberFormat.decimal_separator);
 
