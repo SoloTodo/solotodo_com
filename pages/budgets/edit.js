@@ -1,18 +1,30 @@
 import React from 'react'
 import {connect} from "react-redux";
 import Router, {withRouter} from 'next/router'
-import {Alert} from "reactstrap";
+import {
+  Alert
+} from "reactstrap";
 import Big from 'big.js';
 
 import {apiResourceStateToPropsUtils} from "../../react-utils/ApiResource";
-import {areObjectListsEqual, fetchJson} from "../../react-utils/utils";
+import {
+  areObjectListsEqual,
+  convertIdToUrl,
+  fetchJson
+} from "../../react-utils/utils";
 
 import {settings} from "../../settings";
 import {solotodoStateToPropsUtils} from "../../redux/utils";
-import TopBanner from "../../components/TopBanner";
 import Loading from "../../components/Loading";
 import BudgetEntryEditRow from "../../components/Budget/BudgetEntryEditRow";
 import BudgetNameEditModal from "../../components/Budget/BudgetNameEditModal";
+import BudgetEntryCreateButton from "../../components/Budget/BudgetEntryCreateButton";
+import BudgetExportButton from "../../components/Budget/BudgetExportButton";
+import BudgetSelectBestPricesButton from "../../components/Budget/BudgetSelectBestPricesButton";
+import BudgetScreenshotButton from "../../components/Budget/BudgetScreenshotButton";
+import BudgetDeleteButton from "../../components/Budget/BudgetDeleteButton";
+import BudgetCompatibilityCheckButton from "../../components/Budget/BudgetCompatibilityCheckButton";
+import TopBanner from "../../components/TopBanner";
 
 class BudgetEdit extends React.Component {
   constructor(props) {
@@ -20,15 +32,7 @@ class BudgetEdit extends React.Component {
     this.state = {
       budget: undefined,
       pricingEntries: undefined,
-      nameEditModalIsActive: false,
-      budgetDeleteModalIsActive: false,
-      createBudgetEntryModalIsActive: false,
-      exportedBBCodeModalIsActive: false,
-      exportedImageModalIsActive: false,
-      exportedImageUrl: undefined,
       compatibilityIssues: undefined,
-      bbCode: undefined,
-      budgetEditName: undefined
     }
   }
 
@@ -36,19 +40,18 @@ class BudgetEdit extends React.Component {
     const { res, query, reduxStore } = ctx;
     const reduxState = reduxStore.getState();
 
-    const {user, categories, preferredCountryStores} = solotodoStateToPropsUtils(reduxState);
+    const {user} = solotodoStateToPropsUtils(reduxState);
     const {fetchAuth} = apiResourceStateToPropsUtils(reduxState, ctx);
 
     const budgetId = query.id;
-    const budgetUrl = `${settings.apiResourceEndpoints.budgets}${budgetId}`;
-
+    const budgetUrl = convertIdToUrl(budgetId, 'budgets');
     let initialBudget;
 
     try{
       initialBudget = await fetchAuth(budgetUrl);
     } catch (e) {
       if (res) {
-        res.statusCode=404;
+        res.statusCode = 404;
         res.end('Not found');
         return
       }
@@ -67,10 +70,7 @@ class BudgetEdit extends React.Component {
     }
 
     return {
-      user,
-      initialBudget,
-      budgetCategories: categories.filter(category => category.budget_ordering),
-      preferredCountryStores
+      initialBudget
     }
   }
 
@@ -101,13 +101,14 @@ class BudgetEdit extends React.Component {
   componentUpdate() {
     const budget = this.state.budget;
     const stores = this.props.preferredCountryStores;
+
     if (budget.products_pool.length) {
       let url = 'products/available_entities/?';
       for (const product of budget.products_pool) {
         url += `ids=${product.id}&`
       }
 
-      for (let store of stores) {
+      for (const store of stores) {
         url += `&stores=${store.id}`;
       }
 
@@ -129,8 +130,7 @@ class BudgetEdit extends React.Component {
   }
 
   budgetUpdate = () => {
-    const budget = this.state.budget;
-    this.props.fetchAuth(budget.url).then(budget => {
+    this.props.fetchAuth(this.state.budget.url).then(budget => {
       this.setState({
         budget
       })
@@ -143,10 +143,6 @@ class BudgetEdit extends React.Component {
     })
   };
 
-  removeBudgetProduct(){
-
-  }
-
   render() {
     if (!this.state.budget) {
       return null
@@ -155,7 +151,6 @@ class BudgetEdit extends React.Component {
     if (!this.state.pricingEntries) {
       return <Loading/>
     }
-
     const budget = this.state.budget;
     let totalPrice = new Big(0);
 
@@ -163,13 +158,11 @@ class BudgetEdit extends React.Component {
       if (!budgetEntry.selected_store) {
         continue
       }
-
       const pricingEntry = this.state.pricingEntries.filter(entry => entry.product.url === budgetEntry.selected_product)[0] || null;
 
       if (!pricingEntry) {
         continue
       }
-
       const matchingEntity = pricingEntry.entities.filter(entity => entity.store === budgetEntry.selected_store)[0] || null;
 
       if (matchingEntity) {
@@ -190,9 +183,12 @@ class BudgetEdit extends React.Component {
       }
     });
 
+    const product_ids = budget.products_pool.map(product => product.id);
+    console.log(this.state.pricingEntries);
+
     return <div className="pl-3 pr-3">
       <div className="row">
-        {/*<TopBanner category="Hardware"/>*/}
+        <TopBanner category="Hardware"/>
         <div className="col-12">
           <BudgetNameEditModal
             budget={budget}
@@ -225,14 +221,39 @@ class BudgetEdit extends React.Component {
                 <BudgetEntryEditRow
                   key={budgetEntry.id}
                   budgetEntry={budgetEntry}
-                  pricingEntries={this.state.pricingEntries.filter(productEntry => (
-                    budgetEntry.category === productEntry.product.category
-                  ))}
+                  pricingEntries={this.state.pricingEntries
+                    .filter(productEntry => product_ids.includes(productEntry.product.id))
+                    .filter(productEntry => budgetEntry.category === productEntry.product.category)}
                   budgetUpdate={this.budgetUpdate}
-                  removeBudgetProduct={this.removeBudgetProduct}/>
-              ))}
+                  removeBudgetProduct={this.removeBudgetProduct}/>))}
+              <tr>
+                <td colSpan="2"/>
+                <td className="budget-total-price" colSpan="2">
+                  {this.props.formatCurrency(totalPrice, this.props.clpCurrency)}
+                </td>
+              </tr>
               </tbody>
             </table>
+          </div>
+        </div>
+        <div className="col-12">
+          <div className="content-card mt-3 mb-3">
+            <BudgetSelectBestPricesButton
+              budget={budget}
+              budgetUpdate={this.budgetUpdate}/>
+            <BudgetEntryCreateButton
+              budget={budget}
+              budgetCategories={budgetCategories}
+              budgetUpdate={this.budgetUpdate}/>
+            <BudgetExportButton
+              budget={budget}/>
+            <BudgetScreenshotButton
+              budget={budget}/>
+            <BudgetCompatibilityCheckButton
+              budget={budget}/>
+            <BudgetDeleteButton
+              budget={budget}
+              onBudgetDeleted={this.userUpdate}/>
           </div>
         </div>
       </div>
@@ -241,9 +262,15 @@ class BudgetEdit extends React.Component {
 }
 
 function mapStateToProps(state) {
+  const {categories, preferredCountryStores, currencies, formatCurrency} = solotodoStateToPropsUtils(state);
   const {fetchAuth} = apiResourceStateToPropsUtils(state);
+
   return {
+    budgetCategories: categories.filter(category => category.budget_ordering),
+    preferredCountryStores,
+    clpCurrency: currencies.filter(currency => currency.id === settings.clpCurrencyId)[0],
     fetchAuth,
+    formatCurrency
   }
 }
 
