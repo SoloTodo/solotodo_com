@@ -15,14 +15,15 @@ class BudgetEntryEditRow extends React.Component{
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevProps.budgetEntry.selected_product !== this.props.budgetEntry.selected_product) {
+    if (prevProps.budgetEntry.selected_product !== this.props.budgetEntry.selected_product ||
+      prevProps.pricingEntries !== this.props.pricingEntries) {
       this.componentUpdate();
     }
   }
 
   componentUpdate(){
     const budgetEntry = this.props.budgetEntry;
-    const pricingEntries = this.props.pricingEntries;
+    const pricingEntries = this.props.pricingEntries.filter(productEntry => budgetEntry.category === productEntry.product.category);
     let matchingPricingEntry = null;
 
     if (budgetEntry.selected_product) {
@@ -99,7 +100,8 @@ class BudgetEntryEditRow extends React.Component{
   render() {
     const selectedProduct = this.props.budgetEntry.selected_product;
     const budgetEntry = this.props.budgetEntry;
-    const matchingPricingEntry = this.props.pricingEntries.filter(pricingEntry => pricingEntry.product.url === selectedProduct)[0];
+    const pricingEntries = this.props.pricingEntries.filter(productEntry => budgetEntry.category === productEntry.product.category);
+    const matchingPricingEntry = pricingEntries.filter(pricingEntry => pricingEntry.product.url === selectedProduct)[0];
     const matchingEntities = matchingPricingEntry? matchingPricingEntry.entities : [];
     const filteredEntities = [];
 
@@ -121,7 +123,7 @@ class BudgetEntryEditRow extends React.Component{
           <a>{category.name}</a>
         </Link>
       </td>
-      {this.props.pricingEntries.length?
+      {pricingEntries.length?
         <td>
           <div className="input-group">
             <div className="input-group-prepend">
@@ -135,7 +137,7 @@ class BudgetEntryEditRow extends React.Component{
               className="custom-select"
               value={selectedProduct || ''}
               onChange={this.handleProductSelect}>
-              {this.props.pricingEntries.map(pricingEntry => (
+              {pricingEntries.map(pricingEntry => (
                 <option key={pricingEntry.product.url} value={pricingEntry.product.url}>
                   {pricingEntry.product.name}
                 </option>
@@ -144,7 +146,7 @@ class BudgetEntryEditRow extends React.Component{
           </div>
         </td>:
         <td colSpan="2"> No hay productos ingresados para esta categoría</td>}
-      {!!this.props.pricingEntries.length && <td>
+      {!!pricingEntries.length && <td>
         {matchingEntity?
           <div className="input-group">
             <div className="input-group-prepend">

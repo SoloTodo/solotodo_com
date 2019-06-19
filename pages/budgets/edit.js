@@ -1,9 +1,6 @@
 import React from 'react'
 import {connect} from "react-redux";
 import Router, {withRouter} from 'next/router'
-import {
-  Alert
-} from "reactstrap";
 import Big from 'big.js';
 
 import {apiResourceStateToPropsUtils} from "../../react-utils/ApiResource";
@@ -13,18 +10,10 @@ import {
   fetchJson
 } from "../../react-utils/utils";
 
-import {settings} from "../../settings";
 import {solotodoStateToPropsUtils} from "../../redux/utils";
 import Loading from "../../components/Loading";
-import BudgetEntryEditRow from "../../components/Budget/BudgetEntryEditRow";
-import BudgetNameEditModal from "../../components/Budget/BudgetNameEditModal";
-import BudgetEntryCreateButton from "../../components/Budget/BudgetEntryCreateButton";
-import BudgetExportButton from "../../components/Budget/BudgetExportButton";
-import BudgetSelectBestPricesButton from "../../components/Budget/BudgetSelectBestPricesButton";
-import BudgetScreenshotButton from "../../components/Budget/BudgetScreenshotButton";
-import BudgetDeleteButton from "../../components/Budget/BudgetDeleteButton";
-import BudgetCompatibilityCheckButton from "../../components/Budget/BudgetCompatibilityCheckButton";
-import TopBanner from "../../components/TopBanner";
+import BudgetEditDesktop from "../../components/Budget/BudgetEditDesktop";
+import BudgetEditMobile from "../../components/Budget/BudgetEditMobile";
 
 class BudgetEdit extends React.Component {
   constructor(props) {
@@ -93,7 +82,8 @@ class BudgetEdit extends React.Component {
       }, () => this.componentUpdate())
     }
 
-    if (!areObjectListsEqual(oldPreferredStores, newPreferredStores)) {
+    if (!areObjectListsEqual(oldPreferredStores, newPreferredStores) ||
+      (prevState.budget && !areObjectListsEqual(prevState.budget.products_pool, this.state.budget.products_pool))) {
       this.componentUpdate();
     }
   }
@@ -151,6 +141,7 @@ class BudgetEdit extends React.Component {
     if (!this.state.pricingEntries) {
       return <Loading/>
     }
+
     const budget = this.state.budget;
     let totalPrice = new Big(0);
 
@@ -183,94 +174,33 @@ class BudgetEdit extends React.Component {
       }
     });
 
-    const product_ids = budget.products_pool.map(product => product.id);
-    console.log(this.state.pricingEntries);
+    if (this.props.isExtraSmall) {
+      return <BudgetEditMobile
+        budget={budget}
+        budgetCategories={budgetCategories}
+        pricingEntries={this.state.pricingEntries}
+        budgetUpdate={this.budgetUpdate}
+        userUpdate={this.userUpdate}/>
+    }
 
-    return <div className="pl-3 pr-3">
-      <div className="row">
-        <TopBanner category="Hardware"/>
-        <div className="col-12">
-          <BudgetNameEditModal
-            budget={budget}
-            budgetUpdate={this.budgetUpdate}
-            userUpdate={this.userUpdate}/>
-        </div>
-        {!this.state.pricingEntries.length && <div className="col-12">
-          <div>
-            <Alert color="info">
-              <i className="fas fa-exclamation-circle">&nbsp;</i> ¡Tu cotización está vacía! Navega por los
-              productos de SoloTodo y haz click en "Agregar a cotización" para incluirlos
-            </Alert>
-          </div>
-        </div>}
-      </div>
-      <div className="row">
-        <div className="col-12">
-          <div className="content-card">
-            <table id="budget-edit-table" className="table mb-0">
-              <thead>
-              <tr>
-                <th scope="col">Componente</th>
-                <th scope="col">Producto</th>
-                <th scope="col">Tienda</th>
-                <th scope="col">Quitar</th>
-              </tr>
-              </thead>
-              <tbody>
-              {budget.entries.map(budgetEntry => (
-                <BudgetEntryEditRow
-                  key={budgetEntry.id}
-                  budgetEntry={budgetEntry}
-                  pricingEntries={this.state.pricingEntries
-                    .filter(productEntry => product_ids.includes(productEntry.product.id))
-                    .filter(productEntry => budgetEntry.category === productEntry.product.category)}
-                  budgetUpdate={this.budgetUpdate}
-                  removeBudgetProduct={this.removeBudgetProduct}/>))}
-              <tr>
-                <td colSpan="2"/>
-                <td className="budget-total-price" colSpan="2">
-                  {this.props.formatCurrency(totalPrice, this.props.clpCurrency)}
-                </td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div className="col-12">
-          <div className="content-card mt-3 mb-3">
-            <BudgetSelectBestPricesButton
-              budget={budget}
-              budgetUpdate={this.budgetUpdate}/>
-            <BudgetEntryCreateButton
-              budget={budget}
-              budgetCategories={budgetCategories}
-              budgetUpdate={this.budgetUpdate}/>
-            <BudgetExportButton
-              budget={budget}/>
-            <BudgetScreenshotButton
-              budget={budget}/>
-            <BudgetCompatibilityCheckButton
-              budget={budget}/>
-            <BudgetDeleteButton
-              budget={budget}
-              onBudgetDeleted={this.userUpdate}/>
-          </div>
-        </div>
-      </div>
-    </div>
+    return <BudgetEditDesktop
+      budget={budget}
+      budgetCategories={budgetCategories}
+      pricingEntries={this.state.pricingEntries}
+      budgetUpdate={this.budgetUpdate}
+      userUpdate={this.userUpdate}/>
   }
 }
 
 function mapStateToProps(state) {
-  const {categories, preferredCountryStores, currencies, formatCurrency} = solotodoStateToPropsUtils(state);
+  const {categories, preferredCountryStores} = solotodoStateToPropsUtils(state);
   const {fetchAuth} = apiResourceStateToPropsUtils(state);
 
   return {
     budgetCategories: categories.filter(category => category.budget_ordering),
     preferredCountryStores,
-    clpCurrency: currencies.filter(currency => currency.id === settings.clpCurrencyId)[0],
+    isExtraSmall: state.browser.is.extraSmall,
     fetchAuth,
-    formatCurrency
   }
 }
 
