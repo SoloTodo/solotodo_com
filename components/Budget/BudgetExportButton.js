@@ -48,13 +48,19 @@ class BudgetExportButton extends React.Component {
 
   render() {
     return <React.Fragment>
-      <UncontrolledDropdown className="m-2 export-dropdown">
-        <DropdownToggle color="primary" outline caret>Exportar</DropdownToggle>
-        <DropdownMenu>
+      {this.props.isMobile?
+        <React.Fragment>
           <DropdownItem onClick={this.exportToBBCode}>Exportar a CHW</DropdownItem>
           <DropdownItem onClick={this.exportToXls}>Exportar a Excel</DropdownItem>
-        </DropdownMenu>
-      </UncontrolledDropdown>
+        </React.Fragment> :
+        <UncontrolledDropdown className="m-2 export-dropdown">
+          <DropdownToggle color="primary" outline caret>Exportar</DropdownToggle>
+          <DropdownMenu>
+            <DropdownItem onClick={this.exportToBBCode}>Exportar a CHW</DropdownItem>
+            <DropdownItem onClick={this.exportToXls}>Exportar a Excel</DropdownItem>
+          </DropdownMenu>
+        </UncontrolledDropdown>}
+
       <Modal isOpen={this.state.exportedBBCodeModalIsActive} toggle={this.toggleExportedBBCodeModal}>
         <ModalBody>
           {this.state.bbCode?

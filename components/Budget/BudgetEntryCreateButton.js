@@ -1,5 +1,12 @@
 import React from 'react'
-import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
+import {
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  DropdownItem
+} from "reactstrap";
 import {apiResourceStateToPropsUtils} from "../../react-utils/ApiResource";
 import {connect} from "react-redux";
 
@@ -43,7 +50,9 @@ class BudgetEntryCreateButton extends React.Component {
 
   render() {
     return <React.Fragment>
-      <Button color="primary" outline className="m-2" onClick={this.toggleEntryCreateModal}>Agregar componente</Button>
+      {this.props.isMobile?
+        <DropdownItem onClick={this.toggleEntryCreateModal}>Agregar Componente</DropdownItem> :
+        <Button color="primary" outline className="m-2" onClick={this.toggleEntryCreateModal}>Agregar componente</Button>}
       <Modal isOpen={this.state.entryCreateModalIsActive} toggle={this.toggleEntryCreateModal}>
         <ModalHeader>Agregar componente</ModalHeader>
         <ModalBody>

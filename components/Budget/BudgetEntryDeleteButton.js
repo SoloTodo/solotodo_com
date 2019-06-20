@@ -36,19 +36,29 @@ class BudgetEntryDeleteButton extends React.Component {
 
   render() {
     return <React.Fragment>
-      <UncontrolledDropdown>
-        <DropdownToggle caret color="danger">
-          Eliminar
-        </DropdownToggle>
-        <DropdownMenu right>
+      {this.props.isMobile?
+        <React.Fragment>
           {this.props.matchingPricingEntry && <DropdownItem onClick={e => this.removeSelectedProduct(this.props.matchingPricingEntry.product)}>
             Producto seleccionado
           </DropdownItem>}
           <DropdownItem onClick={this.toggleEntryDeleteModal}>
             Quitar componente
           </DropdownItem>
-        </DropdownMenu>
-      </UncontrolledDropdown>
+        </React.Fragment> :
+        <UncontrolledDropdown>
+          <DropdownToggle caret color="danger">
+            Eliminar
+          </DropdownToggle>
+          <DropdownMenu right>
+            {this.props.matchingPricingEntry && <DropdownItem onClick={e => this.removeSelectedProduct(this.props.matchingPricingEntry.product)}>
+              Producto seleccionado
+            </DropdownItem>}
+            <DropdownItem onClick={this.toggleEntryDeleteModal}>
+              Quitar componente
+            </DropdownItem>
+          </DropdownMenu>
+        </UncontrolledDropdown>}
+
       <Modal isOpen={this.state.entryDeleteModalIsActive} toggle={this.toggleEntryDeleteModal}>
         <ModalHeader>Quitar componente</ModalHeader>
         <ModalBody>

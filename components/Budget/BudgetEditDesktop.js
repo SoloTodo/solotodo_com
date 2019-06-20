@@ -79,8 +79,7 @@ class BudgetEditDesktop extends React.Component {
                   key={budgetEntry.id}
                   budgetEntry={budgetEntry}
                   pricingEntries={this.props.pricingEntries}
-                  budgetUpdate={this.props.budgetUpdate}
-                  removeBudgetProduct={this.removeBudgetProduct}/>})}
+                  budgetUpdate={this.props.budgetUpdate}/>})}
               <tr>
                 <td colSpan="2"/>
                 <td className="budget-total-price" colSpan="2">

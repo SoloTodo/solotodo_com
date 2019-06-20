@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from "react-redux";
-import {Modal, ModalHeader, ModalBody, ModalFooter, Button} from "reactstrap";
+import {Modal, ModalHeader, ModalBody, ModalFooter, Button, DropdownItem} from "reactstrap";
 
 import {apiResourceStateToPropsUtils} from "../../react-utils/ApiResource";
 
@@ -41,7 +41,9 @@ class BudgetNameEditModal extends React.Component {
 
   render() {
     return <React.Fragment>
-      <h1 className="budget-name" onClick={this.toggleNameEditModal}>{this.props.budget.name}</h1>
+      {this.props.isMobile?
+        <DropdownItem onClick={this.toggleNameEditModal}>Editar nombre</DropdownItem> :
+        <h1 className="budget-name" onClick={this.toggleNameEditModal}>{this.props.budget.name}</h1>}
       <Modal isOpen={this.state.nameEditModalIsActive} toggle={this.toggleNameEditModal}>
         <ModalHeader>Cambiar nombre</ModalHeader>
         <ModalBody>

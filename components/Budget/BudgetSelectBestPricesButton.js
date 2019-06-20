@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from "react-redux";
 
 import {apiResourceStateToPropsUtils} from "../../react-utils/ApiResource";
-import {Button} from "reactstrap";
+import {Button, DropdownItem} from "reactstrap";
 import {solotodoStateToPropsUtils} from "../../redux/utils";
 
 class BudgetSelectBestPricesButton extends React.Component {
@@ -16,6 +16,9 @@ class BudgetSelectBestPricesButton extends React.Component {
   };
 
   render() {
+    if (this.props.isMobile) {
+      return <DropdownItem onClick={this.selectBestPrices}>Seleccionar mejores precios</DropdownItem>
+    }
     return <Button color="primary" outline className="m-2" onClick={this.selectBestPrices}>Seleccionar mejores precios</Button>
   }
 }

@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from "react-redux";
 import Router from 'next/router'
 import {toast} from 'react-toastify';
-import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
+import {Button, Modal, ModalHeader, ModalBody, ModalFooter, DropdownItem} from "reactstrap";
 
 import {apiResourceStateToPropsUtils} from "../../react-utils/ApiResource";
 
@@ -33,7 +33,10 @@ class BudgetDeleteButton extends React.Component {
 
   render() {
     return <React.Fragment>
-      <Button color="danger" className="m-2" onClick={this.toggleBudgetDeleteModal}>Eliminar</Button>
+      {this.props.isMobile?
+        <DropdownItem onClick={this.toggleBudgetDeleteModal}> Eliminar </DropdownItem> :
+        <Button color="danger" className="m-2" onClick={this.toggleBudgetDeleteModal}>Eliminar</Button>}
+
       <Modal isOpen={this.state.budgetDeleteModalIsActive} toggle={this.toggleBudgetDeleteModal}>
         <ModalHeader>Eliminar cotización</ModalHeader>
         <ModalBody>

@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from "react-redux";
 import {toast} from "react-toastify";
 import {CopyToClipboard} from "react-copy-to-clipboard";
-import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
+import {Button, Modal, ModalHeader, ModalBody, ModalFooter, DropdownItem} from "reactstrap";
 
 import {apiResourceStateToPropsUtils} from "../../react-utils/ApiResource";
 import Loading from "../Loading";
@@ -38,7 +38,10 @@ class BudgetScreenshotButton extends React.Component {
 
   render() {
     return <React.Fragment>
-      <Button color="primary" outline className="m-2" onClick={this.exportToImage}>Obtener pantallazo</Button>
+      {this.props.isMobile?
+        <DropdownItem onClick={this.exportToImage}> Obtener pantallazo </DropdownItem> :
+        <Button color="primary" outline className="m-2" onClick={this.exportToImage}>Obtener pantallazo</Button>}
+
       <Modal size="lg" id="exported-image-modal" isOpen={this.state.exportedImageModalIsActive} toggle={this.toggleExportedImageModal}>
         <ModalHeader>{this.state.exportedImageUrl? "Pantallazo" : "Obteniendo pantallazo..."}</ModalHeader>
         <ModalBody>
