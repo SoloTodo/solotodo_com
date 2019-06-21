@@ -6,6 +6,7 @@ import {solotodoStateToPropsUtils} from "../../redux/utils";
 import {apiResourceStateToPropsUtils} from "../../react-utils/ApiResource";
 import {Button, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem} from "reactstrap";
 import BudgetEntryDeleteButton from "./BudgetEntryDeleteButton";
+import SoloTodoLeadLink from "../SoloTodoLeadLink";
 
 class BudgetEntryEditRowMobile extends React.Component {
   addProductsMessage = () => {
@@ -22,6 +23,19 @@ class BudgetEntryEditRowMobile extends React.Component {
     const formData = {
       selected_product: newProductUrl,
       selected_store: matchingEntity && matchingEntity.store
+    };
+    this.props.fetchAuth(`budget_entries/${this.props.budgetEntry.id}/`, {
+      method: 'PATCH',
+      body: JSON.stringify(formData)
+    }).then(() => {
+      this.props.budgetUpdate();
+    })
+  };
+
+  handleStoreSelect = e => {
+    const newStoreUrl = e.target.value;
+    const formData = {
+      selected_store: newStoreUrl
     };
     this.props.fetchAuth(`budget_entries/${this.props.budgetEntry.id}/`, {
       method: 'PATCH',
@@ -86,7 +100,7 @@ class BudgetEntryEditRowMobile extends React.Component {
       {pricingEntries.length?
         <div>
           <div className="d-flex pb-2">
-            <div className="mobile-select mr-2">
+            <div className="mobile-select flex-grow mr-2">
               <select
                 className="custom-select"
                 value={selectedProduct || ''}
@@ -99,11 +113,38 @@ class BudgetEntryEditRowMobile extends React.Component {
               </select>
             </div>
             <div>
+              {budgetEntry.selected_product &&
               <Link href={selectedProductHref} as={selectedProductAs}>
                 <Button outline color="info">
-                  Ir
+                  Link
                 </Button>
-              </Link>
+              </Link>}
+            </div>
+          </div>
+          <div className="d-flex pb-2">
+            <div className="mobile-select flex-grow mr-2">
+              {filteredEntities.length?
+              <select
+                className="custom-select"
+                value={this.props.budgetEntry.selected_store || ''}
+                onChange={this.handleStoreSelect}>
+                {filteredEntities.map(entity => {
+                  const store = this.props.stores.filter(store => store.url === entity.store)[0];
+                  return <option key={store.url} value={store.url}>
+                    {this.props.formatCurrency(entity.active_registry.offer_price)} - {store.name}
+                  </option>
+                })}
+              </select> : "Este producto no está disponible actualmente"}
+            </div>
+            <div>
+              {matchingEntity?
+              <SoloTodoLeadLink
+                className="btn btn-outline-warning budget-store-link"
+                product={matchingEntity.product}
+                entity={matchingEntity}
+                storeEntry={this.props.stores.filter(store => store.url === matchingEntity.store)[0]}>
+                Ir a tienda
+              </SoloTodoLeadLink> : ''}
             </div>
           </div>
         </div> :
