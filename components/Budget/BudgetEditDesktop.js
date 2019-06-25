@@ -19,8 +19,23 @@ import BudgetScreenshotButton from "../../components/Budget/BudgetScreenshotButt
 import BudgetDeleteButton from "../../components/Budget/BudgetDeleteButton";
 import BudgetCompatibilityCheckButton from "../../components/Budget/BudgetCompatibilityCheckButton";
 import TopBanner from "../../components/TopBanner";
+import BudgetCompatibilityCheckContainer
+  from "./BudgetCompatibilityCheckContainer";
 
 class BudgetEditDesktop extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      compatibilityIssues: undefined
+    }
+  }
+
+  setCompatibilityIssues = (compatibilityIssues) => {
+    this.setState({
+      compatibilityIssues
+    })
+  };
+
   render() {
     const budget = this.props.budget;
     const budgetCategories = this.props.budgetCategories;
@@ -104,10 +119,13 @@ class BudgetEditDesktop extends React.Component {
             <BudgetScreenshotButton
               budget={budget}/>
             <BudgetCompatibilityCheckButton
-              budget={budget}/>
+              budget={budget}
+              setCompatibilityIssues={this.setCompatibilityIssues}/>
             <BudgetDeleteButton
               budget={budget}
               onBudgetDeleted={this.props.userUpdate}/>
+            <BudgetCompatibilityCheckContainer
+              compatibilityIssues={this.state.compatibilityIssues}/>
           </div>
         </div>
       </div>

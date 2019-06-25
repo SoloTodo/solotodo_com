@@ -14,9 +14,24 @@ import BudgetScreenshotButton from "./BudgetScreenshotButton";
 import BudgetCompatibilityCheckButton from "./BudgetCompatibilityCheckButton";
 import BudgetExportButton from "./BudgetExportButton";
 import BudgetDeleteButton from "./BudgetDeleteButton";
-import BudgetEntryEditRowMobile from "./BudgetEntryEditRowMobile";
+import BudgetEntryEditRow from "./BudgetEntryEditRow";
+import BudgetCompatibilityCheckContainer
+  from "./BudgetCompatibilityCheckContainer";
 
 class BudgetEditMobile extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      compatibilityIssues: undefined
+    }
+  }
+
+  setCompatibilityIssues = (compatibilityIssues) => {
+    this.setState({
+      compatibilityIssues
+    })
+  };
+
   render() {
     const budget = this.props.budget;
     const budgetCategories = this.props.budgetCategories;
@@ -68,6 +83,10 @@ class BudgetEditMobile extends React.Component {
               <BudgetScreenshotButton
                 budget={budget}
                 isMobile={true}/>
+              <BudgetCompatibilityCheckButton
+                budget={budget}
+                setCompatibilityIssues={this.setCompatibilityIssues}
+                isMobile={true}/>
               <DropdownItem divider/>
               <BudgetExportButton
                 budget={budget}
@@ -95,12 +114,15 @@ class BudgetEditMobile extends React.Component {
       </div>
       <div className="content-card mb-3">
         {budget.entries.map(budgetEntry => {
-          return <BudgetEntryEditRowMobile
+          return <BudgetEntryEditRow
             key={budgetEntry.id}
             budgetEntry={budgetEntry}
             pricingEntries={this.props.pricingEntries}
-            budgetUpdate={this.props.budgetUpdate}/>})}
+            budgetUpdate={this.props.budgetUpdate}
+            isMobile={true}/>})}
       </div>
+      <BudgetCompatibilityCheckContainer
+        compatibilityIssues={this.state.compatibilityIssues}/>
     </div>
   }
 }
