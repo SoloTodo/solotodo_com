@@ -39,7 +39,7 @@ class Browse extends React.Component {
       <Head>
         <title>{this.props.category.name} - SoloTodo</title>
         <meta property="og:title" content={`Catálogo de ${this.props.category.name} - SoloTodo`} />
-        <meta name="description" property="og:description" content={`Cotiza y ahorra comparando los precios de todos los ${this.props.category.name.toLowerCase()} de todo el mercado`} />
+        <meta name="description" property="og:description" content={`Cotiza y ahorra comparando los precios de todos los ${this.props.category.name.toLowerCase()} disponibles en el mercado`} />
       </Head>
 
       <div className="container-fluid">

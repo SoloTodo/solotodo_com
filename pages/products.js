@@ -105,9 +105,9 @@ class Products extends React.Component {
         <meta property="og:url" content={`${settings.domain}/products/${product.id}-${product.slug}`} />
         <meta property="og:title" content={product.name} />
         <meta name="description" property="og:description" content={this.props.description} />
-        <meta property="og:image" content={`${endpoint}products/${product.id}/picture/?image_format=JPEG&quality=80&width=1000&height=1000`} key="og_image" />
-        <meta property="og:image:width" content="1000" />
-        <meta property="og:image:height" content="1000" />
+        <meta property="og:image" content={`${endpoint}products/${product.id}/picture/?image_format=JPEG&quality=80&width=1200&height=650`} key="og_image" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="650" />
         <meta property="product:brand" content={product.specs.brand_unicode} />
         <meta property="product:condition" content="new" />
         <meta property="product:retailer_item_id" content={product.id} />
