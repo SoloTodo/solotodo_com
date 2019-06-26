@@ -33,7 +33,7 @@ export const loadFilteredRequiredResources = resources => dispatch => {
 };
 
 export const login = (authToken, state) => dispatch => {
-  setCookie(null, 'authToken', authToken, {});
+  setCookie(null, 'authToken', authToken, {path:"/"});
   return dispatch(initializeUser(authToken, state));
 };
 

@@ -1,0 +1,44 @@
+.budget-name {
+    display: inline-block;
+    padding: 0 10px;
+    border: 1px solid transparent;
+
+}
+
+.budget-name:hover {
+    background-color: white;
+    border: 1px solid #ddd;
+}
+
+#budget-edit-table td {
+    vertical-align: middle;
+}
+
+.export-dropdown {
+    display: inline-block;
+}
+
+.more-budget-options-dropdown{
+    font-size: 1.7rem;
+}
+
+.exported-bbcode{
+    resize: none;
+    width: 100%;
+    height: 120px;
+}
+
+#exported-image-modal {
+    text-align: center;
+}
+
+#exported-image-modal .image-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: inline;
+}
+
+.budget-store-link {
+    width: 100px
+}

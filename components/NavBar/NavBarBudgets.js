@@ -93,9 +93,9 @@ class NavBarBudgets extends React.Component {
             </DropdownItem>
         }
         <DropdownItem divider/>
-        <a href="." className="dropdown-item navbar-dropdown-link" onClick={this.toggleCreateBudgetModal}>
+        <DropdownItem onClick={this.toggleCreateBudgetModal}>
           Crear nueva cotización
-        </a>
+        </DropdownItem>
       </DropdownMenu>
 
       <Modal isOpen={this.state.createBudgetModalIsActive} toggle={this.createBudgetModalHandler}>
