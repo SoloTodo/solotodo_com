@@ -127,3 +127,18 @@ h4 {
 .fa-star, .fa-star-half {
   color: #ffb700;
 }
+
+/* Ratings page */
+
+.rating-container dt {
+  float: left;
+  margin-right: 0.5em;
+}
+
+.no-float {
+  float: none !important;
+}
+
+#navbar-departments .nav-link {
+  color: white;
+}
