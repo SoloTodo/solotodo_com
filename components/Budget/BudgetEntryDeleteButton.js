@@ -39,7 +39,7 @@ class BudgetEntryDeleteButton extends React.Component {
       {this.props.isMobile?
         <React.Fragment>
           {this.props.matchingPricingEntry && <DropdownItem onClick={e => this.removeSelectedProduct(this.props.matchingPricingEntry.product)}>
-            Producto seleccionado
+            Quitar producto seleccionado
           </DropdownItem>}
           <DropdownItem onClick={this.toggleEntryDeleteModal}>
             Quitar componente

@@ -116,33 +116,21 @@ class BudgetEntryEditRow extends React.Component{
 
     const category = this.props.categories.filter(category => category.url === budgetEntry.category)[0];
 
-    return this.props.isMobile?
-      <BudgetEntryEditRowMobile
-        budgetEntry={budgetEntry}
-        category={category}
-        pricingEntries={pricingEntries}
-        matchingPricingEntry={matchingPricingEntry}
-        filteredEntities={filteredEntities}
-        matchingEntity={matchingEntity}
-        selectedProduct={selectedProduct}
-        selectedProductHref={selectedProductHref}
-        selectedProductAs={selectedProductAs}
-        handleProductSelect={this.handleProductSelect}
-        handleStoreSelect={this.handleStoreSelect}
-        budgetUpdate={this.props.budgetUpdate}/> :
-      <BudgetEntryEditRowDesktop
-        budgetEntry={budgetEntry}
-        category={category}
-        pricingEntries={pricingEntries}
-        matchingPricingEntry={matchingPricingEntry}
-        filteredEntities={filteredEntities}
-        matchingEntity={matchingEntity}
-        selectedProduct={selectedProduct}
-        selectedProductHref={selectedProductHref}
-        selectedProductAs={selectedProductAs}
-        handleProductSelect={this.handleProductSelect}
-        handleStoreSelect={this.handleStoreSelect}
-        budgetUpdate={this.props.budgetUpdate}/>
+    const BudgetEntryEditRowComponent = this.props.isMobile? BudgetEntryEditRowMobile : BudgetEntryEditRowDesktop;
+
+    return <BudgetEntryEditRowComponent
+      budgetEntry={budgetEntry}
+      category={category}
+      pricingEntries={pricingEntries}
+      matchingPricingEntry={matchingPricingEntry}
+      filteredEntities={filteredEntities}
+      matchingEntity={matchingEntity}
+      selectedProduct={selectedProduct}
+      selectedProductHref={selectedProductHref}
+      selectedProductAs={selectedProductAs}
+      handleProductSelect={this.handleProductSelect}
+      handleStoreSelect={this.handleStoreSelect}
+      budgetUpdate={this.props.budgetUpdate}/>
   }
 }
 

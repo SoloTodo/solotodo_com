@@ -1,14 +1,10 @@
 import React from 'react'
-import {connect} from "react-redux";
 import Link from "next/link";
-import {Button, Alert} from "reactstrap";
-
-import {apiResourceStateToPropsUtils} from "../../react-utils/ApiResource";
+import {Alert} from "reactstrap";
 
 class BudgetCompatibilityCheckContainer extends React.Component {
-
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.props.compatibilityIssues) {
+    if (this.props.compatibilityIssues && this.props.compatibilityIssues !== prevProps.compatibilityIssues) {
       const scrollToComponent = require("react-scroll-to-component");
       scrollToComponent(this.CompatibilityIssuesContainer, {offset: -60, align: 'top'});
     }
@@ -61,12 +57,4 @@ class BudgetCompatibilityCheckContainer extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
-  const {fetchAuth} = apiResourceStateToPropsUtils(state);
-
-  return {
-    fetchAuth
-  }
-}
-
-export default connect(mapStateToProps)(BudgetCompatibilityCheckContainer);
+export default BudgetCompatibilityCheckContainer;
