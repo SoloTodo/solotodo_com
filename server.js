@@ -52,6 +52,14 @@ app.prepare()
       app.render(req, res, actualPage, queryParams)
     });
 
+    server.get(`/stores/:id/ratings`, (req, res) => {
+      const actualPage = '/store_ratings';
+      const queryParams = {
+        id: req.params.id,
+      };
+      app.render(req, res, actualPage, queryParams)
+    });
+
     server.get(`/budgets/:id`, (req, res) => {
       const actualPage = '/budgets/view';
       const queryParams = {

@@ -1,35 +1,30 @@
 import React from 'react'
-import Router, {withRouter} from "next/router";
 import Link from "next/link";
-import ReactPaginate from 'react-paginate';
-import queryString from 'query-string';
-
-import {convertIdToUrl, fetchJson} from "../../react-utils/utils";
-import {solotodoStateToPropsUtils} from "../../redux/utils";
-import {settings} from "../../settings";
-import TopBanner from "../../components/TopBanner";
-import Loading from "../../components/Loading";
+import Router, {withRouter} from "next/dist/client/router";
+import ReactPaginate from "react-paginate";
+import queryString from "query-string";
 import moment from "moment";
-import ProductRatingStars from "../../components/Product/ProductRatingStars";
 
+import {solotodoStateToPropsUtils} from "../redux/utils";
+import {fetchJson} from "../react-utils/utils";
 
-class ProductRatings extends React.Component {
+import TopBanner from "../components/TopBanner";
+import ProductRatingStars from "../components/Product/ProductRatingStars";
+import Loading from "../components/Loading";
+
+class StoreRatings extends React.Component {
   static async getInitialProps(ctx) {
     const {res, query, reduxStore, asPath} = ctx;
     const reduxState = reduxStore.getState();
 
-    const {user, categories, preferredCountryStores} = solotodoStateToPropsUtils(reduxState);
-    const productId = query.id;
+    const {user, preferredCountryStores} = solotodoStateToPropsUtils(reduxState);
+    const storeId = parseInt(query.id);
+    const store = preferredCountryStores.filter(s => s.id === storeId)[0];;
+
 
     let page = queryString.parse(asPath.split('?')[1])['page'] || 1;
 
-    const productsUrl = settings.apiResourceEndpoints.products;
-
-    let product;
-
-    try {
-      product = await fetchJson(`${productsUrl}${productId}/`);
-    } catch (e) {
+    if (!store) {
       if (res) {
         res.statusCode = 404;
         res.end('Not found');
@@ -37,30 +32,25 @@ class ProductRatings extends React.Component {
       }
     }
 
-    const ratings = await fetchJson(`ratings/?page_size=10&products=${product.id}&page=${page}`);
-    const category = categories.filter(localCategory => localCategory.url === product.category)[0];
+    const ratings = await fetchJson(`ratings/?page_size=10&stores=${store.id}&page=${page}`);
 
     return {
-      product,
+      store,
       ratings,
       page,
-      category,
-      preferredCountryStores,
       user
     }
   }
 
   onPageChange = selection => {
     const nextPage = selection.selected;
-    const nextHref = `/products/ratings?id=${this.props.product.id}&page=${nextPage+1}`;
-    const nextAs = `/products/${this.props.product.id}/ratings?page=${nextPage+1}`;
+    const nextHref = `/store_ratings?id=${this.props.store.id}&page=${nextPage+1}`;
+    const nextAs = `/stores/${this.props.store.id}/ratings?page=${nextPage+1}`;
     Router.push(nextHref, nextAs)
   };
 
   render() {
-    const product = this.props.product;
-    const stores = this.props.preferredCountryStores;
-    const category = this.props.category;
+    const store = this.props.store;
     const userIsStaff = this.props.user && this.props.user.is_staff;
 
     const ratings = this.props.ratings.results;
@@ -73,27 +63,19 @@ class ProductRatings extends React.Component {
         <div className="col-12">
           <div>
             <div className="row">
-              <TopBanner category={category.name}/>
+              <TopBanner category="Any"/>
               <div className="col-12">
                 <nav aria-label="breadcrumb">
                   <ol className="breadcrumb">
-                    <li className="breadcrumb-item">
-                      <Link  href={`/browse?category_slug=${category.slug}`} as={`/${category.slug}`}>
-                        <a>{category.name}</a>
-                      </Link>
-                    </li>
-                    <li className="breadcrumb-item">
-                      <Link href= {`/products/view?id=${product.id}&slug=${product.slug}`} as={`/products/${product.id}-${product.slug}`}>
-                        <a>{product.name}</a>
-                      </Link>
-                    </li>
+                    <li className="breadcrumb-item">Tiendas</li>
+                    <li className="breadcrumb-item">{store.name}</li>
                     <li className="breadcrumb-item active" aria-current="page">Ratings</li>
                   </ol>
                 </nav>
               </div>
 
               <div className="col-12">
-                <h1>Ratings {product.name}</h1>
+                <h1>Ratings {store.name}</h1>
               </div>
 
               <div className="col-12">
@@ -129,12 +111,14 @@ class ProductRatings extends React.Component {
                         {userIsStaff && <dd>{rating.id}</dd>}
                         <dt>Fecha</dt>
                         <dd>{moment(rating.creation_date).format('lll')}</dd>
-                        <dt>Tienda de compra</dt>
-                        <dd>{stores.filter(store => store.url === rating.store)[0].name}</dd>
-                        <dt>Evaluación del producto</dt>
-                        <dd><ProductRatingStars value={rating.product_rating}/></dd>
+                        <dt>Producto comprado</dt>
+                        <dd><Link href={`/products/view?id=${rating.product.id}&slug=${rating.product.slug}`} as={`/products/${rating.product.id}-${rating.product.slug}`}>
+                          <a>{rating.product.name}</a>
+                        </Link></dd>
+                        <dt>Evaluación de la tienda</dt>
+                        <dd><ProductRatingStars value={rating.store_rating}/></dd>
                         <dt className="no-float">Comentarios del producto</dt>
-                        <dd>{rating.product_comments}</dd>
+                        <dd>{rating.store_comments}</dd>
                       </dl>
                     </div>
                   )) :
@@ -173,4 +157,4 @@ class ProductRatings extends React.Component {
   }
 }
 
-export default withRouter(ProductRatings)
+export default withRouter(StoreRatings)
