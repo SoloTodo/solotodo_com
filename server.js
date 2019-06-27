@@ -29,7 +29,7 @@ app.prepare()
     });
 
     server.get(`/products/:id-:slug`, (req, res) => {
-      const actualPage = '/products';
+      const actualPage = '/products/view';
       const queryParams = {
         id: req.params.id,
         slug: req.params.slug };
@@ -37,9 +37,25 @@ app.prepare()
     });
 
     server.get(`/products/:id`, (req, res) => {
-      const actualPage = '/products';
+      const actualPage = '/products/view';
       const queryParams = {
         id: req.params.id
+      };
+      app.render(req, res, actualPage, queryParams)
+    });
+
+    server.get(`/products/:id/ratings`, (req, res) => {
+      const actualPage = '/products/ratings';
+      const queryParams = {
+        id: req.params.id,
+      };
+      app.render(req, res, actualPage, queryParams)
+    });
+
+    server.get(`/stores/:id/ratings`, (req, res) => {
+      const actualPage = '/store_ratings';
+      const queryParams = {
+        id: req.params.id,
       };
       app.render(req, res, actualPage, queryParams)
     });
