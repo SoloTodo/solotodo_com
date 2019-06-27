@@ -165,7 +165,7 @@ class Products extends React.Component {
                       {cheapestEntity && <ProductAlertButton
                         entity={cheapestEntity}
                         product={this.props.product}/>}
-                      <Link href={`/product_ratings/new?product_id=${product.id}`} as={`/products/${product.id}/ratings/new`}>
+                      <Link href={`/products/new_rating?product_id=${product.id}`} as={`/products/${product.id}/ratings/new`}>
                         <a className="ml-2 mt-2 btn btn-info btn-large">
                           ¿Lo compraste? ¡Danos tu opinión!
                         </a>
