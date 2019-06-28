@@ -4,7 +4,7 @@ import Link from "next/link";
 import ReactPaginate from 'react-paginate';
 import queryString from 'query-string';
 
-import {convertIdToUrl, fetchJson} from "../../react-utils/utils";
+import {fetchJson} from "../../react-utils/utils";
 import {solotodoStateToPropsUtils} from "../../redux/utils";
 import {settings} from "../../settings";
 import TopBanner from "../../components/TopBanner";
