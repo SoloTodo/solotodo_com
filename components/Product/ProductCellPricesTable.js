@@ -1,8 +1,6 @@
 import React from 'react'
 import ReactTooltip from 'react-tooltip'
 
-
-import {formatCurrency} from "../../react-utils/next_utils";
 import EntityRefurbishedWarning from "../../react-utils/components/Entity/EntityRefurbishedWarning";
 
 import ProductRatingStars from "./ProductRatingStars";
@@ -62,12 +60,7 @@ class ProductCellPricesTable extends React.Component {
                 entity={entity}
                 storeEntry={group.store}
                 product={entity.product}>
-                {formatCurrency(
-                  entity.active_registry.offer_price,
-                  this.props.preferredCurrency,
-                  this.props.preferredCurrency,
-                  this.props.numberFormat.thousands_separator,
-                  this.props.numberFormat.decimal_separator)}
+                {this.props.formatCurrency(entity.active_registry.offer_price)}
               </SoloTodoLeadLink>
             </td>
             <td className="text-right">
@@ -76,12 +69,7 @@ class ProductCellPricesTable extends React.Component {
                 entity={entity}
                 storeEntry={group.store}
                 product={entity.product}>
-                {formatCurrency(
-                  entity.active_registry.normal_price,
-                  this.props.preferredCurrency,
-                  this.props.preferredCurrency,
-                  this.props.numberFormat.thousands_separator,
-                  this.props.numberFormat.decimal_separator)}
+                {this.props.formatCurrency(entity.active_registry.normal_price)}
               </SoloTodoLeadLink>
             </td>
           </tr>
@@ -122,4 +110,4 @@ class ProductCellPricesTable extends React.Component {
   }
 }
 
-export default ProductCellPricesTable;
+export default ProductCellPricesTable

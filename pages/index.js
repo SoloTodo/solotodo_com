@@ -2,12 +2,16 @@ import React from 'react';
 import Head from "next/head";
 import { connect } from 'react-redux'
 import {withRouter} from 'next/router'
-import { formatCurrency } from "../react-utils/next_utils";
-import { solotodoStateToPropsUtils } from "../redux/utils";
-import ProductsReel from "../components/Product/ProductsReel";
-import TopBanner from "../components/TopBanner";
+
 import {settings} from '../settings';
 import {withSoloTodoTracker} from "../utils";
+import { solotodoStateToPropsUtils } from "../redux/utils";
+
+import ProductsReel from "../components/Product/ProductsReel";
+import TopBanner from "../components/TopBanner";
+import FrontPageBudgets from "../components/Budget/FrontPageBudgets";
+
+
 
 class Index extends React.Component {
   static async getInitialProps({ reduxStore, res }) {
@@ -22,15 +26,8 @@ class Index extends React.Component {
   }
 
   render () {
-    const preferredCurrency = this.props.preferredCurrency;
-
     const ribbonFormatter = value => {
-      const localizedDiscount = formatCurrency(
-        value,
-        this.props.usdCurrency,
-        preferredCurrency,
-        this.props.preferredNumberFormat.thousands_separator,
-        preferredCurrency.decimal_separator);
+      const localizedDiscount = this.props.formatCurrency(value, this.props.usdCurrency);
       return `Bajó ${localizedDiscount}!`;
     };
 
@@ -56,8 +53,10 @@ class Index extends React.Component {
             />
           </div>
 
-          <div className="col-12 mt-3">
-            <h1>Ofertas del día</h1>
+          <div className="col-12 col-sm-12 col-md-10 col-lg-8 col-xl-7">
+            <div className="mt-3">
+              <h1>Ofertas del día</h1>
+            </div>
           </div>
 
           <div className="col-12">
@@ -67,6 +66,11 @@ class Index extends React.Component {
               ordering="discount"
             />
           </div>
+
+          <div className="col-6 mt-3">
+            <h1>Cotizaciones gamer</h1>
+            <FrontPageBudgets/>
+          </div>
         </div>
       </div>
     </React.Fragment>
@@ -74,14 +78,10 @@ class Index extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const {preferredCountry, preferredStores, preferredCurrency, preferredNumberFormat, currencies} = solotodoStateToPropsUtils(state);
+  const {currencies, formatCurrency} = solotodoStateToPropsUtils(state);
 
   return {
-    apiResourceObjects: state.apiResourceObjects,
-    preferredCountry,
-    preferredStores,
-    preferredCurrency,
-    preferredNumberFormat,
+    formatCurrency,
     usdCurrency: currencies.filter(currency => currency.id === settings.usdCurrencyId)[0]
   }
 }

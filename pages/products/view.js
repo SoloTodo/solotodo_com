@@ -4,25 +4,26 @@ import Link from "next/link";
 import Router, {withRouter} from 'next/router'
 import ReactDisqusComments from "react-disqus-comments";
 
-import {fetchJson} from "../react-utils/utils";
-import {filterApiResourceObjectsByType} from "../react-utils/ApiResource";
+import {fetchJson} from "../../react-utils/utils";
+import {filterApiResourceObjectsByType} from "../../react-utils/ApiResource";
 
-import {solotodoStateToPropsUtils} from "../redux/utils";
-import {getProductShortDescription, withSoloTodoTracker} from "../utils";
-import {settings} from "../settings";
-import {endpoint} from "../endpoint";
+import {solotodoStateToPropsUtils} from "../../redux/utils";
+import {getProductShortDescription, withSoloTodoTracker} from "../../utils";
+import {settings} from "../../settings";
+import {endpoint} from "../../endpoint";
 
-import TopBanner from "../components/TopBanner";
-import ProductDetailRating from "../components/Product/ProductDetailRating";
-import ProductPicture from "../components/Product/ProductPicture";
-import ProductVariants from "../components/Product/ProductVariants";
-import ProductTechSpecs from "../react-utils/components/Product/ProductTechSpecs";
-import ProductStaffActionsButton from "../components/Product/ProductStaffActionsButton";
-import ProductPricesTable from "../components/Product/ProductPricesTable"
-import ProductAlertButton from "../components/Product/ProductAlertButton";
-import ProductBenchmarks from "../components/Product/ProductBenchmarks";
-import ProductAlternatives from "../components/Product/ProductAlternatives";
-import PricingHistory from "../components/Product/PricingHistory";
+import TopBanner from "../../components/TopBanner";
+import ProductDetailRating from "../../components/Product/ProductDetailRating";
+import ProductPicture from "../../components/Product/ProductPicture";
+import ProductVariants from "../../components/Product/ProductVariants";
+import ProductTechSpecs from "../../react-utils/components/Product/ProductTechSpecs";
+import ProductStaffActionsButton from "../../components/Product/ProductStaffActionsButton";
+import ProductPricesTable from "../../components/Product/ProductPricesTable"
+import ProductAlertButton from "../../components/Product/ProductAlertButton";
+import ProductBenchmarks from "../../components/Product/ProductBenchmarks";
+import ProductAlternatives from "../../components/Product/ProductAlternatives";
+import PricingHistory from "../../components/Product/PricingHistory";
+import ProductAddToBudgetButton from "../../components/Product/ProductAddToBudgetButton";
 
 
 class Products extends React.Component {
@@ -57,7 +58,7 @@ class Products extends React.Component {
         });
         res.end()
       } else {
-        const href = `/products?id=${productId}&slug=${expectedSlug}`;
+        const href = `/products/view?id=${productId}&slug=${expectedSlug}`;
         const as = `/products/${productId}-${expectedSlug}`;
 
         Router.push(href, as)
@@ -158,10 +159,13 @@ class Products extends React.Component {
                     <div className="d-flex justify-content-end flex-wrap">
                       {this.props.user && this.props.user.is_staff &&
                       <ProductStaffActionsButton product={product}/>}
+                      {category.budget_ordering &&
+                      <ProductAddToBudgetButton
+                        product={product}/>}
                       {cheapestEntity && <ProductAlertButton
                         entity={cheapestEntity}
                         product={this.props.product}/>}
-                      <Link href={`/product_ratings/new?product_id=${product.id}`} as={`/products/${product.id}/ratings/new`}>
+                      <Link href={`/products/new_rating?id=${product.id}`} as={`/products/${product.id}/ratings/new`}>
                         <a className="ml-2 mt-2 btn btn-info btn-large">
                           ¿Lo compraste? ¡Danos tu opinión!
                         </a>
@@ -198,13 +202,6 @@ class Products extends React.Component {
                   </div>
                 </div>
               </div>
-
-              <Link href="/products?id=44843&slug=huawei-p20-lite-32-gb-4-gb-midnight-black" as="/products/44843-huawei-p20-lite-32-gb-4-gb-midnight-black">
-                <a>Celular</a>
-              </Link> <br/>
-              <Link href="/products?id=36165&slug=nintendo-switch-joy-con-neon-negra" as="/products/36165-nintendo-switch-joy-con-neon-negra">
-                <a>Switch</a>
-              </Link>
             </div>
           </div>
         </div>

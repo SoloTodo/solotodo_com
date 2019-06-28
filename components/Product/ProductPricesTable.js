@@ -42,8 +42,6 @@ class ProductPricesTable extends React.Component {
       storesUrl += `&stores=${store.id}`
     }
 
-    console.log(this.props.preferredCountryStores);
-
     fetchJson(`${productsUrl}available_entities/?ids=${product.id}${storesUrl}`).then(availableEntities => {
       const entities = availableEntities.results[0].entities.filter(entity => entity.active_registry.cell_monthly_payment === null);
       this.props.onEntitiesChange(entities);
@@ -60,8 +58,6 @@ class ProductPricesTable extends React.Component {
         return
       }
 
-      console.log(storeUrls);
-
       let storesRatingsUrl = '';
       for (const store of filteredStores) {
         storesRatingsUrl += 'ids=' + store.id + '&';
@@ -71,7 +67,6 @@ class ProductPricesTable extends React.Component {
         for (const storeRating of storesRatings) {
           storeEntries[storeRating.store].rating = storeRating.rating;
         }
-        console.log(entities);
         this.setState({
           entities,
           storeEntries
@@ -92,19 +87,17 @@ class ProductPricesTable extends React.Component {
     return <PricesTableComponent
       entities={this.state.entities}
       storeEntries={this.state.storeEntries}
-      preferredCurrency={this.props.preferredCurrency}
-      numberFormat={this.props.numberFormat}/>
+      formatCurrency={this.props.formatCurrency}/>
   }
 }
 
 function mapStateToProps(state) {
-  const {preferredCountry, preferredCurrency, preferredCountryStores, numberFormat} = solotodoStateToPropsUtils(state);
+  const {preferredCountry, preferredCountryStores, formatCurrency} = solotodoStateToPropsUtils(state);
 
   return {
     preferredCountry,
-    preferredCurrency,
     preferredCountryStores,
-    numberFormat
+    formatCurrency
   }
 }
 

@@ -1,0 +1,21 @@
+#budget-view-table a {
+    color: #264c85;
+}
+
+#budget-view-table a:hover {
+    text-decoration: underline;
+}
+
+#budget-view-table .price-column {
+    min-width: 100px;
+}
+
+#budget-view-table .btn.btn-outline-primary:hover {
+    color: white;
+    text-decoration: none;
+}
+
+.budget-total-price {
+    color: #ca0000;
+    font-size: 22px;
+}

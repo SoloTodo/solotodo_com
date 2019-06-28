@@ -2,7 +2,6 @@ import React from 'react'
 import ReactTooltip from 'react-tooltip'
 import ProductRatingStars from "./ProductRatingStars";
 
-import {formatCurrency} from "../../react-utils/next_utils";
 import SoloTodoLeadLink from '../SoloTodoLeadLink'
 
 class ProductNormalPricesTable extends React.Component {
@@ -49,12 +48,7 @@ class ProductNormalPricesTable extends React.Component {
               entity={entity}
               storeEntry={storeEntry}
               product={entity.product}>
-              {formatCurrency(
-                entity.active_registry.offer_price,
-                this.props.preferredCurrency,
-                this.props.preferredCurrency,
-                this.props.numberFormat.thousands_separator,
-                this.props.numberFormat.decimal_separator)}
+              {this.props.formatCurrency(entity.active_registry.offer_price)}
             </SoloTodoLeadLink>
           </td>
           <td className="text-right">
@@ -63,12 +57,7 @@ class ProductNormalPricesTable extends React.Component {
               entity={entity}
               storeEntry={storeEntry}
               product={entity.product}>
-              {formatCurrency(
-                entity.active_registry.normal_price,
-                this.props.preferredCurrency,
-                this.props.preferredCurrency,
-                this.props.numberFormat.thousands_separator,
-                this.props.numberFormat.decimal_separator)}
+              {this.props.formatCurrency(entity.active_registry.normal_price)}
             </SoloTodoLeadLink>
           </td>
         </tr>

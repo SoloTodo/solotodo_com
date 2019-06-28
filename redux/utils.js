@@ -1,4 +1,6 @@
 import { settings } from '../settings'
+import {formatCurrency} from "../react-utils/next_utils";
+
 import {convertIdToUrl, listToObject} from "../react-utils/utils";
 import {filterApiResourceObjectsByType} from "../react-utils/ApiResource";
 
@@ -23,6 +25,13 @@ export function solotodoStateToPropsUtils(state) {
   const numberFormat = state.apiResourceObjects[preferredCountry.number_format];
   const preferredCurrency = state.apiResourceObjects[preferredCountry.currency];
 
+  const _formatCurrency = (value, valueCurrency) => {
+    if (!valueCurrency) {
+      valueCurrency = preferredCurrency;
+    }
+    return formatCurrency(value, valueCurrency, preferredCurrency, numberFormat.thousands_separator, numberFormat.decimal_separator)
+  };
+
   return {
     user,
     countries,
@@ -35,6 +44,7 @@ export function solotodoStateToPropsUtils(state) {
     countryStores,
     preferredCurrency,
     numberFormat,
+    formatCurrency: _formatCurrency,
     preferredNumberFormat: numberFormat
   };
 }

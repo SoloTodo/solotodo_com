@@ -1,7 +1,7 @@
 import React from "react";
 import {connect} from "react-redux";
 import Link from "next/link";
-import {withRouter} from 'next/router'
+import Router, {withRouter} from 'next/router'
 import onClickOutside from "react-onclickoutside";
 import {
   Collapse,
@@ -85,7 +85,9 @@ class NavBar extends React.Component {
     this.props.fetchAuth('rest-auth/logout/', {
       method: 'POST'
     }).then(res => {
-      this.props.invalidateLocalUser(this.props.state);
+      this.props.invalidateLocalUser(this.props.state).then(() => {
+        Router.push('/')
+      });
     })
   };
 
@@ -169,7 +171,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     invalidateLocalUser: state => {
-      dispatch(initializeUser(null, state))
+      return dispatch(initializeUser(null, state))
     }
   }
 }

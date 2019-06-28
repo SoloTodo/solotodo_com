@@ -12,7 +12,6 @@ import {
 import {chartColors, lightenDarkenColor} from "../../react-utils/colors";
 
 import {settings} from "../../settings";
-import {formatCurrency} from "../../react-utils/next_utils";
 import {solotodoStateToPropsUtils} from "../../redux/utils";
 import Loading from '../Loading'
 import PricingHistoryModal from "./PricingHistoryModal";
@@ -111,13 +110,7 @@ class PricingHistory extends React.Component {
 
       if(historyPoint){
         price = historyPoint[priceField];
-        formattedPrice = formatCurrency(
-          price,
-          this.props.preferredCurrency,
-          null,
-          this.props.numberFormat.thousands_separator,
-          this.props.numberFormat.decimal_separator
-        );
+        formattedPrice = this.props.formatCurrency(price);
       }
 
       pricingHistory.push({
@@ -155,8 +148,8 @@ class PricingHistory extends React.Component {
       this.preparePricingHistoryChartData(this.state.chart.data.offerPrices, 'offerPrice', 'Precio oferta (tarjeta CMR, Cencosud, etc.)')
     ];
 
-    const numberFormat = this.props.numberFormat;
     const preferredCurrency = this.props.preferredCurrency;
+    const formatCurrency = this.props.formatCurrency;
 
     const yAxes = [
       {
@@ -164,13 +157,7 @@ class PricingHistory extends React.Component {
         ticks: {
           callback: function (value, index, values) {
             if (preferredCurrency) {
-              return formatCurrency(
-                value,
-                preferredCurrency,
-                null,
-                numberFormat.thousands_separator,
-                numberFormat.decimal_Separator
-              )
+              return formatCurrency(value)
             } else {
               return value
             }
@@ -278,13 +265,13 @@ class PricingHistory extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const {preferredCountry, preferredCountryStores, preferredCurrency, numberFormat} = solotodoStateToPropsUtils(state);
+  const {preferredCountry, preferredCountryStores, preferredCurrency, formatCurrency} = solotodoStateToPropsUtils(state);
 
   return {
     preferredCountry,
     preferredCountryStores,
     preferredCurrency,
-    numberFormat
+    formatCurrency
   }
 }
 

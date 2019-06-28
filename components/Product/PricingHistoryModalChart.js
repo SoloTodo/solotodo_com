@@ -3,7 +3,6 @@ import {connect} from "react-redux";
 import moment from "moment";
 import {Line} from 'react-chartjs-2';
 
-import {formatCurrency} from "../../react-utils/next_utils";
 import {chartColors, lightenDarkenColor} from "../../react-utils/colors";
 
 import {solotodoStateToPropsUtils} from "../../redux/utils";
@@ -48,13 +47,7 @@ class PricingHistoryModalChart extends React.Component {
 
         if(historyPoint){
           price = historyPoint[priceType];
-          formattedPrice = formatCurrency(
-            price,
-            this.props.preferredCurrency,
-            null,
-            this.props.numberFormat.thousands_separator,
-            this.props.numberFormat.decimal_separator
-          );
+          formattedPrice = this.props.formatCurrency(price);
         }
         storePricingHistory.push({
           price,
@@ -77,8 +70,8 @@ class PricingHistoryModalChart extends React.Component {
     }
 
     const filledChartData = this.preparePricingHistoryChartData();
-    const numberFormat = this.props.numberFormat;
     const preferredCurrency = this.props.preferredCurrency;
+    const formatCurrency = this.props.formatCurrency;
 
     const yAxes = [
       {
@@ -86,12 +79,7 @@ class PricingHistoryModalChart extends React.Component {
         ticks: {
           callback: function (value, index, values) {
             if (preferredCurrency) {
-              return formatCurrency(
-                value,
-                preferredCurrency,
-                null,
-                numberFormat.thousands_separator,
-                numberFormat.decimal_separator);
+              return formatCurrency(value);
             } else {
               return value
             }
@@ -164,11 +152,11 @@ class PricingHistoryModalChart extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const {preferredCurrency, numberFormat, stores} = solotodoStateToPropsUtils(state);
+  const {preferredCurrency, stores, formatCurrency} = solotodoStateToPropsUtils(state);
 
   return {
     preferredCurrency,
-    numberFormat,
+    formatCurrency,
     stores
   }
 }

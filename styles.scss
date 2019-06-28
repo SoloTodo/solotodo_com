@@ -26,6 +26,9 @@ $container-max-widths: (
 @import '~rc-slider/assets/index.css';
 @import '~rc-tooltip/assets/bootstrap.css';
 @import '~react-image-gallery/styles/css/image-gallery.css';
+@import '~react-multi-toggle/style.css';
+@import '~ladda/css/ladda.scss';
+
 @import './components/Footer/Footer.css';
 @import './components/NavBar/NavBar.css';
 @import './components/NavBar/NavBarPreferredStores.css';
@@ -43,6 +46,11 @@ $container-max-widths: (
 @import './components/Category/CategoryBrowse.css';
 @import './components/Category/CategoryBrowseResults.css';
 @import './components/Category/CategoryBrowseResult.css';
+
+@import './components/Budget/FrontPageBudgets.css';
+@import './components/Budget/BudgetViewTable.css';
+@import './components/Budget/BudgetEdit.css';
+
 
 body {
   font-family: 'Roboto', sans-serif;
@@ -120,4 +128,19 @@ h4 {
 
 .fa-star, .fa-star-half {
   color: #ffb700;
+}
+
+/* Ratings page */
+
+.rating-container dt {
+  float: left;
+  margin-right: 0.5em;
+}
+
+.no-float {
+  float: none !important;
+}
+
+#navbar-departments .nav-link {
+  color: white;
 }
