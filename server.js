@@ -84,6 +84,11 @@ app.prepare()
       app.render(req, res, actualPage, queryParams)
     });
 
+    server.get(`/notebook_processors`, (req, res) => {
+      const actualPage = '/notebook_processors';
+      app.render(req, res, actualPage)
+    });
+
     server.get(`/:category_slug`, (req, res) => {
       const actualPage = '/browse';
       const queryParams = { category_slug: req.params.category_slug };
