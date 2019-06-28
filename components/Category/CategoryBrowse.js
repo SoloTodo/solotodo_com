@@ -1,6 +1,5 @@
 import React from 'react'
 import {connect} from "react-redux";
-import Router from 'next/router';
 import { Accordion, AccordionItem } from 'react-sanfona';
 import Menu from 'react-burger-menu/lib/menus/slide'
 
@@ -40,11 +39,7 @@ class CategoryBrowse extends React.Component {
     const processedFormLayout = processFormLayout(formLayout, priceRange, usdCurrency, conversionCurrency, preferredNumberFormat);
     const endpoint = this.apiEndpoint(category, preferredCountryStores);
 
-    // console.log(processedFormLayout);
-
     const {initialFormData, initialSearchResults} = await ApiFormNext.getInitialProps(processedFormLayout, asPath, [endpoint], fetchJson);
-
-    // console.log(initialFormData);
 
     return {
       formLayout: formLayout,
@@ -163,7 +158,6 @@ class CategoryBrowse extends React.Component {
       let fieldsetExpanded = false;
 
       for (const filter of fieldset.filters) {
-        // console.log(filter);
         filter.props.initialValue = initialFormData[filter.props.name].fieldValues;
         filter.props.searchable = !isExtraSmall;
 
@@ -365,12 +359,6 @@ class CategoryBrowse extends React.Component {
 
     const topBanner = <TopBanner category={category.name} /> || null;
 
-    const handleApiFormPushUrl = search => {
-      const href = `/browse?category_slug=${category.slug}&${search}`;
-      const as = `/${category.slug}?${search}`;
-      Router.push(href, as).then(() => window.scrollTo(0, 0));
-    };
-
     return (
       <div className="row">
         <ApiFormNext
@@ -380,7 +368,6 @@ class CategoryBrowse extends React.Component {
           onFormValueChange={this.handleFormValueChange}
           anonymous={true}
           initialFormData={initialFormData}
-          onPushUrl={handleApiFormPushUrl}
         >
           <div id="page-wrap" className="flex-grow">
             {isExtraSmall &&
