@@ -11,10 +11,10 @@ import {getProductShortDescription} from "../../utils";
 
 class ProductShortDescription extends React.Component {
   render() {
-    const firstPrice = this.props.productEntry.prices[0];
+    const firstPrice = this.props.productEntry.metadata.prices_per_currency[0];
     const firstPriceCurrency = this.props.currencies.filter(currency => currency.url === firstPrice.currency)[0];
 
-    const formattedPrice = this.props.formatCurrency(firstPrice.min_offer_price, firstPriceCurrency);
+    const formattedPrice = this.props.formatCurrency(firstPrice.offer_price, firstPriceCurrency);
 
     const product = this.props.productEntry.product;
 
