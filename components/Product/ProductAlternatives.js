@@ -66,7 +66,7 @@ class ProductAlternatives extends React.Component {
       for (const store of preferredStores) {
         url += `stores=${store.id}&`;
       }
-      return `categories/${category.id}/browse/?${url}&page_size=4`
+      return `categories/${category.id}/es_browse/?${url}&page_size=4`
     } else if (mode === BUTTON_MODE) {
       return `${url}`.replace(/_0/gi, '_start').replace(/_1/gi, '_end')
     }

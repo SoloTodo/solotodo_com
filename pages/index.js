@@ -16,8 +16,8 @@ class Index extends React.Component {
     const discountedProductsData = await ProductsReel.getInitialProps(preferredCountryStores, 'discount');
 
     return {
-      popularProducts: popularProductsData['productBuckets'],
-      discountedProducts: discountedProductsData['productBuckets']
+      popularProducts: popularProductsData['productEntries'],
+      discountedProducts: discountedProductsData['productEntries']
     }
   }
 
@@ -36,7 +36,9 @@ class Index extends React.Component {
 
     return <React.Fragment>
       <Head>
-        <title key="title">Cotiza y compara los precios de todas las tiendas - SoloTodo</title>
+        <title>Cotiza y compara los precios de todas las tiendas - SoloTodo</title>
+        <meta property="og:title" content={`Cotiza y ahorra cotizando todos tus productos de tecnología en un sólo lugar - SoloTodo`} />
+        <meta name="description" property="og:description" content={`Ahorra tiempo y dinero cotizando celulares, notebooks, etc. en un sólo lugar y comparando el precio de todas las tiendas.`} />
       </Head>
       <div className="container-fluid">
         <div className="row">
@@ -48,7 +50,7 @@ class Index extends React.Component {
 
           <div className="col-12">
             <ProductsReel
-              initialProductBuckets={this.props.popularProducts}
+              initialProductEntries={this.props.popularProducts}
               ribbonFormatter={value => `${parseInt(value, 10)} visitas`}
               ordering="leads"
             />
@@ -60,7 +62,7 @@ class Index extends React.Component {
 
           <div className="col-12">
             <ProductsReel
-              initialProductBuckets={this.props.discountedProducts}
+              initialProductEntries={this.props.discountedProducts}
               ribbonFormatter={ribbonFormatter}
               ordering="discount"
             />

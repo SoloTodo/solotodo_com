@@ -1,6 +1,5 @@
 import React from 'react'
 import {connect} from "react-redux";
-import Router from 'next/router';
 import { Accordion, AccordionItem } from 'react-sanfona';
 import Menu from 'react-burger-menu/lib/menus/slide'
 
@@ -40,11 +39,7 @@ class CategoryBrowse extends React.Component {
     const processedFormLayout = processFormLayout(formLayout, priceRange, usdCurrency, conversionCurrency, preferredNumberFormat);
     const endpoint = this.apiEndpoint(category, preferredCountryStores);
 
-    // console.log(processedFormLayout);
-
     const {initialFormData, initialSearchResults} = await ApiFormNext.getInitialProps(processedFormLayout, asPath, [endpoint], fetchJson);
-
-    // console.log(initialFormData);
 
     return {
       formLayout: formLayout,
@@ -118,9 +113,9 @@ class CategoryBrowse extends React.Component {
   };
 
   static apiEndpoint = (category, stores) => {
-    const categoryBrowseParams = settings.categoryBrowseParameters;
+    const categoryBrowseParams = settings.categoryBrowseParameters[category.id] || {};
 
-    let endpoint = `categories/${category.id}/browse/?page_size=${settings.categoryBrowseResultsPerPage}`;
+    let endpoint = `categories/${category.id}/es_browse/?page_size=${settings.categoryBrowseResultsPerPage}`;
 
     if (categoryBrowseParams.bucketField) {
       endpoint += '&bucket_field=' + categoryBrowseParams.bucketField
@@ -152,10 +147,9 @@ class CategoryBrowse extends React.Component {
   };
 
   render() {
-    const categoryBrowseParams = settings.categoryBrowseParameters;
-
     const {formLayout, resultsAggs} = this.state;
     const {numberFormat, priceRange, usdCurrency, conversionCurrency, category, stores, initialFormData, isExtraSmall} = this.props;
+    const categoryBrowseParams = settings.categoryBrowseParameters[category.id];
 
     const {filtersLayout, ordering, pagination} = processFormLayout(formLayout, priceRange, usdCurrency, conversionCurrency, numberFormat);
     const apiFormFields = ['ordering', 'page'];
@@ -164,7 +158,6 @@ class CategoryBrowse extends React.Component {
       let fieldsetExpanded = false;
 
       for (const filter of fieldset.filters) {
-        // console.log(filter);
         filter.props.initialValue = initialFormData[filter.props.name].fieldValues;
         filter.props.searchable = !isExtraSmall;
 
@@ -366,12 +359,6 @@ class CategoryBrowse extends React.Component {
 
     const topBanner = <TopBanner category={category.name} /> || null;
 
-    const handleApiFormPushUrl = search => {
-      const href = `/browse?category_slug=${category.slug}&${search}`;
-      const as = `/${category.slug}?${search}`;
-      Router.push(href, as).then(() => window.scrollTo(0, 0));
-    };
-
     return (
       <div className="row">
         <ApiFormNext
@@ -381,7 +368,6 @@ class CategoryBrowse extends React.Component {
           onFormValueChange={this.handleFormValueChange}
           anonymous={true}
           initialFormData={initialFormData}
-          onPushUrl={handleApiFormPushUrl}
         >
           <div id="page-wrap" className="flex-grow">
             {isExtraSmall &&

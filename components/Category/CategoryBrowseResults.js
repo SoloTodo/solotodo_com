@@ -9,11 +9,12 @@ export default class CategoryBrowseResults extends React.Component {
 
     return <div>
       <div className="card-block d-flex justify-content-between flex-wrap category-browse-results">
-        {this.props.results.results.map(product => (
+        {this.props.results.results.map(productEntry => (
             <CategoryBrowseResult
-                key={product.bucket}
-                bucket={product}
+                key={productEntry.bucket}
+                bucket={productEntry}
                 priceFormatter={this.props.priceFormatter}
+                categoryBrowseParams={this.props.categoryBrowseParams}
             />
         ))}
 
