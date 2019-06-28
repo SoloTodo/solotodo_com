@@ -21,6 +21,8 @@ export default class SoloTodoHead extends React.Component {
       <meta name="theme-color" content="#284c6b" />
 
       <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet" />
+      {/*<meta property="og:image" content={`${settings.domain}/static/logo_vertical.png`} key="og_image" />*/}
+      <meta property="og:image" content={`${settings.domain}/static/logo_horizontal.png`} key="og_image" />
 
       <script async src={`https://www.googletagmanager.com/gtag/js?id=${settings.googleAnalyticsId}`}></script>
       <script dangerouslySetInnerHTML={this.setGoogleTags()} />
