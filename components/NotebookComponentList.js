@@ -1,19 +1,25 @@
 import React from 'react'
 import {connect} from "react-redux";
 import Link from "next/link";
+import ReactTable from 'react-table'
 import classNames from 'classnames/bind';
 import ReactTooltip from 'react-tooltip'
 
 import {fetchJson} from "../react-utils/utils";
 import {solotodoStateToPropsUtils} from "../redux/utils";
 import {DropdownItem} from "reactstrap";
+import TopBanner from "./TopBanner";
+import CategoryBrowseResult
+  from "./Category/CategoryBrowseResult";
+import {settings} from "../../solotodo_frontend/src/settings";
 
 
 class NotebookComponentList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      notebooksWithMatchingComponent: undefined
+      notebooksWithMatchingComponent: undefined,
+      page: this.props.initialPage
     }
   }
 
@@ -47,7 +53,7 @@ class NotebookComponentList extends React.Component {
       { id: 'Name',
         accessor: 'unicode',
         Header: 'Nombre',
-        Cell: props => <Link href={`/browse?category_slug=notebooks`} as={`notebooks`}>
+        Cell: props => <Link href={`/browse?category_slug=notebooks&${this.props.browse_path}${props.original.id}`} as={`notebooks?${this.props.browse_path}${props.original.id}`}>
           <a className={classNames('text-primary', {'font-weight-bold': matchingComponent && props.original.id === matchingComponent.id})}>{props.original.unicode}</a>
         </Link>,
         filterable: true,
@@ -72,9 +78,19 @@ class NotebookComponentList extends React.Component {
       className: 'text-right'
     });
 
-    const numberOfSampleProducts = 2;
+    const samplesPerSize = {
+      extraSmall: 1,
+      small: 2,
+      medium: 2,
+      large: 1,
+      extraLarge: 2,
+      infinity: 3,
+    };
+
+    const numberOfSampleProducts = samplesPerSize[this.props.mediaType] || 2;
 
     return <div className="row">
+      <TopBanner category="Notebooks" />
       <div className="col-12">
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb">
@@ -97,21 +113,50 @@ class NotebookComponentList extends React.Component {
 
       <div className="col-12 col-lg-7 col-xl-5">
         <div className="content-card">
-          React Table aquí
+          <ReactTable
+            data={this.props.componentList}
+            page={this.state.page}
+            columns={columns}
+            sortable={false}
+            defaultSorted={[{id: 'Speed', desc: true}]}
+            defaultPageSize={15}
+            className="-striped -highligh"
+            showPageSizeOptions={false}
+            onPageChange={page => this.setState({page})}
+            onFilteredChange={() => this.setState({page: 0})}
+            previousText="Anterior"
+            nextText="Siguiente"
+            pageText="Página"
+            ofText="de"
+            rowsText="filas"/>
         </div>
       </div>
 
-      {
-      }
+      {this.state.notebooksWithMatchingComponent && this.state.notebooksWithMatchingComponent.length &&
+      <div className="col-12 col-lg-5 col-xl-7 mt-3 mt-lg-0">
+        <div className="content-card">
+          <div className="d-flex flex-wrap flex-row justify-content-between">
+            {this.state.notebooksWithMatchingComponent.slice(0, numberOfSampleProducts).map(bucket => (
+              <CategoryBrowseResult key={bucket.bucket} bucket={bucket} websiteId={settings.websiteId} priceFormatter={this.props.formatCurrency} />
+            ))}
+          </div>
+          <Link href={`/browse?category_slug=notebooks&${this.props.browse_path}${matchingComponent.id}`} as={`notebooks?${this.props.browse_path}${matchingComponent.id}`}>
+            <a className="btn btn-xl btn-primary">Ver más notebooks</a>
+
+          </Link>,
+        </div>
+      </div>}
     </div>
   }
 }
 
 function mapStateToProps(state) {
-  const {preferredCountryStores} = solotodoStateToPropsUtils(state);
+  const {preferredCountryStores, formatCurrency} = solotodoStateToPropsUtils(state);
 
   return {
-    preferredCountryStores
+    preferredCountryStores,
+    formatCurrency,
+    mediaType: state.browser.mediaType
   }
 }
 
