@@ -1,0 +1,65 @@
+{
+  "version": 2,
+  "name": "solotodo_com",
+  "alias": [
+    "www.solotodo.com"
+  ],
+  "builds": [{ "src": "package.json", "use": "@now/next" }],
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/",
+      "headers": { "cache-control": "no-cache" }
+    },
+    {
+      "src": "/reset/(?<uid>[^/]+?)/(?<token>[^/]+?)",
+      "dest": "/reset?uid=$uid&token=$token",
+      "headers": { "cache-control": "no-cache" }
+    },
+    {
+      "src": "/products/(?<id>[^/]+?)-(?<slug>[^/]+)",
+      "dest": "/products/view?id=$id&slug=$slug",
+      "headers": { "cache-control": "no-cache" }
+    },
+    {
+      "src": "/products/(?<id>[^/]+?)",
+      "dest": "/products/view?id=$id",
+      "headers": { "cache-control": "no-cache" }
+    },
+    {
+      "src": "/products/(?<id>[^/]+?)/ratings",
+      "dest": "/products/ratings?id=$id",
+      "headers": { "cache-control": "no-cache" }
+    },
+    {
+      "src": "/products/(?<id>[^/]+?)/ratings/new",
+      "dest": "/products/new_rating?id=$id",
+      "headers": { "cache-control": "no-cache" }
+    },
+    {
+      "src": "/stores/(?<id>[^/]+?)/ratings",
+      "dest": "/store_ratings?id=$id",
+      "headers": { "cache-control": "no-cache" }
+    },
+    {
+      "src": "/budgets/(?<id>[^/]+?)",
+      "dest": "/budgets/view?id=$id",
+      "headers": { "cache-control": "no-cache" }
+    },
+    {
+      "src": "/budgets/(?<id>[^/]+?)/edit",
+      "dest": "/budgets/edit?id=$id",
+      "headers": { "cache-control": "no-cache" }
+    },
+    {
+      "src": "(?<categoryslug>[^/]+?)",
+      "dest": "/browse?category_slug=$categoryslug",
+      "headers": { "cache-control": "no-cache" }
+    },
+    {
+      "src": "(?<categoryslug>[^/]+?)",
+      "dest": "/browse?category_slug=$categoryslug",
+      "headers": { "cache-control": "no-cache" }
+    }
+  ]
+}

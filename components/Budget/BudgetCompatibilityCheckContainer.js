@@ -5,8 +5,13 @@ import {Alert} from "reactstrap";
 class BudgetCompatibilityCheckContainer extends React.Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.props.compatibilityIssues && this.props.compatibilityIssues !== prevProps.compatibilityIssues) {
-      const scrollToComponent = require("react-scroll-to-component");
-      scrollToComponent(this.CompatibilityIssuesContainer, {offset: -60, align: 'top'});
+      if (process.browser) {
+        const scrollToComponent = require("react-scroll-to-component");
+        scrollToComponent(this.CompatibilityIssuesContainer, {
+          offset: -60,
+          align: 'top'
+        });
+      }
     }
   }
 
