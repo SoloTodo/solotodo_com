@@ -5,9 +5,8 @@ import ReactTable from 'react-table'
 import classNames from 'classnames/bind';
 import ReactTooltip from 'react-tooltip'
 
-import {fetchJson} from "../react-utils/utils";
+import {areListsEqual, fetchJson} from "../react-utils/utils";
 import {solotodoStateToPropsUtils} from "../redux/utils";
-import {DropdownItem} from "reactstrap";
 import TopBanner from "./TopBanner";
 import CategoryBrowseResult
   from "./Category/CategoryBrowseResult";
@@ -25,6 +24,12 @@ class NotebookComponentList extends React.Component {
 
   componentDidMount() {
     this.componentUpdate()
+  }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+    if (!areListsEqual(this.props.preferredCountryStores,prevProps.preferredCountryStores)) {
+      this.componentUpdate();
+    }
   }
 
   componentUpdate() {

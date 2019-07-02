@@ -2,10 +2,10 @@ import React from 'react'
 import {withRouter} from "next/router";
 import queryString from "query-string";
 import {fetchJson} from "../react-utils/utils";
+import Head from "next/head";
 
 import NotebookComponentList from "../components/NotebookComponentList";
 import {settings} from "../settings";
-import Head from "next/head";
 
 
 class NotebookProcessors extends React.Component {
@@ -38,8 +38,6 @@ class NotebookProcessors extends React.Component {
     return <React.Fragment>
       <Head>
         <title>{this.props.matchingProcessor? `${this.props.matchingProcessor.unicode} - ` : ''} Procesadores de notebooks - SoloTodo</title>
-        <meta property="og:title" content={`Cotiza y ahorra cotizando todos tus productos de tecnología en un sólo lugar - SoloTodo`} />
-        <meta name="description" property="og:description" content={`Ahorra tiempo y dinero cotizando celulares, notebooks, etc. en un sólo lugar y comparando el precio de todas las tiendas.`} />
       </Head>
       <div className="pl-3 pr-3">
         <NotebookComponentList
