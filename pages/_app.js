@@ -80,7 +80,9 @@ class MyApp extends App {
 
         <NProgress
           color="#ce5028"
+          options={{ parent: "#main-container" }}
         />
+
 
         <Provider store={reduxStore}>
           <AppContext.Provider value={{namespace:this.props.namespace}}>
