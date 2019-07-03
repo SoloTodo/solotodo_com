@@ -64,6 +64,25 @@ function navigationReducer(state, action) {
   return state
 }
 
+function categoryBrowsePriceRangesReducer(state, action) {
+  if (typeof state === 'undefined') {
+    return []
+  }
+
+  if (action.type === 'addCategoryBrowsePriceRange') {
+    return [
+      ...state,
+      {
+        storeIds: action.storeIds,
+        categoryId: action.categoryId,
+        priceRange: action.priceRange
+      }
+    ]
+  }
+
+  return state
+}
+
 export const createReducer = isMobile => combineReducers({
   preferredCountryId: preferredCountryIdReducer,
   preferredStoreIds: preferredStoreIdsReducer,
@@ -71,6 +90,7 @@ export const createReducer = isMobile => combineReducers({
   apiResourceObjects: apiResourceObjectsReducer,
   loadedBundle: loadedBundleReducer,
   navigation: navigationReducer,
+  categoryBrowsePriceRanges: categoryBrowsePriceRangesReducer,
   browser: createResponsiveStateReducer({
     extraSmall: 575,
     small: 767,

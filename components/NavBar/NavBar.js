@@ -23,7 +23,7 @@ import NavBarDepartments from "./NavBarDepartments";
 import NavBarSelectedDepartment from "./NavBarSelectedDepartment";
 import NavBarBudgets from "./NavBarBudgets"
 import SearchByKeywords from "./SearchByKeywords"
-import {initializeUser, invalidateLocalUser} from "../../redux/actions";
+import {initializeUser} from "../../redux/actions";
 
 class NavBar extends React.Component {
   constructor(props) {
@@ -108,8 +108,8 @@ class NavBar extends React.Component {
         <NavbarToggler onClick={this.toggle}/>
         <Collapse isOpen={this.state.isOpen} navbar>
           <NavBarDepartments
-              selectedDepartment={this.state.selectedDepartment}
-              onSelectedDepartmentChange={this.handleSelectedDepartmentChange} />
+            selectedDepartment={this.state.selectedDepartment}
+            onSelectedDepartmentChange={this.handleSelectedDepartmentChange} />
 
           <Nav onClick={this.undefSelectedDepartment} navbar>
             <SearchByKeywords/>
@@ -121,27 +121,27 @@ class NavBar extends React.Component {
                 <i className="fas fa-user">&nbsp;</i>
               </DropdownToggle>
               {user ?
-                  <DropdownMenu>
-                    <DropdownItem>
-                      {user.email}
-                    </DropdownItem>
-                    <DropdownItem divider/>
-                    <Link href="/account/password_change">
-                      <a className="dropdown-item navbar-dropdown-link">Cambiar contraseña</a>
-                    </Link>
-                    <a href="." className="dropdown-item navbar-dropdown-link" onClick={this.handleLogout}>Cerrar sesión</a>
-                  </DropdownMenu>
-                  :
-                  <DropdownMenu>
-                    <Link href={`/account/login?next=${encodeURIComponent(this.props.router.asPath)}`}>
-                      <a className="dropdown-item navbar-dropdown-link">
-                        Iniciar sesión
-                      </a>
-                    </Link>
-                    <Link href="/account/signup">
-                      <a className="dropdown-item navbar-dropdown-link">Registrarse</a>
-                    </Link>
-                  </DropdownMenu>
+                <DropdownMenu>
+                  <DropdownItem>
+                    {user.email}
+                  </DropdownItem>
+                  <DropdownItem divider/>
+                  <Link href="/account/password_change">
+                    <a className="dropdown-item navbar-dropdown-link">Cambiar contraseña</a>
+                  </Link>
+                  <a href="." className="dropdown-item navbar-dropdown-link" onClick={this.handleLogout}>Cerrar sesión</a>
+                </DropdownMenu>
+                :
+                <DropdownMenu>
+                  <Link href={`/account/login?next=${encodeURIComponent(this.props.router.asPath)}`}>
+                    <a className="dropdown-item navbar-dropdown-link">
+                      Iniciar sesión
+                    </a>
+                  </Link>
+                  <Link href="/account/signup">
+                    <a className="dropdown-item navbar-dropdown-link">Registrarse</a>
+                  </Link>
+                </DropdownMenu>
               }
             </UncontrolledDropdown>
 
@@ -177,6 +177,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default withRouter(connect(
-    mapStateToProps,
-    mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(onClickOutside(NavBar)));

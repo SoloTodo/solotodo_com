@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import { Accordion, AccordionItem } from 'react-sanfona';
 import Menu from 'react-burger-menu/lib/menus/slide'
 
-import {fetchJson} from "../../react-utils/utils";
+import {convertIdToUrl, fetchJson} from "../../react-utils/utils";
 import ApiFormNext from "../../react-utils/api_forms/ApiFormNext";
 import CategoryBrowseResults from "../../components/Category/CategoryBrowseResults";
 import {formatCurrency} from "../../react-utils/utils";
@@ -21,29 +21,57 @@ import {
   ApiFormDiscreteRangeFieldNext,
   ApiFormContinuousRangeFieldNext
 } from "../../react-utils/api_forms/ApiFormFieldsNext";
+import {filterApiResourceObjectsByType} from "../../react-utils/ApiResource";
 
 
 class CategoryBrowse extends React.Component {
   static async getInitialProps(category, reduxState, asPath) {
     const {preferredCountry, preferredCountryStores, currencies, preferredNumberFormat} = solotodoStateToPropsUtils(reduxState);
 
-    const promises = [
-      getFormLayout(category),
-      getGlobalFieldRanges(category, preferredCountryStores)
-    ];
+    const formLayouts = filterApiResourceObjectsByType(reduxState.apiResourceObjects, 'category_specs_form_layouts');
+    const websiteUrl = convertIdToUrl(settings.websiteId, 'websites');
 
-    const [formLayout, priceRange] = await Promise.all(promises);
+    const promises = [];
+
+    let formLayout = formLayouts.filter(formLayout => formLayout.category === category.url && formLayout.website === websiteUrl)[0];
+
+    if (formLayout) {
+      promises.push(formLayout)
+    } else {
+      promises.push(getFormLayout(category))
+    }
+
+    const storeIds = preferredCountryStores.map(store => store.id);
+    let priceRange = reduxState.categoryBrowsePriceRanges.filter(
+      localPriceRange => localPriceRange.categoryId === category.id &&
+        JSON.stringify(localPriceRange.storeIds) === JSON.stringify(storeIds)
+    )[0];
+
+    if (priceRange) {
+      promises.push(priceRange)
+    } else {
+      promises.push(getGlobalFieldRanges(category, preferredCountryStores))
+    }
+    const result = await Promise.all(promises);
+
+    if (!formLayout) {
+      formLayout = result[0]
+    }
+
+    if (!priceRange) {
+      priceRange = result[1]
+    }
 
     const usdCurrency = currencies.filter(currency => currency.id === settings.usdCurrencyId)[0];
-    const conversionCurrency = currencies.filter(currency => currency.url === preferredCountry.currencyUrl)[0];
+    const conversionCurrency = currencies.filter(currency => currency.url === preferredCountry.currency)[0];
     const processedFormLayout = processFormLayout(formLayout, priceRange, usdCurrency, conversionCurrency, preferredNumberFormat);
     const endpoint = this.apiEndpoint(category, preferredCountryStores);
 
     const {initialFormData, initialSearchResults} = await ApiFormNext.getInitialProps(processedFormLayout, asPath, [endpoint], fetchJson);
 
     return {
-      formLayout: formLayout,
-      priceRange: priceRange,
+      formLayout,
+      priceRange,
       initialFormData,
       usdCurrency,
       conversionCurrency,
@@ -53,21 +81,29 @@ class CategoryBrowse extends React.Component {
 
   constructor(props) {
     super(props);
+
     this.state = {}
   }
 
-  static getDerivedStateFromProps(props, state) {
-    if (!state.formLayout || state.formLayout.id !== props.formLayout.id) {
-      return {
-        ...state,
-        formLayout: props.formLayout,
-        formValues: {},
-        isMobileMenuOpen: false,
-        ...props.initialProductsPageState
-      }
+  componentDidUpdate(prevProps) {
+    if (!this.props.existingFormLayout) {
+      this.props.saveFormLayout(this.props.formLayout);
     }
 
-    return state
+    if (!this.props.existingPriceRange) {
+      const storeIds = this.props.stores.map(store => store.id);
+      this.props.saveCategoryBrowsePriceRange(this.props.category, storeIds, this.props.priceRange);
+    }
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    return {
+      ...state,
+      formLayout: props.formLayout,
+      isMobileMenuOpen: false,
+      ...props.initialProductsPageState,
+      formValues: {}
+    };
   }
 
   handleFormValueChange = formValues => {
@@ -368,8 +404,9 @@ class CategoryBrowse extends React.Component {
           onFormValueChange={this.handleFormValueChange}
           anonymous={true}
           initialFormData={initialFormData}
+          onPushUrl={() => {window.scrollTo(0, 0)}}
         >
-          <div id="page-wrap" className="flex-grow">
+          <div id="page-wrap" className="flex-grow w-100">
             {isExtraSmall &&
             <Menu pageWrapId="page-wrap"
                   outerContainerId="outer-container"
@@ -458,17 +495,48 @@ class CategoryBrowse extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   const {preferredCountryStores, preferredNumberFormat} = solotodoStateToPropsUtils(state);
+
+  const formLayouts = filterApiResourceObjectsByType(state.apiResourceObjects, 'category_specs_form_layouts');
+  const websiteUrl = convertIdToUrl(settings.websiteId, 'websites');
+  const existingFormLayout = formLayouts.filter(formLayout => formLayout.category === ownProps.category.url && formLayout.website === websiteUrl)[0];
+
+  const storeIds = preferredCountryStores.map(store => store.id);
+  const existingPriceRange = state.categoryBrowsePriceRanges.filter(
+    localPriceRange => localPriceRange.categoryId === ownProps.category.id &&
+      JSON.stringify(localPriceRange.storeIds) === JSON.stringify(storeIds)
+  )[0];
 
   return {
     isExtraSmall: state.browser.is.extraSmall,
     stores: preferredCountryStores,
-    numberFormat: preferredNumberFormat
+    numberFormat: preferredNumberFormat,
+    existingFormLayout,
+    existingPriceRange
   }
 }
 
-export default connect(mapStateToProps)(CategoryBrowse);
+function mapDispatchToProps(dispatch) {
+  return {
+    saveFormLayout: formLayout => {
+      return dispatch({
+        type: 'updateApiResourceObject',
+        apiResourceObject: formLayout
+      })
+    },
+    saveCategoryBrowsePriceRange: (category, storeIds, priceRange) => {
+      return dispatch({
+        type: 'addCategoryBrowsePriceRange',
+        categoryId: category.id,
+        storeIds: storeIds,
+        priceRange: priceRange,
+      })
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryBrowse);
 
 const getFormLayout = async (category) => {
   // Obtain layout of the form fields
@@ -655,6 +723,10 @@ const processFormLayout = (formLayout, priceRange, usdCurrency, conversionCurren
     {
       id: 'leads',
       name: 'Popularidad'
+    },
+    {
+      id: 'discount',
+      name: 'Descuento'
     }
   ];
 

@@ -18,6 +18,7 @@ import Footer from "../components/Footer/Footer";
 import SoloTodoHead from "../components/SoloTodoHead";
 import {solotodoStateToPropsUtils} from "../redux/utils";
 import {DFPSlotsProvider} from "react-dfp";
+import NProgress from "next-nprogress/component";
 
 // Import theme here because ajax-loader.gif import breaks otherwise
 import 'slick-carousel/slick/slick-theme.scss';
@@ -76,6 +77,12 @@ class MyApp extends App {
           pauseOnHover
           className="toast-container"
         />
+
+        <NProgress
+          color="#ce5028"
+          options={{ parent: "#main-container" }}
+        />
+
 
         <Provider store={reduxStore}>
           <AppContext.Provider value={{namespace:this.props.namespace}}>
