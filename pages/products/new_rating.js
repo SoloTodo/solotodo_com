@@ -11,6 +11,7 @@ import TopBanner from "../../components/TopBanner";
 import RatingStarsEditable from "../../components/RatingStarsEditable";
 import {apiResourceStateToPropsUtils} from "../../react-utils/ApiResource";
 import {connect} from "react-redux";
+import Head from "next/head";
 
 
 
@@ -129,6 +130,9 @@ class NewProductRating extends React.Component {
     const category = this.props.category;
 
     return <React.Fragment>
+      <Head>
+        <title key="title">{product.name} - Nuevo rating - SoloTodo</title>
+      </Head>
       <div className="container-fluid">
         <div className="row">
           <div className="col-12">
