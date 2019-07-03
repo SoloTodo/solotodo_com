@@ -52,7 +52,7 @@ class ProductCellPricesTable extends React.Component {
                 product={entity.product}>
                 {entity.cell_plan ? entity.cell_plan.name : "Liberado"}
               </SoloTodoLeadLink>
-              <EntityRefurbishedWarning entity={entity} />
+              <EntityRefurbishedWarning entity={entity}/>
             </td>
             <td className="text-right">
               <SoloTodoLeadLink

@@ -94,10 +94,6 @@ app.prepare()
       app.render(req, res, actualPage)
     });
 
-    server.get(`/video_card_gpus`, (req, res) => {
-      const actualPage = '/video_card_gpus';
-      app.render(req, res, actualPage)
-    });
 
     server.get(`/video_card_gpus/:id`, (req, res) => {
       const actualPage = '/video_card_gpus';

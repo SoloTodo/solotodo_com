@@ -2,6 +2,8 @@ import React from 'react'
 import ReactTooltip from 'react-tooltip'
 import ProductRatingStars from "./ProductRatingStars";
 
+import EntityRefurbishedWarning from "../../react-utils/components/Entity/EntityRefurbishedWarning";
+
 import SoloTodoLeadLink from '../SoloTodoLeadLink'
 
 class ProductNormalPricesTable extends React.Component {
@@ -34,7 +36,14 @@ class ProductNormalPricesTable extends React.Component {
         const storeEntry = this.props.storeEntries[entity.store];
         return <tr key={entity.id}>
           <td>
-            {storeEntry.name}
+            <SoloTodoLeadLink
+              className="normal-table-product-link"
+              entity={entity}
+              storeEntry={storeEntry}
+              product={entity.product}>
+              {storeEntry.name}
+            </SoloTodoLeadLink>
+            <EntityRefurbishedWarning entity={entity}/>
           </td>
           <td>
             <ProductRatingStars
