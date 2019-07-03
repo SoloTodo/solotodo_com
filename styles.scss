@@ -28,6 +28,7 @@ $container-max-widths: (
 @import '~react-image-gallery/styles/css/image-gallery.css';
 @import '~react-multi-toggle/style.css';
 @import '~ladda/css/ladda.scss';
+@import '~react-table/react-table.css';
 
 @import './components/Footer/Footer.css';
 @import './components/NavBar/NavBar.css';
@@ -143,4 +144,15 @@ h4 {
 
 #navbar-departments .nav-link {
   color: white;
+}
+
+/* Video Card Gpu Detail */
+
+.video_card_gpu_specs dt {
+    float: left;
+    margin-right: 0.5em;
+}
+
+.video_card_gpu_specs h2 {
+    margin-bottom: 20px;
 }
