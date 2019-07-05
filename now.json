@@ -67,6 +67,11 @@
       "headers": { "cache-control": "no-cache" }
     },
     {
+      "src": "/search",
+      "dest": "/search?search=$keyword",
+      "headers": { "cache-control": "no-cache" }
+    },
+    {
       "src": "(?<categoryslug>[^/]+?)",
       "dest": "/browse?category_slug=$categoryslug",
       "headers": { "cache-control": "no-cache" }
