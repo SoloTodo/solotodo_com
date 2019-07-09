@@ -66,10 +66,11 @@ class Index extends React.Component {
               ordering="discount"
             />
           </div>
-
-          <div className="col-6 mt-3">
-            <h1>Cotizaciones gamer</h1>
-            <FrontPageBudgets/>
+          <div className="col-12 col-sm-12 col-md-10 col-lg-8 col-xl-7">
+            <div className="mt-3">
+              <h1>Cotizaciones gamer</h1>
+              <FrontPageBudgets/>
+            </div>
           </div>
         </div>
       </div>

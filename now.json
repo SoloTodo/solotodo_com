@@ -17,7 +17,7 @@
       "headers": { "cache-control": "no-cache" }
     },
     {
-      "src": "/products/(?<id>[^/]+?)-(?<slug>[^/]+)",
+      "src": "/products/(?<id>[^/]+?)-(?<slug>[^/]*)",
       "dest": "/products/view?id=$id&slug=$slug",
       "headers": { "cache-control": "no-cache" }
     },
