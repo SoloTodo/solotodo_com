@@ -25,6 +25,14 @@ class ProductSearch extends React.Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if(this.state.formValues.search !== prevState.formValues.search){
+      this.setState({
+        categoryChoices: undefined
+      })
+    }
+  }
+
   handleFormValueChange = formValues => {
     this.setState({formValues})
   };
@@ -99,45 +107,76 @@ class ProductSearch extends React.Component {
           <div className="col-12">
             <div>
               <div className="row">
-                <TopBanner category="Any"/>
-                <div className="col-12">
-                  <ApiFormNext
-                    endpoints={[endpoint]}
-                    fields={['page', 'search', 'categories', 'ordering']}
-                    onResultsChange={this.setProductsPage}
-                    onFormValueChange={this.handleFormValueChange}>
+                <ApiFormNext
+                  endpoints={[endpoint]}
+                  fields={['page', 'search', 'categories', 'ordering']}
+                  onResultsChange={this.setProductsPage}
+                  onFormValueChange={this.handleFormValueChange}>
+                  {this.props.isExtraSmall &&
+                  <div className="pt-2 pb-2" id="mobile-filter-and-ordering">
                     <div className="row">
+                      <div className="col-6 search-filters-mobile pl-4">
+                        <span className="category-browse-result-count mb-1">Categoría</span>
+                        <ApiFormChoiceFieldNext
+                          placeholder="Todas"
+                          name="categories"
+                          choices={this.state.categoryChoices? this.state.categoryChoices : []}
+                          value={this.state.formValues.category}/>
+                      </div>
+                      <div className="col-6 search-filters-mobile pr-4">
+                        <span className="category-browse-result-count mb-1">Ordenar por</span>
+                        <ApiFormChoiceFieldNext
+                          name="ordering"
+                          choices={choices}
+                          value={this.state.formValues.ordering}
+                          required={true}/>
+                      </div>
+                    </div>
+                  </div>}
+                  {this.props.isExtraSmall?
+                    <div className="mobile-top-banner-container">
+                      <TopBanner category="Any"/>
+                    </div>:
+                    <TopBanner category="Any"/>}
+                  <div id="filters-and-results" className="col-12 pt-1">
+                    <div className="row" >
                       <div className="col-12">
-                        <h1>Resultados de la búsqueda</h1>
-                        <p><span className="font-weight-bold">Palabras clave:</span> {this.state.formValues.search}</p>
                         <ApiFormTextFieldNext
                           name="search"
                           placeholder="Palabras clave"
                           value={this.state.formValues.search}
                           hidden={true}/>
                         <div className="content-card">
+
+                          {this.props.isExtraSmall ||
                           <div className="d-flex justify-content-between mb-2">
-                            <div className="d-flex flex-column align-items-start flex-grow category-browse-ordering-container mr-2">
-                              <span className="category-browse-result-count mb-1 ml-2">Categoría</span>
-                              <div className="flex-grow ml-2">
-                                <ApiFormChoiceFieldNext
-                                  name="categories"
-                                  choices={this.state.categoryChoices? this.state.categoryChoices : []}
-                                  multiple={true}
-                                  value={this.state.formValues.category}/>
+                            <div className="d-flex flex-column flex-grow align-items-start product-search-title">
+                              <h1>Resultados de la búsqueda</h1>
+                              <p><span className="font-weight-bold">Palabras clave:</span> {this.state.formValues.search}</p>
+                            </div>
+                            <div className="d-flex justify-content-end flex-wrap">
+                              <div>
+                                <span className="category-browse-result-count mb-1 ml-2">Categoría</span>
+                                <div className="flex-grow ml-2 search-filters-desktop">
+                                  <ApiFormChoiceFieldNext
+                                    name="categories"
+                                    placeholder="Todas"
+                                    choices={this.state.categoryChoices? this.state.categoryChoices : []}
+                                    value={this.state.formValues.category}/>
+                                </div>
+                              </div>
+                              <div>
+                                <span className="category-browse-result-count mb-1 ml-2">Ordenar por</span>
+                                <div className="flex-grow ml-2 search-filters-desktop">
+                                  <ApiFormChoiceFieldNext
+                                    name="ordering"
+                                    choices={choices}
+                                    value={this.state.formValues.ordering}
+                                    required={true}/>
+                                </div>
                               </div>
                             </div>
-                            <div className="d-flex flex-column align-items-end flex-grow category-browse-ordering-container mr-2">
-                              <span className="category-browse-result-count mb-1">Ordenar por</span>
-                              <div className="flex-grow ml-2">
-                                <ApiFormChoiceFieldNext
-                                  name="ordering"
-                                  choices={choices}
-                                  value={this.state.formValues.ordering}
-                                  required={true}/>
-                              </div>
-                            </div>
-                          </div>
+                          </div>}
                           {products?
                             <CategoryBrowseResults
                               results={products}
@@ -151,13 +190,13 @@ class ProductSearch extends React.Component {
                             page={this.state.formValues.page}
                             pageSize={{id: settings.categoryBrowseResultsPerPage}}
                             resultCount={this.state.productsPage && this.state.productsPage.count}
-                            previousLabel="Anterior"
-                            nextLabel="Siguiente"/>
+                            previousLabel={this.props.isExtraSmall? "Ant" : "Anterior"}
+                            nextLabel={this.props.isExtraSmall? "Sig" : "Siguiente"}/>
                         </div>
                       </div>
                     </div>
-                  </ApiFormNext>
-                </div>
+                  </div>
+                </ApiFormNext>
               </div>
             </div>
           </div>
@@ -171,6 +210,7 @@ function mapStateToProps(state) {
   const {categories, preferredCountryStores, preferredCountry, formatCurrency} = solotodoStateToPropsUtils(state);
 
   return {
+    isExtraSmall: state.browser.is.extraSmall,
     preferredCountry,
     preferredCountryStores,
     formatCurrency,

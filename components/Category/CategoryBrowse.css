@@ -8,8 +8,12 @@
     font-weight: 300;
 }
 
-#ordering {
+.search-filters-desktop #ordering {
     width: 200px;
+}
+
+.search-filters-mobile #ordering {
+    width: 100%;
 }
 
 .category-browse-pagination ul {
