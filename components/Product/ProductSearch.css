@@ -1,0 +1,11 @@
+.search-filters-desktop #categories {
+    width: 200px;
+}
+
+.search-filters-mobile #categories {
+  width: 100%;
+}
+
+.product-search-title {
+  min-width: 330px;
+}
