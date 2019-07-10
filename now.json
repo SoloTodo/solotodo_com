@@ -2,7 +2,7 @@
   "version": 2,
   "name": "solotodo_com",
   "alias": [
-    "www.solotodo.com"
+    "beta.solotodo.com"
   ],
   "builds": [{ "src": "package.json", "use": "@now/next" }],
   "routes": [
