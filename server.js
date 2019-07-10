@@ -84,6 +84,26 @@ app.prepare()
       app.render(req, res, actualPage, queryParams)
     });
 
+    server.get(`/notebook_processors`, (req, res) => {
+      const actualPage = '/notebook_processors';
+      app.render(req, res, actualPage)
+    });
+
+    server.get(`/notebook_video_cards`, (req, res) => {
+      const actualPage = '/notebook_video_cards';
+      app.render(req, res, actualPage)
+    });
+
+
+    server.get(`/video_card_gpus/:id`, (req, res) => {
+      const actualPage = '/video_card_gpus';
+      app.render(req, res, actualPage);
+      const queryParams = {
+        id: req.params.id
+      };
+      app.render(req, res, actualPage, queryParams)
+    });
+
     server.get(`/:category_slug`, (req, res) => {
       const actualPage = '/browse';
       const queryParams = { category_slug: req.params.category_slug };

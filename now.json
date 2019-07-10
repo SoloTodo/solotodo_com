@@ -17,7 +17,7 @@
       "headers": { "cache-control": "no-cache" }
     },
     {
-      "src": "/products/(?<id>[^/]+?)-(?<slug>[^/]+)",
+      "src": "/products/(?<id>[^/]+?)-(?<slug>[^/]*)",
       "dest": "/products/view?id=$id&slug=$slug",
       "headers": { "cache-control": "no-cache" }
     },
@@ -52,8 +52,23 @@
       "headers": { "cache-control": "no-cache" }
     },
     {
-      "src": "(?<categoryslug>[^/]+?)",
-      "dest": "/browse?category_slug=$categoryslug",
+      "src": "/notebook_processors",
+      "dest": "/notebook_processors",
+      "headers": { "cache-control": "no-cache" }
+    },
+    {
+      "src": "/notebook_video_cards",
+      "dest": "/notebook_video_cards",
+      "headers": { "cache-control": "no-cache" }
+    },
+    {
+      "src": "/video_card_gpus/(?<id>[^/]+?)",
+      "dest": "/video_card_gpus?id=$id",
+      "headers": { "cache-control": "no-cache" }
+    },
+    {
+      "src": "/search",
+      "dest": "/search?search=$keyword",
       "headers": { "cache-control": "no-cache" }
     },
     {

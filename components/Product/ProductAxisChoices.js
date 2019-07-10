@@ -79,7 +79,7 @@ class AxisChoices extends React.Component {
           } else if (choice.redirectUrlData) {
             return <Link
               key={choice.labelValue}
-              href={`/products?id=${choice.redirectUrlData.id}&slug=${choice.redirectUrlData.slug}`}
+              href={`/products/view?id=${choice.redirectUrlData.id}&slug=${choice.redirectUrlData.slug}`}
               as={`/products/${choice.redirectUrlData.id}-${choice.redirectUrlData.slug}`}>
               <button type="button" className="btn btn-outline-secondary btn-sm">{choice.labelValue}</button>
             </Link>
@@ -100,7 +100,7 @@ class AxisChoices extends React.Component {
                       {choice.matchingAxisPricingEntries.map(pricingEntry => (
                         <p key={pricingEntry.product.id}>
                           <Link
-                            href={`/products?id=${pricingEntry.product.id}&slug=${pricingEntry.product.slug}`}
+                            href={`/products/view?id=${pricingEntry.product.id}&slug=${pricingEntry.product.slug}`}
                             as={`/products/${pricingEntry.product.id}-${pricingEntry.product.slug}`}>
                             <a>{pricingEntry.product.name}</a>
                           </Link>

@@ -14,6 +14,7 @@ import {solotodoStateToPropsUtils} from "../../redux/utils";
 import Loading from "../../components/Loading";
 import BudgetEditDesktop from "../../components/Budget/BudgetEditDesktop";
 import BudgetEditMobile from "../../components/Budget/BudgetEditMobile";
+import Head from "next/head";
 
 class BudgetEdit extends React.Component {
   constructor(props) {
@@ -183,12 +184,17 @@ class BudgetEdit extends React.Component {
         userUpdate={this.userUpdate}/>
     }
 
-    return <BudgetEditDesktop
-      budget={budget}
-      budgetCategories={budgetCategories}
-      pricingEntries={this.state.pricingEntries}
-      budgetUpdate={this.budgetUpdate}
-      userUpdate={this.userUpdate}/>
+    return <React.Fragment>
+      <Head>
+        <title key="title">{budget.name} - SoloTodo</title>
+      </Head>
+      <BudgetEditDesktop
+        budget={budget}
+        budgetCategories={budgetCategories}
+        pricingEntries={this.state.pricingEntries}
+        budgetUpdate={this.budgetUpdate}
+        userUpdate={this.userUpdate}/>
+    </React.Fragment>
   }
 }
 
