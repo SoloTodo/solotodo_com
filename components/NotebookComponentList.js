@@ -10,7 +10,7 @@ import {solotodoStateToPropsUtils} from "../redux/utils";
 import TopBanner from "./TopBanner";
 import CategoryBrowseResult
   from "./Category/CategoryBrowseResult";
-import {settings} from "../../solotodo_frontend/src/settings";
+import {settings} from "../settings";
 
 
 class NotebookComponentList extends React.Component {

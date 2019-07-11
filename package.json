@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "node server.js",
     "build": "next build",
-    "start": "NODE_ENV=production node server.js"
+    "start": "NODE_ENV=production node server.js",
+    "deploy": "now --target production"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.7.2",
