@@ -45,7 +45,7 @@ class BudgetNameEditModal extends React.Component {
         <DropdownItem onClick={this.toggleNameEditModal}>Editar nombre</DropdownItem> :
         <h1 className="budget-name" onClick={this.toggleNameEditModal}>{this.props.budget.name}</h1>}
       <Modal isOpen={this.state.nameEditModalIsActive} toggle={this.toggleNameEditModal}>
-        <ModalHeader>Cambiar nombre</ModalHeader>
+        <ModalHeader toggle={this.toggleNameEditModal}>Cambiar nombre</ModalHeader>
         <ModalBody>
           <div className="form-group">
             <label htmlFor="budgetName">Nombre:</label>

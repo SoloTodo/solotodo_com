@@ -9,6 +9,7 @@ import {
 import Loading from "../Loading";
 import {apiResourceStateToPropsUtils} from "../../react-utils/ApiResource";
 import {connect} from "react-redux";
+import ModalHeader from "reactstrap/es/ModalHeader";
 
 class BudgetExportButton extends React.Component {
   constructor(props) {
@@ -62,6 +63,7 @@ class BudgetExportButton extends React.Component {
         </UncontrolledDropdown>}
 
       <Modal isOpen={this.state.exportedBBCodeModalIsActive} toggle={this.toggleExportedBBCodeModal}>
+        <ModalHeader toggle={this.toggleExportedBBCodeModal}>Código para foro CHW</ModalHeader>
         <ModalBody>
           {this.state.bbCode?
             <div>

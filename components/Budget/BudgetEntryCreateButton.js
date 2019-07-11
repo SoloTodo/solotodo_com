@@ -54,7 +54,7 @@ class BudgetEntryCreateButton extends React.Component {
         <DropdownItem onClick={this.toggleEntryCreateModal}>Agregar Componente</DropdownItem> :
         <Button color="primary" outline className="m-2" onClick={this.toggleEntryCreateModal}>Agregar componente</Button>}
       <Modal isOpen={this.state.entryCreateModalIsActive} toggle={this.toggleEntryCreateModal}>
-        <ModalHeader>Agregar componente</ModalHeader>
+        <ModalHeader toggle={this.toggleEntryCreateModal}>Agregar componente</ModalHeader>
         <ModalBody>
           <div className="form-group">
             <label htmlFor="category-select">Component</label>

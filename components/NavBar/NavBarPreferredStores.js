@@ -97,7 +97,7 @@ class NavBarPreferredStores extends React.Component {
       </NavLink>
       <Modal id="preferred_stores" isOpen={this.state.preferredStoresModalIsActive}
              toggle={this.togglePreferredStoresModal} size="lg">
-        <ModalHeader>
+        <ModalHeader toggle={this.togglePreferredStoresModal}>
           Tiendas seleccionadas
           <div className="mt-2">
             <Button color="info" onClick={this.selectAllStores}>Todas</Button>

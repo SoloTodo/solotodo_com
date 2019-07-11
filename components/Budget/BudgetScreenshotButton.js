@@ -43,7 +43,7 @@ class BudgetScreenshotButton extends React.Component {
         <Button color="primary" outline className="m-2" onClick={this.exportToImage}>Obtener pantallazo</Button>}
 
       <Modal size="lg" id="exported-image-modal" isOpen={this.state.exportedImageModalIsActive} toggle={this.toggleExportedImageModal}>
-        <ModalHeader>{this.state.exportedImageUrl? "Pantallazo" : "Obteniendo pantallazo..."}</ModalHeader>
+        <ModalHeader toggle={this.toggleExportedImageModal}>{this.state.exportedImageUrl? "Pantallazo" : "Obteniendo pantallazo..."}</ModalHeader>
         <ModalBody>
           {this.state.exportedImageUrl?
             <div className="row">

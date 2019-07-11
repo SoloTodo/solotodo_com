@@ -90,12 +90,12 @@ class PricingHistoryModal extends React.Component {
     return <React.Fragment>
       <button type="button" className="btn btn-primary btn-sm form-control" onClick={this.pricingModalToggle}>Ver detalle</button>
       <Modal id="pricing-modal" size="xl" centered isOpen={this.state.pricingModalIsActive} toggle={this.pricingModalToggle}>
-        <ModalHeader>Precio histórico por tienda</ModalHeader>
+        <ModalHeader toggle={this.pricingModalToggle}>Precio histórico por tienda</ModalHeader>
         <ModalBody>
           <div className="form-inline prices-chart-container mb-3">
-            <div className="form-group row ml-2">
-              <label className="col-form-label" htmlFor="start-date">Desde</label>
-              <div className="col-sm-6">
+            <div className="form-group col-xs-6">
+              <label className="col-form-label pl-2" htmlFor="start-date">Desde</label>
+              <div className="pl-2">
                 <input
                   type="date"
                   name="startDate"
@@ -105,9 +105,9 @@ class PricingHistoryModal extends React.Component {
                   onChange={this.handleDateChange}/>
               </div>
             </div>
-            <div className="form-group row ml-3">
-              <label className="col-form-label" htmlFor="end-date">Hasta</label>
-              <div className="col-sm-6">
+            <div className="form-group col-xs-6">
+              <label className="col-form-label pl-2" htmlFor="end-date">Hasta</label>
+              <div className="pl-2">
                 <input
                   type="date"
                   name="endDate"

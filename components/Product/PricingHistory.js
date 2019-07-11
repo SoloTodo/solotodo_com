@@ -224,11 +224,16 @@ class PricingHistory extends React.Component {
     };
 
     return <div className="product-pricing-history">
-      <h3>Precio histórico</h3>
+      <div className="d-flex justify-content-between">
+        <h3>Precio histórico</h3>
+        <div className="form-group">
+            <PricingHistoryModal product={this.props.product}/>
+        </div>
+      </div>
       <div className="form-inline prices-chart-container mb-3">
-        <div className="form-group row ml-2">
-          <label className="col-form-label" htmlFor="start-date">Desde</label>
-          <div className="col-sm-6">
+        <div className="form-group col-xs-6">
+          <label className="col-form-label pl-2" htmlFor="start-date">Desde</label>
+          <div className="pl-2">
             <input
               type="date"
               id="startDate"
@@ -238,9 +243,9 @@ class PricingHistory extends React.Component {
               onChange={this.handleDateChange}/>
           </div>
         </div>
-        <div className="form-group row ml-3">
-          <label className="col-form-label" htmlFor="end-date">Hasta</label>
-          <div className="col-sm-6">
+        <div className="form-group col-xs-6">
+          <label className="col-form-label pl-2" htmlFor="end-date">Hasta</label>
+          <div className="pl-2">
             <input
               type="date"
               id="endDate"
@@ -249,11 +254,6 @@ class PricingHistory extends React.Component {
               max={moment().format('YYYY-MM-DD')}
               value={this.state.endDate? this.state.endDate.clone().subtract(1, 'days').format('YYYY-MM-DD') : ''}
               onChange={this.handleDateChange}/>
-          </div>
-        </div>
-        <div className="form-group row ml-auto mr-2">
-          <div className="col-sm-12">
-            <PricingHistoryModal product={this.props.product}/>
           </div>
         </div>
       </div>

@@ -6,6 +6,14 @@
   width: 100%;
 }
 
+.search-filters-desktop #ordering {
+    width: 200px;
+}
+
+.search-filters-mobile #ordering {
+    width: 100%;
+}
+
 .product-search-title {
   min-width: 330px;
 }
