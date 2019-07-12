@@ -99,7 +99,7 @@ class NavBarBudgets extends React.Component {
       </DropdownMenu>
 
       <Modal isOpen={this.state.createBudgetModalIsActive} toggle={this.createBudgetModalHandler}>
-        <ModalHeader>
+        <ModalHeader toggle={this.createBudgetModalHandler}>
           Crear nueva cotización
         </ModalHeader>
         <form onSubmit={this.handleFormSubmit}>

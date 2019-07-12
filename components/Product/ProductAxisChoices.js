@@ -89,7 +89,7 @@ class AxisChoices extends React.Component {
                 {choice.labelValue}
               </button>
               <Modal id="variants-modal" isOpen={this.state.otherVariantsModalIsActive} toggle={this.otherVariantsModalToggle}>
-                <ModalHeader>
+                <ModalHeader toggle={this.otherVariantsModalToggle}>
                   Producto exacto no disponible
                 </ModalHeader>
                 <ModalBody>

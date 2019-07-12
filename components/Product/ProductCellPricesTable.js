@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactTooltip from 'react-tooltip'
 
-import EntityRefurbishedWarning from "../../react-utils/components/Entity/EntityRefurbishedWarning";
+import ProductRefurbishedWarning from "./ProductRefurbishedWarning";
 
 import ProductRatingStars from "./ProductRatingStars";
 import SoloTodoLeadLink from '../SoloTodoLeadLink'
@@ -52,7 +52,7 @@ class ProductCellPricesTable extends React.Component {
                 product={entity.product}>
                 {entity.cell_plan ? entity.cell_plan.name : "Liberado"}
               </SoloTodoLeadLink>
-              <EntityRefurbishedWarning entity={entity}/>
+              <ProductRefurbishedWarning entity={entity}/>
             </td>
             <td className="text-right">
               <SoloTodoLeadLink

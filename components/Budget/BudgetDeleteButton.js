@@ -38,7 +38,7 @@ class BudgetDeleteButton extends React.Component {
         <Button color="danger" className="m-2" onClick={this.toggleBudgetDeleteModal}>Eliminar</Button>}
 
       <Modal isOpen={this.state.budgetDeleteModalIsActive} toggle={this.toggleBudgetDeleteModal}>
-        <ModalHeader>Eliminar cotización</ModalHeader>
+        <ModalHeader toggle={this.toggleBudgetDeleteModal}>Eliminar cotización</ModalHeader>
         <ModalBody>
           <div className="row">
             <div className="col-12">
