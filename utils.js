@@ -36,7 +36,7 @@ export const getPreferredCountry = async (user, state, ctx) => {
   let clientIp = settings.customIp;
 
   if (!clientIp && ctx && ctx.req) {
-    clientIp = ctx.req.headers['x-forwarded-for'] || ctx.req.connection.remoteAddress;
+    clientIp = ctx.req.headers['cf-connecting-ip'] || ctx.req.headers['x-real-ip'] || ctx.req.headers['x-forwarded-for'] || ctx.req.connection.remoteAddress;
   }
 
   const countryByIpArgs = clientIp ? `?ip=${clientIp}` : '';
@@ -45,7 +45,10 @@ export const getPreferredCountry = async (user, state, ctx) => {
   return await fetch(countryByIpUrl)
     .then(res => res.json())
     .then(json => {
-      return json.url ? json : state.apiResourceObjects[settings.defaultCountryUrl];
+      if (json.url && state.apiResourceObjects[json.url]) {
+        return state.apiResourceObjects[json.url]
+      }
+      return state.apiResourceObjects[settings.defaultCountryUrl];
     });
 };
 

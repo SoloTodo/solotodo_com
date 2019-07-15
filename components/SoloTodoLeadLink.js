@@ -30,6 +30,7 @@ class SoloTodoLeadLink extends React.Component {
       className={className}
       websiteId={settings.websiteId}
       callback={this.handleClick}
+      soicosPrefix="ST_"
     >
       {children}
     </LeadLink>

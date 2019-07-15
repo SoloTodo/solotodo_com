@@ -33,7 +33,10 @@ export const loadFilteredRequiredResources = resources => dispatch => {
 };
 
 export const login = (authToken, state) => dispatch => {
-  setCookie(null, 'authToken', authToken, {path:"/"});
+  setCookie(null, 'authToken', authToken, {
+    maxAge: 60 * 60 * 24 * 14,
+    path: "/"
+  });
   return dispatch(initializeUser(authToken, state));
 };
 
@@ -156,7 +159,10 @@ export const updateNavigation = countryUrl => dispatch => {
 
 const setSessionPreferredCountryId = (preferredCountryId, ctx) => dispatch => {
   if (preferredCountryId) {
-    setCookie(ctx, 'preferredCountryId', preferredCountryId, {path: '/'})
+    setCookie(ctx, 'preferredCountryId', preferredCountryId, {
+      maxAge: 60 * 60 * 24 * 14,
+      path: '/'
+    })
   } else {
     destroyCookie(ctx, 'preferredCountryId');
   }
@@ -173,8 +179,14 @@ const setSessionPreferredCountryId = (preferredCountryId, ctx) => dispatch => {
 
 const setSessionPreferredStoreIds = (preferredStoreIds, ctx) => dispatch => {
   if (preferredStoreIds) {
-    setCookie(ctx, 'preferredStoreIds', JSON.stringify(preferredStoreIds), {path: '/'});
-    setCookie(ctx, 'preferredStoresLastUpdated', moment().format(), {path: '/'})
+    setCookie(ctx, 'preferredStoreIds', JSON.stringify(preferredStoreIds), {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 14
+    });
+    setCookie(ctx, 'preferredStoresLastUpdated', moment().format(), {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 14
+    })
   } else {
     destroyCookie(ctx, 'preferredStoreIds');
     destroyCookie(ctx, 'preferredStoresLastUpdated');
