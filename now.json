@@ -12,7 +12,7 @@
       "headers": { "cache-control": "no-cache" }
     },
     {
-      "src": "/reset/(?<uid>[^/]+?)/(?<token>[^/]+?)",
+      "src": "/reset/(?<uid>[^/]+?)/(?<token>[^/]+?)/?",
       "dest": "/reset?uid=$uid&token=$token",
       "headers": { "cache-control": "no-cache" }
     },
@@ -39,6 +39,11 @@
     {
       "src": "/stores/(?<id>[^/]+?)/ratings",
       "dest": "/store_ratings?id=$id",
+      "headers": { "cache-control": "no-cache" }
+    },
+    {
+      "src": "/budgets/compatibility",
+      "dest": "/budgets/compatibility",
       "headers": { "cache-control": "no-cache" }
     },
     {

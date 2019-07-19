@@ -87,16 +87,16 @@ class ProductSearch extends React.Component {
     }
 
     const products = this.state.productsPage || null;
-    const choices = [
-      {id: 'relevance',
-        name: 'Relevancia'},
-      {id: 'offer_price_usd',
-        name: 'Precio'},
-      {id: 'leads',
-        name: 'Popularidad'},
-      {id: 'discount',
-        name: 'Descuento'},
-    ];
+    // const choices = [
+    //   {id: 'relevance',
+    //     name: 'Relevancia'},
+    //   {id: 'offer_price_usd',
+    //     name: 'Precio'},
+    //   {id: 'leads',
+    //     name: 'Popularidad'},
+    //   {id: 'discount',
+    //     name: 'Descuento'},
+    // ];
 
     return <React.Fragment>
       <Head>
@@ -109,7 +109,7 @@ class ProductSearch extends React.Component {
               <div className="row">
                 <ApiFormNext
                   endpoints={[endpoint]}
-                  fields={['page', 'search', 'categories', 'ordering']}
+                  fields={['page', 'search', 'categories']}
                   onResultsChange={this.setProductsPage}
                   onFormValueChange={this.handleFormValueChange}>
                   {this.props.isExtraSmall &&
@@ -123,14 +123,14 @@ class ProductSearch extends React.Component {
                           choices={this.state.categoryChoices? this.state.categoryChoices : []}
                           value={this.state.formValues.category}/>
                       </div>
-                      <div className="col-6 search-filters-mobile pr-4">
-                        <span className="category-browse-result-count mb-1">Ordenar por</span>
-                        <ApiFormChoiceFieldNext
-                          name="ordering"
-                          choices={choices}
-                          value={this.state.formValues.ordering}
-                          required={true}/>
-                      </div>
+                      {/*<div className="col-6 search-filters-mobile pr-4">*/}
+                      {/*  <span className="category-browse-result-count mb-1">Ordenar por</span>*/}
+                      {/*  <ApiFormChoiceFieldNext*/}
+                      {/*    name="ordering"*/}
+                      {/*    choices={choices}*/}
+                      {/*    value={this.state.formValues.ordering}*/}
+                      {/*    required={true}/>*/}
+                      {/*</div>*/}
                     </div>
                   </div>}
                   {this.props.isExtraSmall?
@@ -165,16 +165,16 @@ class ProductSearch extends React.Component {
                                     value={this.state.formValues.category}/>
                                 </div>
                               </div>
-                              <div>
-                                <span className="category-browse-result-count mb-1 ml-2">Ordenar por</span>
-                                <div className="flex-grow ml-2 search-filters-desktop">
-                                  <ApiFormChoiceFieldNext
-                                    name="ordering"
-                                    choices={choices}
-                                    value={this.state.formValues.ordering}
-                                    required={true}/>
-                                </div>
-                              </div>
+                              {/*<div>*/}
+                              {/*  <span className="category-browse-result-count mb-1 ml-2">Ordenar por</span>*/}
+                              {/*  <div className="flex-grow ml-2 search-filters-desktop">*/}
+                              {/*    <ApiFormChoiceFieldNext*/}
+                              {/*      name="ordering"*/}
+                              {/*      choices={choices}*/}
+                              {/*      value={this.state.formValues.ordering}*/}
+                              {/*      required={true}/>*/}
+                              {/*  </div>*/}
+                              {/*</div>*/}
                             </div>
                           </div>}
                           {products?
