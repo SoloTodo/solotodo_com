@@ -10,8 +10,6 @@ import {
   updateNavigation
 } from '../redux/actions'
 import withReduxStore from '../lib/with-redux-store'
-import uuidv4 from "uuid/v4"
-import AppContext from '../react-utils/components/Context'
 import NavBar from "../components/NavBar/NavBar";
 
 import Footer from "../components/Footer/Footer";
@@ -45,11 +43,8 @@ class MyApp extends App {
       pageProps = await appContext.Component.getInitialProps(appContext.ctx)
     }
 
-    const namespace = uuidv4();
-
     return {
-      pageProps,
-      namespace
+      pageProps
     }
   }
 
@@ -85,21 +80,19 @@ class MyApp extends App {
 
 
         <Provider store={reduxStore}>
-          <AppContext.Provider value={{namespace:this.props.namespace}}>
-            <DFPSlotsProvider
-              dfpNetworkId='/21667261583'
-              sizeMapping={[
-                {viewport: [1024, 768], sizes:[[728, 90], [300, 50]]},
-                {viewport: [900, 768], sizes:[[320, 50]] }
-              ]}
-              adSenseAttributes={{page_url: 'www.solotodo.com'}}>
-              <NavBar />
-              <div id="main-container">
-                <Component {...pageProps} />
-              </div>
-              <Footer />
-            </DFPSlotsProvider>
-          </AppContext.Provider>
+          <DFPSlotsProvider
+            dfpNetworkId='/21667261583'
+            sizeMapping={[
+              {viewport: [1024, 768], sizes:[[728, 90], [300, 50]]},
+              {viewport: [900, 768], sizes:[[320, 50]] }
+            ]}
+            adSenseAttributes={{page_url: 'www.solotodo.com'}}>
+            <NavBar />
+            <div id="main-container">
+              <Component {...pageProps} />
+            </div>
+            <Footer />
+          </DFPSlotsProvider>
         </Provider>
       </Container>
     )
