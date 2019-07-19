@@ -72,7 +72,7 @@
       "headers": { "cache-control": "no-cache" }
     },
     {
-      "src": "/(?<$categoryslug>[^/]+)",
+      "src": "/(?<categoryslug>[^/]+)",
       "dest": "/browse?category_slug=$categoryslug",
       "headers": { "cache-control": "no-cache" }
     }
