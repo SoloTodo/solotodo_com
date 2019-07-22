@@ -100,20 +100,22 @@ class CategoryBrowse extends React.Component {
     return {
       ...state,
       formLayout: props.formLayout,
-      isMobileMenuOpen: false,
       ...props.initialProductsPageState,
       formValues: {}
     };
   }
 
   handleFormValueChange = formValues => {
-    this.setState({formValues})
+    this.setState({
+      formValues,
+      isMobileMenuOpen: false
+    })
   };
 
   toggleMobileMenu = evt => {
     evt.preventDefault();
     this.setState({
-      isMobileMenuOpen: true
+      isMobileMenuOpen: !this.state.isMobileMenuOpen
     })
   };
 
