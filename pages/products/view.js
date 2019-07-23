@@ -24,6 +24,7 @@ import ProductBenchmarks from "../../components/Product/ProductBenchmarks";
 import ProductAlternatives from "../../components/Product/ProductAlternatives";
 import PricingHistory from "../../components/Product/PricingHistory";
 import ProductAddToBudgetButton from "../../components/Product/ProductAddToBudgetButton";
+import ProductVideo from "../../components/Product/ProductVideo";
 
 
 class Products extends React.Component {
@@ -180,6 +181,8 @@ class Products extends React.Component {
                     <ProductBenchmarks product={product} category={category}/>
                   </div>
                 </div>}
+
+                <ProductVideo product={product}/>
 
                 {cheapestEntity &&
                 <ProductAlternatives product={product} category={category} entity={cheapestEntity}/>}
