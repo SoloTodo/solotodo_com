@@ -82,7 +82,9 @@ class CategoryBrowse extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {}
+    this.state = {
+      formValues: {}
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -101,7 +103,6 @@ class CategoryBrowse extends React.Component {
       ...state,
       formLayout: props.formLayout,
       ...props.initialProductsPageState,
-      formValues: {}
     };
   }
 
@@ -457,7 +458,7 @@ class CategoryBrowse extends React.Component {
                       <h1 className="mb-0">{category.name}</h1>
                       <CategoryResultCount
                         resultCount={products && products.count}
-                        page={this.state.formValues.page}
+                        page={this.state.formValues.page || initialFormData.page.fieldValues}
                         resultsPerPage={settings.categoryBrowseResultsPerPage}/>
                     </div>
 
@@ -792,6 +793,15 @@ const getGlobalFieldRanges = async (category, stores) => {
   const endpoint = CategoryBrowse.apiEndpoint(category, stores);
 
   const json = await fetchJson(endpoint);
+
+  if (!json.price_ranges) {
+    return {
+      min: null,
+      max: null,
+      p80th: null
+    };
+  }
+
   return {
     min: Math.floor(parseFloat(json.price_ranges.normal_price_usd.min)),
     max: Math.ceil(parseFloat(json.price_ranges.normal_price_usd.max)),

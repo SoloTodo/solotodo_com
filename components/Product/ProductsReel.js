@@ -5,6 +5,7 @@ import {settings} from '../../settings';
 import {areObjectListsEqual, fetchJson} from "../../react-utils/utils";
 import Slider from 'react-slick'
 import ProductShortDescription from "./ProductShortDescription";
+import Loading from "../Loading";
 
 class ProductsReel extends Component {
   static async getInitialProps(stores, ordering) {
@@ -29,20 +30,34 @@ class ProductsReel extends Component {
     }
   }
 
+  componentDidMount() {
+    if (!this.state.productEntries) {
+      this.componentUpdate()
+    }
+  }
+
   componentDidUpdate(prevProps, prevState, snapshot) {
     const newPreferredStores = this.props.preferredCountryStores;
     const oldPreferredStores = prevProps.preferredCountryStores;
 
     if (!areObjectListsEqual(oldPreferredStores, newPreferredStores)) {
-      ProductsReel.getInitialProps(newPreferredStores, this.props.ordering).then(updatedProducts => {
+      this.componentUpdate()
+    }
+  }
+
+  componentUpdate() {
+    ProductsReel.getInitialProps(this.props.preferredCountryStores, this.props.ordering).then(updatedProducts => {
         this.setState({
           productEntries: updatedProducts.productEntries
         })
       });
-    }
   }
 
   render() {
+    if (!this.state.productEntries) {
+      return <Loading />
+    }
+
     const slidesToShowDict = {
       extraSmall: 1,
       small: 1,

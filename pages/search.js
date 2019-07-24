@@ -43,10 +43,17 @@ class ProductSearch extends React.Component {
       return {}
     }
 
-    const categoryChoices = categoryBuckets.map(categoryBucket => ({
-      id: categoryBucket.id,
-      name: `${this.props.categories.filter(category => category.id === categoryBucket.id)[0].name} (${categoryBucket.doc_count})`
-    }));
+    const categoryChoices = [];
+
+    for (const category of this.props.categories) {
+      const categoryBucket = categoryBuckets.filter(categoryBucket => categoryBucket.id === category.id)[0]
+      if (categoryBucket) {
+        categoryChoices.push({
+          id: categoryBucket.id,
+          name: `${category.name} (${categoryBucket.doc_count})`
+        })
+      }
+    }
 
     return {
       categoryChoices
@@ -116,7 +123,7 @@ class ProductSearch extends React.Component {
                   <div className="pt-2 pb-2" id="mobile-filter-and-ordering">
                     <div className="row">
                       <div className="col-6 search-filters-mobile pl-4">
-                        <span className="category-browse-result-count mb-1">Categoría</span>
+                        <span className="category-browse-result-count mbcategoryChoices-1">Categoría</span>
                         <ApiFormChoiceFieldNext
                           placeholder="Todas"
                           name="categories"
