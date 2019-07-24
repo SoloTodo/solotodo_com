@@ -182,7 +182,9 @@ class Products extends React.Component {
                   </div>
                 </div>}
 
-                <ProductVideo product={product}/>
+                <div id="product-detail-video">
+                  <ProductVideo product={product}/>
+                </div>
 
                 {cheapestEntity &&
                 <ProductAlternatives product={product} category={category} entity={cheapestEntity}/>}
