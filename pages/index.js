@@ -14,17 +14,6 @@ import FrontPageBudgets from "../components/Budget/FrontPageBudgets";
 
 
 class Index extends React.Component {
-  static async getInitialProps({ reduxStore, res }) {
-    const {preferredCountryStores} = solotodoStateToPropsUtils(reduxStore.getState());
-    const popularProductsData = await ProductsReel.getInitialProps(preferredCountryStores, 'leads');
-    const discountedProductsData = await ProductsReel.getInitialProps(preferredCountryStores, 'discount');
-
-    return {
-      popularProducts: popularProductsData['productEntries'],
-      discountedProducts: discountedProductsData['productEntries']
-    }
-  }
-
   render () {
     const ribbonFormatter = value => {
       const localizedDiscount = this.props.formatCurrency(value, this.props.usdCurrency);
@@ -47,7 +36,6 @@ class Index extends React.Component {
 
           <div className="col-12">
             <ProductsReel
-              initialProductEntries={this.props.popularProducts}
               ribbonFormatter={value => `${parseInt(value, 10)} visitas`}
               ordering="leads"
             />
@@ -61,7 +49,6 @@ class Index extends React.Component {
 
           <div className="col-12">
             <ProductsReel
-              initialProductEntries={this.props.discountedProducts}
               ribbonFormatter={ribbonFormatter}
               ordering="discount"
             />
