@@ -3,7 +3,11 @@ import {connect} from "react-redux";
 import { Accordion, AccordionItem } from 'react-sanfona';
 import Menu from 'react-burger-menu/lib/menus/slide'
 
-import {convertIdToUrl, fetchJson} from "../../react-utils/utils";
+import {
+  areObjectListsEqual,
+  convertIdToUrl,
+  fetchJson
+} from "../../react-utils/utils";
 import ApiFormNext from "../../react-utils/api_forms/ApiFormNext";
 import CategoryBrowseResults from "../../components/Category/CategoryBrowseResults";
 import {formatCurrency} from "../../react-utils/utils";
@@ -48,7 +52,7 @@ class CategoryBrowse extends React.Component {
     )[0];
 
     if (priceRange) {
-      promises.push(priceRange)
+      promises.push(priceRange.priceRange)
     } else {
       promises.push(getGlobalFieldRanges(category, preferredCountryStores))
     }
@@ -58,18 +62,21 @@ class CategoryBrowse extends React.Component {
       formLayout = result[0]
     }
 
-    if (!priceRange) {
+    if (priceRange) {
+      priceRange = priceRange.priceRange
+    } else {
       priceRange = result[1]
     }
 
     const usdCurrency = currencies.filter(currency => currency.id === settings.usdCurrencyId)[0];
     const conversionCurrency = currencies.filter(currency => currency.url === preferredCountry.currency)[0];
-    const processedFormLayout = processFormLayout(formLayout, priceRange, usdCurrency, conversionCurrency, preferredNumberFormat);
-    const endpoint = this.apiEndpoint(category, preferredCountryStores);
 
-    const {initialFormData, initialSearchResults} = await ApiFormNext.getInitialProps(processedFormLayout, asPath, [endpoint], fetchJson);
+    const {initialFormData, initialSearchResults} = await this.getInitialFormDataAndSearchResults(
+      usdCurrency, conversionCurrency, preferredCountry, formLayout, priceRange, preferredNumberFormat, category, preferredCountryStores, asPath
+    );
 
     return {
+      category,
       formLayout,
       priceRange,
       initialFormData,
@@ -79,11 +86,18 @@ class CategoryBrowse extends React.Component {
     }
   }
 
+  static getInitialFormDataAndSearchResults(usdCurrency, conversionCurrency, preferredCountry, formLayout, priceRange, preferredNumberFormat, category, preferredCountryStores, asPath) {
+    const processedFormLayout = processFormLayout(formLayout, priceRange, usdCurrency, conversionCurrency, preferredNumberFormat);
+    const endpoint = this.apiEndpoint(category, preferredCountryStores);
+    return ApiFormNext.getInitialProps(processedFormLayout, asPath, [endpoint], fetchJson);
+  }
+
   constructor(props) {
     super(props);
 
     this.state = {
-      formValues: {}
+      formValues: {},
+      searchResults: props.initialProductsPageState,
     }
   }
 
@@ -92,17 +106,42 @@ class CategoryBrowse extends React.Component {
       this.props.saveFormLayout(this.props.formLayout);
     }
 
+    if (this.props.initialProductsPageState !== prevProps.initialProductsPageState) {
+      this.setState({
+        searchResults: this.props.initialProductsPageState
+      })
+    }
+
     if (!this.props.existingPriceRange) {
       const storeIds = this.props.stores.map(store => store.id);
       this.props.saveCategoryBrowsePriceRange(this.props.category, storeIds, this.props.priceRange);
+    }
+
+    if (!areObjectListsEqual(this.props.stores, prevProps.stores)) {
+      const asPath = `${window.location.pathname}${window.location.search}`
+
+      CategoryBrowse.getInitialFormDataAndSearchResults(
+        this.props.usdCurrency,
+        this.props.conversionCurrency,
+        this.props.preferredCountry,
+        this.props.formLayout,
+        this.props.priceRange,
+        this.props.numberFormat,
+        this.props.category,
+        this.props.stores,
+        asPath)
+        .then(({initialFormData, initialSearchResults}) => {
+          this.setState({
+            searchResults: CategoryBrowse.getNewProductsPageState(initialSearchResults[0])
+          })
+        });
     }
   }
 
   static getDerivedStateFromProps(props, state) {
     return {
       ...state,
-      formLayout: props.formLayout,
-      ...props.initialProductsPageState,
+      formLayout: props.formLayout
     };
   }
 
@@ -133,7 +172,7 @@ class CategoryBrowse extends React.Component {
           count: json.count,
           results: json.results
         },
-        resultsAggs: json.aggs,
+        resultsAggs: json.aggs
       }
     } else {
       // Only reset the actual results to keep the old filter aggregations
@@ -186,7 +225,7 @@ class CategoryBrowse extends React.Component {
   };
 
   render() {
-    const {formLayout, resultsAggs} = this.state;
+    const {formLayout, searchResults} = this.state;
     const {numberFormat, priceRange, usdCurrency, conversionCurrency, category, stores, initialFormData, isExtraSmall} = this.props;
     const categoryBrowseParams = settings.categoryBrowseParameters[category.id];
 
@@ -218,7 +257,7 @@ class CategoryBrowse extends React.Component {
         const filterDocCountsDict = {};
 
         let filterAggs = [];
-        const rawFilterAggs = resultsAggs[filter.name];
+        const rawFilterAggs = searchResults.resultsAggs[filter.name];
 
         if (rawFilterAggs) {
           for (const filterDocCount of rawFilterAggs) {
@@ -370,7 +409,7 @@ class CategoryBrowse extends React.Component {
 
     ordering.props.initialValue = initialFormData['ordering'].fieldValues;
 
-    const products = this.state.productsPage || null;
+    const products = searchResults.productsPage;
     const endpoint = CategoryBrowse.apiEndpoint(category, stores);
 
     const filtersComponent = <Accordion allowMultiple={true}>
@@ -483,7 +522,7 @@ class CategoryBrowse extends React.Component {
                     <pagination.component
                       {...pagination.props}
                       initialValue={initialFormData['page'].fieldValues}
-                      resultCount={this.state.productsPage && this.state.productsPage.count}
+                      resultCount={this.state.searchResults.productsPage && this.state.searchResults.productsPage.count}
                       previousLabel={isExtraSmall ? 'Ant' : 'Anterior'}
                       nextLabel={isExtraSmall ? 'Sig' : 'Siguiente'}
                     />
@@ -499,7 +538,7 @@ class CategoryBrowse extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  const {preferredCountryStores, preferredNumberFormat} = solotodoStateToPropsUtils(state);
+  const {preferredCountry, preferredCountryStores, preferredNumberFormat, currencies} = solotodoStateToPropsUtils(state);
 
   const formLayouts = filterApiResourceObjectsByType(state.apiResourceObjects, 'category_specs_form_layouts');
   const websiteUrl = convertIdToUrl(settings.websiteId, 'websites');
@@ -512,6 +551,7 @@ function mapStateToProps(state, ownProps) {
   )[0];
 
   return {
+    preferredCountry,
     isExtraSmall: state.browser.is.extraSmall,
     stores: preferredCountryStores,
     numberFormat: preferredNumberFormat,
