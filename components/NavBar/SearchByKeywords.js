@@ -17,7 +17,11 @@ class SearchByKeywords extends React.Component {
 
   handleFormSubmit = evt => {
     evt.preventDefault();
-    Router.push(`/search?search=${encodeURIComponent(this.state.keywords)}`);
+    window.scrollTo(0, 0);
+    Router.push(
+      `/search?search=${encodeURIComponent(this.state.keywords)}`,
+      `/search?search=${encodeURIComponent(this.state.keywords)}`
+    );
   };
 
   render() {

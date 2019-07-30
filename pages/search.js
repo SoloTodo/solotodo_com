@@ -38,7 +38,6 @@ class ProductSearch extends React.Component {
   };
 
   setCategoryChoices(categoryBuckets) {
-
     if (this.state.categoryChoices) {
       return {}
     }
@@ -61,8 +60,9 @@ class ProductSearch extends React.Component {
   }
 
   setProductsPage = json => {
-    if (json) {
+    window.scrollTo(0, 0)
 
+    if (json) {
       const results = json.payload.results.map(result => ({
         bucket: result.product.id,
         product_entries: [result]
@@ -121,14 +121,17 @@ class ProductSearch extends React.Component {
                   onFormValueChange={this.handleFormValueChange}>
                   {this.props.isExtraSmall &&
                   <div className="pt-2 pb-2" id="mobile-filter-and-ordering">
-                    <div className="row">
-                      <div className="col-6 search-filters-mobile pl-4">
-                        <span className="category-browse-result-count mbcategoryChoices-1">Categoría</span>
-                        <ApiFormChoiceFieldNext
-                          placeholder="Todas"
-                          name="categories"
-                          choices={this.state.categoryChoices? this.state.categoryChoices : []}
-                          value={this.state.formValues.category}/>
+                      <div className="search-filters-mobile pl-2 pr-2">
+                        <div className="d-flex flex-row justify-content-end align-items-center">
+                          <div className="category-browse-result-count mr-2 flex-grow">Categoría</div>
+                          <ApiFormChoiceFieldNext
+                            placeholder="Todas"
+                            name="categories"
+                            searchable={false}
+                            choices={this.state.categoryChoices? this.state.categoryChoices : []}
+                            value={this.state.formValues.category}
+                          />
+                        </div>
                       </div>
                       {/*<div className="col-6 search-filters-mobile pr-4">*/}
                       {/*  <span className="category-browse-result-count mb-1">Ordenar por</span>*/}
@@ -138,7 +141,6 @@ class ProductSearch extends React.Component {
                       {/*    value={this.state.formValues.ordering}*/}
                       {/*    required={true}/>*/}
                       {/*</div>*/}
-                    </div>
                   </div>}
                   {this.props.isExtraSmall?
                     <div className="mobile-top-banner-container">

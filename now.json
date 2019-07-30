@@ -17,67 +17,67 @@
       "headers": { "cache-control": "no-cache" }
     },
     {
-      "src": "/products/(?<id>[^/]+?)-(?<slug>[^/]*)",
+      "src": "/products/(?<id>[^/]+?)-(?<slug>[^/]*)/?",
       "dest": "/products/view?id=$id&slug=$slug",
       "headers": { "cache-control": "no-cache" }
     },
     {
-      "src": "/products/(?<id>[^/]+?)",
+      "src": "/products/(?<id>[^/]+?)/?",
       "dest": "/products/view?id=$id",
       "headers": { "cache-control": "no-cache" }
     },
     {
-      "src": "/products/(?<id>[^/]+?)/ratings",
+      "src": "/products/(?<id>[^/]+?)/ratings/?",
       "dest": "/products/ratings?id=$id",
       "headers": { "cache-control": "no-cache" }
     },
     {
-      "src": "/products/(?<id>[^/]+?)/ratings/new",
+      "src": "/products/(?<id>[^/]+?)/ratings/new/?",
       "dest": "/products/new_rating?id=$id",
       "headers": { "cache-control": "no-cache" }
     },
     {
-      "src": "/stores/(?<id>[^/]+?)/ratings",
+      "src": "/stores/(?<id>[^/]+?)/ratings/?",
       "dest": "/store_ratings?id=$id",
       "headers": { "cache-control": "no-cache" }
     },
     {
-      "src": "/budgets/compatibility",
+      "src": "/budgets/compatibility/?",
       "dest": "/budgets/compatibility",
       "headers": { "cache-control": "no-cache" }
     },
     {
-      "src": "/budgets/(?<id>[^/]+?)",
+      "src": "/budgets/(?<id>[^/]+?)/?",
       "dest": "/budgets/view?id=$id",
       "headers": { "cache-control": "no-cache" }
     },
     {
-      "src": "/budgets/(?<id>[^/]+?)/edit",
+      "src": "/budgets/(?<id>[^/]+?)/edit/?",
       "dest": "/budgets/edit?id=$id",
       "headers": { "cache-control": "no-cache" }
     },
     {
-      "src": "/notebook_processors",
+      "src": "/notebook_processors/?",
       "dest": "/notebook_processors",
       "headers": { "cache-control": "no-cache" }
     },
     {
-      "src": "/notebook_video_cards",
+      "src": "/notebook_video_cards/?",
       "dest": "/notebook_video_cards",
       "headers": { "cache-control": "no-cache" }
     },
     {
-      "src": "/video_card_gpus/(?<id>[^/]+?)",
+      "src": "/video_card_gpus/(?<id>[^/]+?)/?",
       "dest": "/video_card_gpus?id=$id",
       "headers": { "cache-control": "no-cache" }
     },
     {
-      "src": "/search",
+      "src": "/search/?",
       "dest": "/search?search=$keyword",
       "headers": { "cache-control": "no-cache" }
     },
     {
-      "src": "/(?<categoryslug>[^/]+)",
+      "src": "/(?<categoryslug>[^/]+)/?",
       "dest": "/browse?category_slug=$categoryslug",
       "headers": { "cache-control": "no-cache" }
     }

@@ -16,7 +16,7 @@ class ProductStaffActionsButton extends Component {
   };
 
   render() {
-    return <div className="mt-2">
+    return <div className="mt-2 mr-2">
       <UncontrolledDropdown>
         <DropdownToggle color="success" caret>
           Opciones

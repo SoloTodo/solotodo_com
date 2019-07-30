@@ -810,7 +810,8 @@ const processFormLayout = (formLayout, priceRange, usdCurrency, conversionCurren
       name: "ordering",
       id: "ordering",
       choices: orderingChoices,
-      required: true
+      required: true,
+      searchable: false
     }
   };
 
