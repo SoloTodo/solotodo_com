@@ -77,6 +77,13 @@
       "headers": { "cache-control": "no-cache" }
     },
     {
+      "src": "/ads.txt",
+      "status": 301,
+      "headers": {
+        "Location": "/static/ads.txt"
+      }
+    },
+    {
       "src": "/(?<categoryslug>[^/]+)/?",
       "dest": "/browse?category_slug=$categoryslug",
       "headers": { "cache-control": "no-cache" }
