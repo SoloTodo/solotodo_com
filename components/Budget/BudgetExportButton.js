@@ -3,13 +3,12 @@ import {CopyToClipboard} from "react-copy-to-clipboard";
 import {toast} from "react-toastify";
 import {
   UncontrolledDropdown,DropdownItem, DropdownMenu, DropdownToggle,
-  Modal, ModalBody, ModalFooter, Button
+  Modal, ModalBody, ModalFooter, Button, ModalHeader
 } from "reactstrap";
 
 import Loading from "../Loading";
 import {apiResourceStateToPropsUtils} from "../../react-utils/ApiResource";
 import {connect} from "react-redux";
-import ModalHeader from "reactstrap/es/ModalHeader";
 
 class BudgetExportButton extends React.Component {
   constructor(props) {
