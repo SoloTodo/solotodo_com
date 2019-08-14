@@ -25,6 +25,7 @@ import ProductAlternatives from "../../components/Product/ProductAlternatives";
 import PricingHistory from "../../components/Product/PricingHistory";
 import ProductAddToBudgetButton from "../../components/Product/ProductAddToBudgetButton";
 import ProductVideo from "../../components/Product/ProductVideo";
+import AnnouncementAlert from "../../components/AnnouncementAlert";
 
 
 class Products extends React.Component {
@@ -121,6 +122,8 @@ class Products extends React.Component {
               <div className="row">
                 <TopBanner category={category.name}/>
                 <div className="col-12">
+                  <AnnouncementAlert />
+
                   <nav aria-label>
                     <ol className="breadcrumb">
                       <li className="breadcrumb-item"><Link  href={`/browse?category_slug=${category.slug}`} as={`/${category.slug}`}><a>{category.name}</a></Link></li>

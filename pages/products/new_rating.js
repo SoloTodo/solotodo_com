@@ -12,6 +12,7 @@ import RatingStarsEditable from "../../components/RatingStarsEditable";
 import {apiResourceStateToPropsUtils} from "../../react-utils/ApiResource";
 import {connect} from "react-redux";
 import Head from "next/head";
+import AnnouncementAlert from "../../components/AnnouncementAlert";
 
 
 
@@ -139,6 +140,8 @@ class NewProductRating extends React.Component {
             <div>
               <div className="row">
                 <TopBanner category={category.name}/>
+                <AnnouncementAlert />
+
                 <div className="col-12">
                   <ol className="breadcrumb">
                     <li className="breadcrumb-item"><Link  href={`/browse?category_slug=${category.slug}`} as={`/${category.slug}`}><a>{category.name}</a></Link></li>

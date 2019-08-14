@@ -1,6 +1,7 @@
 import React from 'react';
 import Head from 'next/head'
 import TopBanner from "../components/TopBanner";
+import AnnouncementAlert from "../components/AnnouncementAlert";
 
 class Tos extends React.Component {
   render() {
@@ -12,6 +13,8 @@ class Tos extends React.Component {
         <div className="row">
           <TopBanner category="Any" />
           <div className="col-12">
+            <AnnouncementAlert />
+
             <h1>Condiciones de servicio</h1>
           </div>
 

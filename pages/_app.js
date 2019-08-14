@@ -21,6 +21,7 @@ import NProgress from "next-nprogress/component";
 // Import theme here because ajax-loader.gif import breaks otherwise
 import 'slick-carousel/slick/slick-theme.scss';
 import '../styles.scss';
+import AnnouncementAlert from "../components/AnnouncementAlert";
 
 class MyApp extends App {
   static async getInitialProps(appContext) {

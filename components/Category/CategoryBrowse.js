@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from "react-redux";
 import { Accordion, AccordionItem } from 'react-sanfona';
 import Menu from 'react-burger-menu/lib/menus/slide'
+import classNames from 'classnames';
 
 import {
   areObjectListsEqual,
@@ -26,6 +27,7 @@ import {
   ApiFormContinuousRangeFieldNext
 } from "../../react-utils/api_forms/ApiFormFieldsNext";
 import {filterApiResourceObjectsByType} from "../../react-utils/ApiResource";
+import AnnouncementAlert from "../AnnouncementAlert";
 
 
 class CategoryBrowse extends React.Component {
@@ -448,7 +450,7 @@ class CategoryBrowse extends React.Component {
           initialFormData={initialFormData}
           onPushUrl={() => {window.scrollTo(0, 0)}}
         >
-          <div id="page-wrap" className="flex-grow w-100">
+          <div id="page-wrap" className={classNames('flex-grow', 'w-100', {'mobile-top-banner-container': isExtraSmall})}>
             {isExtraSmall &&
             <Menu pageWrapId="page-wrap"
                   outerContainerId="outer-container"
@@ -476,9 +478,10 @@ class CategoryBrowse extends React.Component {
             </div>
             }
 
-            {isExtraSmall ?
-              <div className="mobile-top-banner-container">{topBanner}</div> : topBanner
-            }
+            {topBanner}
+
+            <AnnouncementAlert />
+
             <div className="d-flex pt-2 pl-2 pr-2" id="filters-and-results">
               {isExtraSmall ||
               <div id="category-browse-filters">

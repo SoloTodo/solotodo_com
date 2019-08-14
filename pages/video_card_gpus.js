@@ -9,6 +9,7 @@ import {solotodoStateToPropsUtils} from "../redux/utils";
 import {settings} from "../settings";
 import CategoryBrowseResult from "../components/Category/CategoryBrowseResult";
 import TopBanner from "../components/TopBanner";
+import AnnouncementAlert from "../components/AnnouncementAlert";
 
 
 class VideoCardGpuDetail extends React.Component {
@@ -88,6 +89,8 @@ class VideoCardGpuDetail extends React.Component {
         <div className="row mt-3">
           <TopBanner category="Notebooks" />
           <div className="col-12">
+            <AnnouncementAlert />
+
             <nav aria-label="breadcrumb">
               <ol className="breadcrumb">
                 <li className="breadcrumb-item"><Link href={`/browse?category_slug=video_cards`} as={`/video_cards`}>

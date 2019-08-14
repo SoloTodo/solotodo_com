@@ -71,7 +71,7 @@ export const getPreferredStores = (user, state) => {
 
   if (!preferredStoresLastUpdated) {
     // date of first version. Existing stores are guaranteed have activation dates before this.
-    preferredStoresLastUpdated = moment('2018-01-01T00:00:00+00:00')
+    preferredStoresLastUpdated = moment('2019-08-10T00:00:00+00:00')
   }
 
   const storesActivatedSinceLastVisitUrls = stores.filter(store => {
@@ -102,7 +102,9 @@ export const persistUser = async (authToken, userChanges) => {
 export function withSoloTodoTracker(WrappedComponent, mapPropsToGAField){
   const trackPageHandler = props => {
     const analyticsParams = {
-      page_title: 'SoloTodo'
+      page_title: 'SoloTodo',
+      page_location: `${settings.domain}${props.router.asPath}`,
+      page_path: props.router.asPath
     };
 
     if (mapPropsToGAField) {
@@ -120,9 +122,10 @@ export function withSoloTodoTracker(WrappedComponent, mapPropsToGAField){
     }
 
     window.gtag('config', settings.googleAnalyticsId, analyticsParams)
+    window.gtag('config', settings.lgAdWordsConversionId)
   };
 
-  return withTracker(WrappedComponent, trackPageHandler, true)
+  return withTracker(WrappedComponent, trackPageHandler)
 }
 
 export function getProductShortDescription(product, categoryTemplates){

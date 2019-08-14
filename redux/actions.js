@@ -1,4 +1,4 @@
-import { setCookie, destroyCookie, parseCookies } from 'nookies'
+import { setCookie, destroyCookie } from 'nookies'
 import moment from 'moment'
 import {
   fetchAuth,

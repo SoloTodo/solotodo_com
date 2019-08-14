@@ -10,6 +10,7 @@ import { solotodoStateToPropsUtils } from "../redux/utils";
 import ProductsReel from "../components/Product/ProductsReel";
 import TopBanner from "../components/TopBanner";
 import FrontPageBudgets from "../components/Budget/FrontPageBudgets";
+import AnnouncementAlert from "../components/AnnouncementAlert";
 
 
 
@@ -29,6 +30,10 @@ class Index extends React.Component {
       <div className="container-fluid">
         <div className="row">
           <TopBanner category="Any" />
+
+          <div className="col-12">
+            <AnnouncementAlert />
+          </div>
 
           <div className="col-12">
             <h1>Lo más visto en SoloTodo</h1>

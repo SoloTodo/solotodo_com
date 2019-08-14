@@ -4,6 +4,7 @@ import Head from 'next/head';
 import {fetchJson} from '../../react-utils/utils'
 import {toast} from 'react-toastify';
 import TopBanner from "../../components/TopBanner";
+import AnnouncementAlert from "../../components/AnnouncementAlert";
 
 class PasswordResetForm extends React.Component {
   constructor(props) {
@@ -55,6 +56,8 @@ class PasswordResetForm extends React.Component {
 
           <TopBanner category="Any" />
           <div className="col-12">
+            <AnnouncementAlert />
+
             <h1>Restablecer Contraseña</h1>
             <hr />
           </div>

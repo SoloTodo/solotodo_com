@@ -60,7 +60,7 @@ class ProductSearch extends React.Component {
   }
 
   setProductsPage = json => {
-    window.scrollTo(0, 0)
+    process.browser && window.scrollTo(0, 0)
 
     if (json) {
       const results = json.payload.results.map(result => ({

@@ -6,6 +6,7 @@ import {apiResourceStateToPropsUtils} from "../../react-utils/ApiResource";
 import {toast} from 'react-toastify';
 import TopBanner from "../../components/TopBanner";
 import {settings} from "../../settings";
+import AnnouncementAlert from "../../components/AnnouncementAlert";
 
 class PasswordChange extends React.Component {
   static getInitialProps ({ reduxStore, res }) {
@@ -92,6 +93,8 @@ class PasswordChange extends React.Component {
         <div className="row">
           <TopBanner category="Any" />
           <div className="col-12">
+            <AnnouncementAlert />
+
             <h1>Cambio de contraseña</h1>
             <hr />
           </div>
