@@ -132,7 +132,11 @@ class PricingHistoryModalChart extends React.Component {
       tooltips: {
         callbacks: {
           title: (tooltipItems, data) => {
-            return tooltipItems.length && moment(tooltipItems[0].xLabel).format('ll')
+            if (tooltipItems) {
+              const xData = data.datasets[tooltipItems[0].datasetIndex].data[tooltipItems[0].index].x;
+              return xData.format('ll')
+            }
+            return false
           },
           label: (tooltipItem, data) => {
             const datapoint = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
