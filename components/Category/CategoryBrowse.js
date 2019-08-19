@@ -89,7 +89,7 @@ class CategoryBrowse extends React.Component {
   }
 
   static getInitialFormDataAndSearchResults(usdCurrency, conversionCurrency, preferredCountry, formLayout, priceRange, preferredNumberFormat, category, preferredCountryStores, asPath) {
-    const processedFormLayout = processFormLayout(formLayout, priceRange, usdCurrency, conversionCurrency, preferredNumberFormat);
+    const processedFormLayout = processFormLayout(formLayout, priceRange, usdCurrency, conversionCurrency, preferredNumberFormat, preferredCountry);
     const endpoint = this.apiEndpoint(category, preferredCountryStores);
     return ApiFormNext.getInitialProps(processedFormLayout, asPath, [endpoint], fetchJson);
   }
@@ -228,10 +228,10 @@ class CategoryBrowse extends React.Component {
 
   render() {
     const {formLayout, searchResults} = this.state;
-    const {numberFormat, priceRange, usdCurrency, conversionCurrency, category, stores, initialFormData, isExtraSmall} = this.props;
+    const {numberFormat, priceRange, usdCurrency, conversionCurrency, category, stores, initialFormData, isExtraSmall, preferredCountry} = this.props;
     const categoryBrowseParams = settings.categoryBrowseParameters[category.id];
 
-    const {filtersLayout, ordering, pagination} = processFormLayout(formLayout, priceRange, usdCurrency, conversionCurrency, numberFormat);
+    const {filtersLayout, ordering, pagination} = processFormLayout(formLayout, priceRange, usdCurrency, conversionCurrency, numberFormat, preferredCountry);
     const apiFormFields = ['ordering', 'page'];
 
     for (const fieldset of filtersLayout) {
@@ -606,7 +606,7 @@ const getFormLayout = async (category) => {
   return processed_form_layouts[0] || null;
 };
 
-const processFormLayout = (formLayout, priceRange, usdCurrency, conversionCurrency, numberFormat) => {
+const processFormLayout = (formLayout, priceRange, usdCurrency, conversionCurrency, numberFormat, country) => {
   formLayout.fieldsets = formLayout.fieldsets.map((fieldset, idx) => ({
     id: fieldset.id,
     label: fieldset.label,

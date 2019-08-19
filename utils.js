@@ -70,8 +70,8 @@ export const getPreferredStores = (user, state) => {
   let preferredStoresLastUpdated = user ? moment(user.preferred_stores_last_updated) : state.preferredStoresLastUpdated;
 
   if (!preferredStoresLastUpdated) {
-    // date of first version. Existing stores are guaranteed have activation dates before this.
-    preferredStoresLastUpdated = moment('2019-08-10T00:00:00+00:00')
+    // Existing stores are guaranteed have activation dates after this.
+    preferredStoresLastUpdated = moment('2018-01-01T00:00:00+00:00')
   }
 
   const storesActivatedSinceLastVisitUrls = stores.filter(store => {
