@@ -44,7 +44,7 @@ class NotebookComponentList extends React.Component {
       storesComponent += `stores=${store.id}&`
     }
 
-    fetchJson(`categories/1/es_browse?${storesComponent}page_size=3&ordering=offer_price_usd&${this.props.browse_path}${matchingComponent.id}`).then(result => {
+    fetchJson(`categories/1/browse?${storesComponent}page_size=3&ordering=offer_price_usd&${this.props.browse_path}${matchingComponent.id}`).then(result => {
       this.setState({
         notebooksWithMatchingComponent: result.results
       })

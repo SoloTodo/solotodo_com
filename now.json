@@ -2,7 +2,7 @@
   "version": 2,
   "name": "solotodo_com",
   "alias": [
-    "beta.solotodo.com"
+    "www.solotodo.com"
   ],
   "builds": [{ "src": "package.json", "use": "@now/next" }],
   "routes": [
@@ -81,6 +81,20 @@
       "status": 301,
       "headers": {
         "Location": "/static/ads.txt"
+      }
+    },
+    {
+      "src": "/robots.txt",
+      "status": 301,
+      "headers": {
+        "Location": "/static/robots.txt"
+      }
+    },
+    {
+      "src": "/sitemap.xml",
+      "status": 301,
+      "headers": {
+        "Location": "https://solotodo-core.s3.amazonaws.com/sitemaps/sitemap.xml"
       }
     },
     {

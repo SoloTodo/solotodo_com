@@ -16,7 +16,7 @@ class ProductsReel extends Component {
     }
 
     let url = 'ordering=' + ordering + '&websites=' + settings.websiteId + storesUrl;
-    const productsResults = await fetchJson('products/es_browse/?' + url);
+    const productsResults = await fetchJson('products/browse/?' + url);
 
     return {
       productEntries: productsResults.results

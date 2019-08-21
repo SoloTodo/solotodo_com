@@ -87,7 +87,7 @@ class ProductSearch extends React.Component {
   };
 
   render() {
-    let endpoint = `products/es_browse/?page_size=${settings.categoryBrowseResultsPerPage}`;
+    let endpoint = `products/browse/?page_size=${settings.categoryBrowseResultsPerPage}`;
 
     for (const store of this.props.preferredCountryStores) {
       endpoint += `&stores=${store.id}`

@@ -60,7 +60,7 @@ class VideoCardGpuDetail extends React.Component {
       storesComponent += `stores=${store.id}&`
     }
 
-    fetchJson(`categories/2/es_browse/?${storesComponent}page_size=3&ordering=offer_price_usd&gpus=${this.props.gpu.id}`).then(result => {
+    fetchJson(`categories/2/browse/?${storesComponent}page_size=3&ordering=offer_price_usd&gpus=${this.props.gpu.id}`).then(result => {
       this.setState({
         videoCardsWithGpu: result.results
       })

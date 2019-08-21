@@ -99,7 +99,7 @@ export const settings = {
       ordering: "-score_general",
     },
     4: {
-      ordering: "offer_price",
+      ordering: "offer_price_usd",
       filters: {
         size_0: "size_family_id",
         resolution_0: "resolution_id",
