@@ -37,7 +37,7 @@ class AlertDeleteByKey extends React.Component {
       payload: alertKey
     };
 
-    fetchJson(`${settings.apiResourceEndpoints.anonymous_alerts}delete_by_key/`, {
+    fetchJson(`${settings.apiResourceEndpoints.alerts}delete_by_key/`, {
       method: 'POST',
       body: JSON.stringify(payload)
     }).then(res => res.json).then(res => {
