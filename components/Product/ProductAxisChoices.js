@@ -1,30 +1,10 @@
 import React from 'react'
 import Link from "next/link";
 import uniqBy from 'lodash/uniqBy'
-import {Modal, ModalHeader, ModalBody} from "reactstrap";
+
+import ProductAxisChoicesButton from './ProductAxisChoicesButton'
 
 class AxisChoices extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      otherVariantsModalIsActive: false
-    }
-  }
-
-  otherVariantsModalToggle = () => {
-    this.setState({
-      otherVariantsModalIsActive: !this.state.otherVariantsModalIsActive
-    })
-  };
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.props.product.id !== prevProps.product.id) {
-      this.setState({
-        otherVariantsModalIsActive: false
-      })
-    }
-  }
-
   render() {
     const labelAndOrderingValues = this.props.pricingEntries.map(pricingEntry => ({
       labelValue: pricingEntry.product.specs[this.props.axis.labelField],
@@ -84,33 +64,10 @@ class AxisChoices extends React.Component {
               <button type="button" className="btn btn-outline-secondary btn-sm">{choice.labelValue}</button>
             </Link>
           } else {
-            return <div key={choice.labelValue}>
-              <button type="button" className="btn btn-outline-secondary btn-sm" key={choice.labelValue} onClick={this.otherVariantsModalToggle}>
-                {choice.labelValue}
-              </button>
-              <Modal id="variants-modal" isOpen={this.state.otherVariantsModalIsActive} toggle={this.otherVariantsModalToggle}>
-                <ModalHeader toggle={this.otherVariantsModalToggle}>
-                  Producto exacto no disponible
-                </ModalHeader>
-                <ModalBody>
-                  <div className="row">
-                    <div className="col-12">
-                      <p>Te mostramos variantes en {axis.label} {choice.labelValue} que
-                        sí están disponibles para compra:</p>
-                      {choice.matchingAxisPricingEntries.map(pricingEntry => (
-                        <p key={pricingEntry.product.id}>
-                          <Link
-                            href={`/products/view?id=${pricingEntry.product.id}&slug=${pricingEntry.product.slug}`}
-                            as={`/products/${pricingEntry.product.id}-${pricingEntry.product.slug}`}>
-                            <a>{pricingEntry.product.name}</a>
-                          </Link>
-                        </p>
-                      ))}
-                    </div>
-                  </div>
-                </ModalBody>
-              </Modal>
-            </div>
+            return <ProductAxisChoicesButton
+              key={choice.labelValue}
+              choice={choice}
+              axis={axis}/>
           }
         })}
       </div>
