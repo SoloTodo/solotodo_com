@@ -46,7 +46,7 @@ class ProductAlertButton extends React.Component {
       stores: this.props.preferredCountryStores.map(store => store.id)
     };
 
-    fetchJson(settings.apiResourceEndpoints.anonymous_alerts, {
+    fetchJson(settings.apiResourceEndpoints.alerts, {
       method: 'POST',
       body: JSON.stringify(payload)
     }).then(() => {
