@@ -450,18 +450,18 @@ class CategoryBrowse extends React.Component {
           initialFormData={initialFormData}
           onPushUrl={() => {window.scrollTo(0, 0)}}
         >
-          <div id="page-wrap" className={classNames('flex-grow', 'w-100', {'mobile-top-banner-container': isExtraSmall})}>
-            {isExtraSmall &&
+          {isExtraSmall &&
             <Menu pageWrapId="page-wrap"
                   outerContainerId="outer-container"
                   isOpen={this.state.isMobileMenuOpen}
                   onStateChange={(state) => this.handleMenuStateChange(state)}
             >
-              <div id="category-browse-filters-mobile">
+                <div id="category-browse-filters-mobile">
                 {filtersComponent}
               </div>
             </Menu>
-            }
+          }
+          <div id="page-wrap" className={classNames('flex-grow', 'w-100', {'mobile-top-banner-container': isExtraSmall})}>
             {isExtraSmall &&
             <div className="pt-2 pb-2" id="mobile-filter-and-ordering">
               <div className="col-12 d-flex justify-content-between">
