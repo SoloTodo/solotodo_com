@@ -24,7 +24,7 @@ class ProductVideo extends React.Component {
   }
 
   componentUpdate = () => {
-    fetchJson(`products/${this.props.product.id}/videos`).then(productVideos => {
+    fetchJson(`products/${this.props.product.id}/videos/`).then(productVideos => {
       if (productVideos.length > 0) {
         const videoUrl = `https://www.youtube.com/embed/${productVideos[0].youtube_id}`;
         const videoTitle = productVideos[0].name;
