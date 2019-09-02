@@ -15,6 +15,7 @@ import Loading from "../../components/Loading";
 import BudgetEditDesktop from "../../components/Budget/BudgetEditDesktop";
 import BudgetEditMobile from "../../components/Budget/BudgetEditMobile";
 import Head from "next/head";
+import {toast} from "react-toastify";
 
 class BudgetEdit extends React.Component {
   constructor(props) {
@@ -40,10 +41,8 @@ class BudgetEdit extends React.Component {
     try{
       initialBudget = await fetchAuth(budgetUrl);
     } catch (e) {
-      if (res) {
-        res.statusCode = 404;
-        res.end('Not found');
-        return
+      return {
+        initialBudget: null
       }
     }
 
@@ -65,12 +64,20 @@ class BudgetEdit extends React.Component {
   }
 
   componentDidMount() {
+    if (!this.props.initialBudget) {
+      toast.info('Por favor inicia sesion para poder acceder a las cotizaciones.', {autoClose: false});
+      Router.push('/account/login');
+      return
+    }
     this.setState({
       budget: this.props.initialBudget
     }, () => this.componentUpdate());
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
+    if (!prevProps.initialBudget) {
+      return
+    }
     const oldPreferredStores = prevProps.preferredCountryStores;
     const newPreferredStores = this.props.preferredCountryStores;
 
