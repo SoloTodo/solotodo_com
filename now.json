@@ -12,6 +12,11 @@
       "headers": { "cache-control": "no-cache" }
     },
     {
+      "src": "/tos",
+      "dest": "/tos",
+      "headers": { "cache-control": "no-cache" }
+    },
+    {
       "src": "/reset/(?<uid>[^/]+?)/(?<token>[^/]+?)/?",
       "dest": "/reset?uid=$uid&token=$token",
       "headers": { "cache-control": "no-cache" }
