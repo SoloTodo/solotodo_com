@@ -159,8 +159,6 @@ export const updatePreferredExcludeRefurbished = (preferred_exclude_refurbished,
   } else {
     dispatch(setSessionPreferredExcludeRefurbished(preferred_exclude_refurbished));
   }
-
-  return dispatch(updateNavigation(country.url));
 };
 
 

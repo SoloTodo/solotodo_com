@@ -24,6 +24,7 @@ import NavBarSelectedDepartment from "./NavBarSelectedDepartment";
 import NavBarBudgets from "./NavBarBudgets"
 import SearchByKeywords from "./SearchByKeywords"
 import {initializeUser} from "../../redux/actions";
+import NavBarFilters from "./NavBarFilters";
 
 class NavBar extends React.Component {
   constructor(props) {
@@ -114,7 +115,7 @@ class NavBar extends React.Component {
           <Nav onClick={this.undefSelectedDepartment} navbar>
             <SearchByKeywords/>
             <NavBarBudgets/>
-            <NavBarPreferredStores/>
+            <NavBarFilters/>
 
             <UncontrolledDropdown nav>
               <DropdownToggle nav caret className="navbar-icon-item navbar-user-link">
