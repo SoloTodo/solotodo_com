@@ -62,13 +62,13 @@ class BudgetExportButton extends React.Component {
         </UncontrolledDropdown>}
 
       <Modal isOpen={this.state.exportedBBCodeModalIsActive} toggle={this.toggleExportedBBCodeModal}>
-        <ModalHeader toggle={this.toggleExportedBBCodeModal}>Código para foro CHW</ModalHeader>
+        <ModalHeader toggle={this.toggleExportedBBCodeModal}>Código para foro de Capa9</ModalHeader>
         <ModalBody>
           {this.state.bbCode?
             <div>
               <div className="row">
                 <div className="col-12">
-                  <p>Copia y pega este código en el foro de CHW para mostrar tu cotización</p>
+                  <p>Copia y pega este código en el foro de Capa9 para compartir tu cotización</p>
                   <textarea disabled className="exported-bbcode" value={this.state.bbCode}/>
                 </div>
               </div>
