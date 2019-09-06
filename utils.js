@@ -92,6 +92,14 @@ export const getPreferredStores = (user, state) => {
   return newPreferredStores;
 };
 
+export const getPreferredExcludeRefurbished = (user, state) => {
+  if (user) {
+    return user.preferred_exclude_refurbished
+  } else {
+    return Boolean(state.preferredExcludeRefurbished)
+  }
+};
+
 export const persistUser = async (authToken, userChanges) => {
   return await fetchAuth(authToken, 'users/me/', {
     method: 'PATCH',

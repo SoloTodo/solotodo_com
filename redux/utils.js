@@ -25,6 +25,9 @@ export function solotodoStateToPropsUtils(state) {
   const numberFormat = state.apiResourceObjects[preferredCountry.number_format];
   const preferredCurrency = state.apiResourceObjects[preferredCountry.currency];
 
+  const preferredExcludeRefurbished = Boolean(user ? user.preferred_exclude_refurbished : state.preferredExcludeRefurbished);
+  console.log(preferredExcludeRefurbished)
+
   const _formatCurrency = (value, valueCurrency) => {
     if (!valueCurrency) {
       valueCurrency = preferredCurrency;
@@ -44,7 +47,8 @@ export function solotodoStateToPropsUtils(state) {
     countryStores,
     preferredCurrency,
     numberFormat,
+    preferredExcludeRefurbished,
     formatCurrency: _formatCurrency,
-    preferredNumberFormat: numberFormat
+    preferredNumberFormat: numberFormat,
   };
 }

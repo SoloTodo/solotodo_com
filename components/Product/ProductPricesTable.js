@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 
 import {
   areObjectsEqual,
-  areValueListsEqual, areValuesEqual,
+  areValueListsEqual,
   fetchJson
 } from "../../react-utils/utils";
 import {listToObject} from "../../react-utils/utils";
