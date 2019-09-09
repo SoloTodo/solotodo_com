@@ -87,7 +87,7 @@ class ProductSearch extends React.Component {
   };
 
   render() {
-    let endpoint = `products/browse/?page_size=${settings.categoryBrowseResultsPerPage}`;
+    let endpoint = `products/browse/?exclude_refurbished=${this.props.preferredExcludeRefurbished}&page_size=${settings.categoryBrowseResultsPerPage}`;
 
     for (const store of this.props.preferredCountryStores) {
       endpoint += `&stores=${store.id}`
@@ -216,12 +216,13 @@ class ProductSearch extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const {categories, preferredCountryStores, preferredCountry, formatCurrency} = solotodoStateToPropsUtils(state);
+  const {categories, preferredCountryStores, preferredExcludeRefurbished, preferredCountry, formatCurrency} = solotodoStateToPropsUtils(state);
 
   return {
     isExtraSmall: state.browser.is.extraSmall,
     preferredCountry,
     preferredCountryStores,
+    preferredExcludeRefurbished,
     formatCurrency,
     categories
   }

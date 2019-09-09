@@ -38,10 +38,10 @@ class NavBarHideRefurbished extends React.Component {
         type="switch"
         id="hideRefurbished"
         name="hideRefurbishedSwitch"
-        label="Ocultar Reacondicionados"
+        label="Ocultar reacondicionados"
         onClick={this.toggleHideRefurbished}
         inline
-        checked={this.state.hideRefurbished}/>
+        defaultChecked={this.state.hideRefurbished}/>
     </DropdownItem>;
   }
 }

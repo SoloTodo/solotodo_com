@@ -24,19 +24,20 @@ class ProductAlternatives extends React.Component {
   }
 
   componentDidMount() {
-    this.componentUpdate(this.props.preferredCountryStores, this.props.product, this.props.category, this.props.entity)
+    this.componentUpdate(this.props.preferredCountryStores, this.props.preferredExcludeRefurbished, this.props.product, this.props.category, this.props.entity)
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.props.product.id !== prevProps.product.id ||
       !areValueListsEqual(prevProps.preferredCountryStores, this.props.preferredCountryStores) ||
-      !areObjectsEqual(prevProps.preferredCountry, this.props.preferredCountry)) {
-      this.componentUpdate(this.props.preferredCountryStores, this.props.product, this.props.category, this.props.entity)
+      !areObjectsEqual(prevProps.preferredCountry, this.props.preferredCountry) ||
+      prevProps.preferredExcludeRefurbished !== this.props.preferredExcludeRefurbished) {
+      this.componentUpdate(this.props.preferredCountryStores, this.props.preferredExcludeRefurbished, this.props.product, this.props.category, this.props.entity)
     }
   }
 
-  componentUpdate = (preferredStores, product, category, entity) => {
-    const alternativesUrl = this.alternativesUrlCreator(product, category, entity, API_MODE, preferredStores);
+  componentUpdate = (preferredStores, excludeRefurbished, product, category, entity) => {
+    const alternativesUrl = this.alternativesUrlCreator(product, category, entity, API_MODE, preferredStores, excludeRefurbished);
     fetchJson(`${alternativesUrl}`).then(alternativeProducts => {
       const alternativeProductsBuckets = alternativeProducts.results.filter(bucket => bucket.product_entries[0].product.id !== product.id);
       this.setState({
@@ -45,7 +46,7 @@ class ProductAlternatives extends React.Component {
     });
   };
 
-  alternativesUrlCreator = (product, category, entity, mode, preferredStores) => {
+  alternativesUrlCreator = (product, category, entity, mode, preferredStores, excludeRefurbished) => {
     let url = '';
 
     if (entity) {
@@ -66,7 +67,7 @@ class ProductAlternatives extends React.Component {
       for (const store of preferredStores) {
         url += `stores=${store.id}&`;
       }
-      return `categories/${category.id}/browse/?${url}&page_size=4`
+      return `categories/${category.id}/browse/?exclude_refurbished=${excludeRefurbished}&${url}&page_size=4`
     } else if (mode === BUTTON_MODE) {
       return `${url}`.replace(/_0/gi, '_start').replace(/_1/gi, '_end')
     }
@@ -119,10 +120,11 @@ class ProductAlternatives extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const {preferredCountryStores, preferredCountry} = solotodoStateToPropsUtils(state);
+  const {preferredCountryStores, preferredExcludeRefurbished, preferredCountry} = solotodoStateToPropsUtils(state);
 
   return {
     preferredCountryStores,
+    preferredExcludeRefurbished,
     preferredCountry,
     mediaType: state.browser.mediaType,
     apiResourceObjects: state.apiResourceObjects

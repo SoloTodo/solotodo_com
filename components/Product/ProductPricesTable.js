@@ -29,7 +29,8 @@ class ProductPricesTable extends React.Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.product.id !== this.props.product.id ||
       !areValueListsEqual(prevProps.preferredCountryStores, this.props.preferredCountryStores) ||
-      !areObjectsEqual(prevProps.preferredCountry, this.props.preferredCountry)) {
+      !areObjectsEqual(prevProps.preferredCountry, this.props.preferredCountry) ||
+      prevProps.preferredExcludeRefurbished !== this.props.preferredExcludeRefurbished) {
       this.componentUpdate(this.props.product)
     }
   }
@@ -42,7 +43,7 @@ class ProductPricesTable extends React.Component {
       storesUrl += `&stores=${store.id}`
     }
 
-    fetchJson(`${productsUrl}available_entities/?ids=${product.id}${storesUrl}`).then(availableEntities => {
+    fetchJson(`${productsUrl}available_entities/?ids=${product.id}${storesUrl}&exclude_refurbished=${this.props.preferredExcludeRefurbished}`).then(availableEntities => {
       const entities = availableEntities.results[0].entities.filter(entity => entity.active_registry.cell_monthly_payment === null);
       this.props.onEntitiesChange(entities);
 
@@ -92,11 +93,12 @@ class ProductPricesTable extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const {preferredCountry, preferredCountryStores, formatCurrency} = solotodoStateToPropsUtils(state);
+  const {preferredCountry, preferredCountryStores, preferredExcludeRefurbished, formatCurrency} = solotodoStateToPropsUtils(state);
 
   return {
     preferredCountry,
     preferredCountryStores,
+    preferredExcludeRefurbished,
     formatCurrency
   }
 }
