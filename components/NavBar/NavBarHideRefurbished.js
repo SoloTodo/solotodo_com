@@ -16,11 +16,23 @@ class NavBarHideRefurbished extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      hideRefurbished: this.props.preferredExcludeRefurbished,
+      hideRefurbished: undefined,
     }
   }
 
+  componentDidMount() {
+    this.setState({
+      hideRefurbished: this.props.preferredExcludeRefurbished
+    })
+  }
+
   componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevProps.preferredExcludeRefurbished !== this.props.preferredExcludeRefurbished){
+      this.setState({
+        hideRefurbished: this.props.preferredExcludeRefurbished
+      })
+    }
+
     if (this.state.hideRefurbished !== prevState.hideRefurbished){
       this.props.updatePreferredExcludeRefurbished(this.state.hideRefurbished, this.props.user)
     }

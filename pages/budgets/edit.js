@@ -91,6 +91,7 @@ class BudgetEdit extends React.Component {
     }
 
     if (!areObjectListsEqual(oldPreferredStores, newPreferredStores) ||
+      (prevProps.preferredExcludeRefurbished !== this.props.preferredExcludeRefurbished) ||
       (prevState.budget && !areObjectListsEqual(prevState.budget.products_pool, this.state.budget.products_pool))) {
       this.componentUpdate();
     }
@@ -99,6 +100,7 @@ class BudgetEdit extends React.Component {
   componentUpdate() {
     const budget = this.state.budget;
     const stores = this.props.preferredCountryStores;
+    const excludeRefurbished = this.props.preferredExcludeRefurbished;
 
     if (budget.products_pool.length) {
       let url = 'products/available_entities/?';
@@ -109,6 +111,8 @@ class BudgetEdit extends React.Component {
       for (const store of stores) {
         url += `&stores=${store.id}`;
       }
+
+      url += `&exclude_refurbished=${excludeRefurbished}`;
 
       fetchJson(url).then(response => {
         const pricingEntries = response.results;
@@ -206,12 +210,13 @@ class BudgetEdit extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const {categories, preferredCountryStores} = solotodoStateToPropsUtils(state);
+  const {categories, preferredCountryStores, preferredExcludeRefurbished} = solotodoStateToPropsUtils(state);
   const {fetchAuth} = apiResourceStateToPropsUtils(state);
 
   return {
     budgetCategories: categories.filter(category => category.budget_ordering),
     preferredCountryStores,
+    preferredExcludeRefurbished,
     isExtraSmall: state.browser.is.extraSmall,
     fetchAuth,
   }
