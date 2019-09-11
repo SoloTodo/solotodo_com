@@ -71,6 +71,9 @@ class PricingHistory extends React.Component {
         }
 
         for (const historyPoint of pricingEntry.pricing_history){
+          if (!historyPoint.is_available) {
+            continue
+          }
           const timestamp = moment(historyPoint.timestamp).startOf('day');
           const normalPrice = convertToDecimal(historyPoint.normal_price);
           const offerPrice = convertToDecimal(historyPoint.offer_price);

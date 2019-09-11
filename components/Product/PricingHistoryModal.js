@@ -58,6 +58,7 @@ class PricingHistoryModal extends React.Component {
         entity: pricingEntry.entity,
         pricingHistory: pricingEntry.pricing_history.map(entityHistory => ({
           timestamp: moment(entityHistory.timestamp),
+          is_available: entityHistory.is_available,
           normalPrice: convertToDecimal(entityHistory.normal_price),
           offerPrice: convertToDecimal(entityHistory.offer_price)
         }))
