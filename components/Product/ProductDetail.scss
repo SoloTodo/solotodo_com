@@ -204,23 +204,24 @@
   #product-detail-images {
     grid-column-start: 1;
     grid-row-start: 1;
-    grid-row-end: 3;
+    grid-row-end: 2;
   }
 
   #product-detail-prices {
     grid-column-start: 1;
-    grid-row-start: 3;
-    grid-row-end: 5;
+    grid-row-start: 2;
+    grid-row-end: 6;
   }
 
   #product-detail-specs {
     grid-column-start: 2;
     grid-row-start: 1;
+    grid-row-end: 3;
   }
 
   #product-detail-benchmarks {
     grid-column-start: 2;
-    grid-row-start: 2;
+    grid-row-start: 3;
   }
 
   #product-detail-video {
@@ -231,13 +232,13 @@
   #product-detail-pricing-history {
     grid-column-start: 1;
     grid-column-end: 3;
-    grid-row-start: 5;
+    grid-row-start: 6;
   }
 
   #product-detail-alternatives {
     grid-column-start: 1;
     grid-column-end: 3;
-    grid-row-start: 6;
+    grid-row-start: 7;
   }
 }
 
@@ -249,12 +250,12 @@
   #product-detail-images {
     grid-column-start: 1;
     grid-row-start: 1;
-    grid-row-end: 3;
   }
 
   #product-detail-prices {
     grid-column-start: 1;
-    grid-row-start: 3;
+    grid-row-start: 2;
+    grid-row-end: 4;
   }
 
   #product-detail-specs {
