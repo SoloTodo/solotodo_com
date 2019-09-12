@@ -1,6 +1,5 @@
 import React from 'react'
 import {connect} from "react-redux";
-import moment from "moment";
 import {Line} from 'react-chartjs-2';
 
 import {chartColors, lightenDarkenColor} from "../../react-utils/colors";
@@ -28,7 +27,7 @@ class PricingHistoryModalChart extends React.Component {
         if (!pricingEntry.is_available) {
           continue
         }
-        const dateKey = pricingEntry.timestamp.startOf('day');
+        const dateKey = pricingEntry.timestamp.utcOffset(this.props.offSet).startOf('day');
         if (!storeMinimumPrices[store.name][dateKey]
           || pricingEntry[priceType].lt(storeMinimumPrices[store.name][dateKey][priceType])) {
           storeMinimumPrices[store.name][dateKey] = pricingEntry

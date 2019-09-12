@@ -17,10 +17,13 @@ import PricingHistoryModalChart from "./PricingHistoryModalChart";
 class PricingHistoryModal extends React.Component {
   constructor(props) {
     super(props);
+    const startDate = moment().subtract(settings.defaultDaysForPricingHistory, 'days').startOf('day');
+    const offSet = startDate.utcOffset();
     this.state = {
       priceType: 'offerPrice',
-      startDate: moment().startOf('day').subtract(settings.defaultDaysForPricingHistory, 'days'),
-      endDate: moment().startOf('day').add(1, 'days'),
+      offSet,
+      startDate: startDate.utcOffset(offSet),
+      endDate: moment().add(1, 'days').utcOffset(offSet).startOf('day'),
       data: undefined,
       pricingModalIsActive: false
     }
@@ -71,13 +74,15 @@ class PricingHistoryModal extends React.Component {
   };
 
   handleDateChange = (e) => {
-    const value = moment(e.target.value);
+    const value = moment(e.target.value).startOf('day');
+    const offSet = value.utcOffset();
     if (e.target.name === 'endDate') {
       value.add(1, 'days')
     }
     this.setState({
       data: undefined,
-      [e.target.name]: value
+      offSet,
+      [e.target.name]: value.utcOffset(offSet)
     })
   };
 
@@ -135,6 +140,7 @@ class PricingHistoryModal extends React.Component {
                 data={this.state.data}
                 startDate={this.state.startDate}
                 endDate={this.state.endDate}
+                offSet={this.state.offSet}
                 priceType={this.state.priceType}/>
             </div>
           </div>
