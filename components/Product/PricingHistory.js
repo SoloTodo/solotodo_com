@@ -20,9 +20,12 @@ import PricingHistoryModal from "./PricingHistoryModal";
 class PricingHistory extends React.Component {
   constructor(props) {
     super(props);
+    const startDate = moment().subtract(settings.defaultDaysForPricingHistory, 'days').startOf('day');
+    const offSet = startDate.utcOffset();
     this.state = {
-      startDate: moment().startOf('day').subtract(settings.defaultDaysForPricingHistory, 'days'),
-      endDate: moment().startOf('day').add(1, 'days'),
+      offSet,
+      startDate: startDate.utcOffset(offSet),
+      endDate: moment().add(1, 'days').utcOffset(offSet).startOf('day'),
       chart: undefined
     }
   }
@@ -34,9 +37,12 @@ class PricingHistory extends React.Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.props.product.id !== prevProps.product.id) {
+      const startDate = moment().subtract(settings.defaultDaysForPricingHistory, 'days').startOf('day');
+      const offSet = startDate.utcOffset();
       this.setState({
-        startDate: moment().startOf('day').subtract(settings.defaultDaysForPricingHistory, 'days'),
-        endDate: moment().startOf('day').add(1, 'days'),
+        offSet,
+        startDate: startDate.utcOffset(offSet),
+        endDate: moment().add(1, 'days').utcOffset(offSet).startOf('day'),
         chart: undefined
       }, () => this.componentUpdate(this.props.preferredCountryStores, this.props.product));
 
@@ -71,7 +77,10 @@ class PricingHistory extends React.Component {
         }
 
         for (const historyPoint of pricingEntry.pricing_history){
-          const timestamp = moment(historyPoint.timestamp).startOf('day');
+          if (!historyPoint.is_available) {
+            continue
+          }
+          const timestamp = moment(historyPoint.timestamp).utcOffset(this.state.offSet).startOf('day');
           const normalPrice = convertToDecimal(historyPoint.normal_price);
           const offerPrice = convertToDecimal(historyPoint.offer_price);
           if (!dayMinimumPrices.offerPrices[timestamp] || offerPrice.lt(dayMinimumPrices.offerPrices[timestamp].offerPrice)) {
@@ -128,13 +137,15 @@ class PricingHistory extends React.Component {
   };
 
   handleDateChange = (e) => {
-    const value = moment(e.target.value);
+    const value = moment(e.target.value).startOf('day');
+    const offSet = value.utcOffset();
     if (e.target.id === 'endDate') {
       value.add(1, 'days')
     }
     this.setState({
       chart:undefined,
-      [e.target.id]:value
+      offSet,
+      [e.target.id]:value.utcOffset(offSet)
     })
   };
 
