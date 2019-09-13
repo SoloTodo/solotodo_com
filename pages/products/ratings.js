@@ -65,7 +65,7 @@ class ProductRatings extends React.Component {
     const category = this.props.category;
     const userIsStaff = this.props.user && this.props.user.is_staff;
 
-    const ratings = this.props.ratings.results;
+    const ratings = this.props.ratings.results.filter(rating => stores.filter(store => store.url === rating.store)[0]);
     const pageCount = Math.ceil(this.props.ratings.count/10);
     const previousLabel = <span>&lsaquo;</span>;
     const nextLabel = <span>&rsaquo;</span>;
