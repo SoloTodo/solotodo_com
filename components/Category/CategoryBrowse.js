@@ -28,7 +28,6 @@ import {
 } from "../../react-utils/api_forms/ApiFormFieldsNext";
 import {filterApiResourceObjectsByType} from "../../react-utils/ApiResource";
 import AnnouncementAlert from "../AnnouncementAlert";
-import {updatePreferredExcludeRefurbished} from "../../redux/actions";
 
 
 class CategoryBrowse extends React.Component {
@@ -119,8 +118,8 @@ class CategoryBrowse extends React.Component {
       this.props.saveCategoryBrowsePriceRange(this.props.category, storeIds, this.props.priceRange);
     }
 
-    if (!areObjectListsEqual(this.props.stores, prevProps.stores)) {
-      const asPath = `${window.location.pathname}${window.location.search}`
+    if (!areObjectListsEqual(this.props.stores, prevProps.stores) || this.props.excludeRefurbished !== prevProps.excludeRefurbished) {
+      const asPath = `${window.location.pathname}${window.location.search}`;
 
       CategoryBrowse.getInitialFormDataAndSearchResults(
         this.props.usdCurrency,
@@ -131,6 +130,7 @@ class CategoryBrowse extends React.Component {
         this.props.numberFormat,
         this.props.category,
         this.props.stores,
+        this.props.excludeRefurbished,
         asPath)
         .then(({initialFormData, initialSearchResults}) => {
           this.setState({
