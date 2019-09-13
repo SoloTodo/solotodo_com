@@ -48,7 +48,8 @@ class VideoCardGpuDetail extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (!areListsEqual(this.props.preferredCountryStores,prevProps.preferredCountryStores)) {
+    if (!areListsEqual(this.props.preferredCountryStores,prevProps.preferredCountryStores) ||
+      prevProps.preferredCountryStores !== this.props.preferredCountryStores) {
       this.componentUpdate();
     }
   }
@@ -60,7 +61,7 @@ class VideoCardGpuDetail extends React.Component {
       storesComponent += `stores=${store.id}&`
     }
 
-    fetchJson(`categories/2/browse/?${storesComponent}page_size=3&ordering=offer_price_usd&gpus=${this.props.gpu.id}`).then(result => {
+    fetchJson(`categories/2/browse/?exclude_refurbished=${this.props.preferredExcludeRefurbished}&${storesComponent}page_size=3&ordering=offer_price_usd&gpus=${this.props.gpu.id}`).then(result => {
       this.setState({
         videoCardsWithGpu: result.results
       })
@@ -185,11 +186,12 @@ class VideoCardGpuDetail extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const {formatCurrency, preferredCountryStores} = solotodoStateToPropsUtils(state);
+  const {formatCurrency, preferredCountryStores, preferredExcludeRefurbished} = solotodoStateToPropsUtils(state);
 
   return {
     formatCurrency,
     preferredCountryStores,
+    preferredExcludeRefurbished,
     mediaType: state.browser.mediaType
   }
 }

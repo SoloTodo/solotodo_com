@@ -8,7 +8,7 @@ import ProductShortDescription from "./ProductShortDescription";
 import Loading from "../Loading";
 
 class ProductsReel extends Component {
-  static async getInitialProps(stores, ordering) {
+  static async getInitialProps(stores, excludeRefurbished, ordering) {
     let storesUrl = '';
 
     for (const store of stores) {
@@ -16,7 +16,7 @@ class ProductsReel extends Component {
     }
 
     let url = 'ordering=' + ordering + '&websites=' + settings.websiteId + storesUrl;
-    const productsResults = await fetchJson('products/browse/?' + url);
+    const productsResults = await fetchJson(`products/browse/?exclude_refurbished=${excludeRefurbished}&` + url);
 
     return {
       productEntries: productsResults.results
@@ -40,13 +40,14 @@ class ProductsReel extends Component {
     const newPreferredStores = this.props.preferredCountryStores;
     const oldPreferredStores = prevProps.preferredCountryStores;
 
-    if (!areObjectListsEqual(oldPreferredStores, newPreferredStores)) {
+    if (!areObjectListsEqual(oldPreferredStores, newPreferredStores) ||
+      prevProps.preferredExcludeRefurbished !== this.props.preferredExcludeRefurbished) {
       this.componentUpdate()
     }
   }
 
   componentUpdate() {
-    ProductsReel.getInitialProps(this.props.preferredCountryStores, this.props.ordering).then(updatedProducts => {
+    ProductsReel.getInitialProps(this.props.preferredCountryStores, this.props.preferredExcludeRefurbished, this.props.ordering).then(updatedProducts => {
         this.setState({
           productEntries: updatedProducts.productEntries
         })
@@ -93,10 +94,11 @@ class ProductsReel extends Component {
 }
 
 function mapStateToProps(state) {
-  const {preferredCountryStores} = solotodoStateToPropsUtils(state);
+  const {preferredCountryStores, preferredExcludeRefurbished} = solotodoStateToPropsUtils(state);
 
   return {
     preferredCountryStores,
+    preferredExcludeRefurbished,
     mediaType: state.browser.mediaType
   }
 }

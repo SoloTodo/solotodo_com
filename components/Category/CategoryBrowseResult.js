@@ -22,6 +22,14 @@ class CategoryBrowseResult extends React.Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.props.bucket !== prevProps.bucket) {
+      this.setState({
+        selectedProductEntry: this.props.bucket.product_entries[0]
+      })
+    }
+  }
+
   handleVariantChange = selectedOption => {
     const newSelectedProductEntry = this.props.bucket.product_entries.filter(entry => entry.product.url === selectedOption.value)[0];
     this.setState({
@@ -91,7 +99,7 @@ class CategoryBrowseResult extends React.Component {
               value={{value: product.url, label: product.specs[bucketProductLabelField] }}
               onChange={this.handleVariantChange}
               options={choices}
-              searchable={false}
+              isSearchable={false}
               clearable={false}
           />
         </div>

@@ -48,6 +48,18 @@ function preferredStoresLastUpdatedReducer(state, action) {
   return state
 }
 
+function preferredExcludeRefurbished(state, action) {
+  if (typeof state === 'undefined') {
+    return null
+  }
+
+  if (action.type === 'setPreferredExcludeRefurbished') {
+    return action.preferredExcludeRefurbished
+  }
+
+  return state
+}
+
 function navigationReducer(state, action) {
   if (typeof state === 'undefined') {
     return []
@@ -87,6 +99,7 @@ export const createReducer = isMobile => combineReducers({
   preferredCountryId: preferredCountryIdReducer,
   preferredStoreIds: preferredStoreIdsReducer,
   preferredStoresLastUpdated: preferredStoresLastUpdatedReducer,
+  preferredExcludeRefurbished: preferredExcludeRefurbished,
   apiResourceObjects: apiResourceObjectsReducer,
   loadedBundle: loadedBundleReducer,
   navigation: navigationReducer,

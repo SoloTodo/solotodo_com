@@ -7,7 +7,11 @@ import {
   convertIdToUrl
 } from '../react-utils/utils';
 import { settings } from '../settings'
-import {getPreferredCountry, getPreferredStores, persistUser} from "../utils";
+import {
+  getPreferredCountry, getPreferredExcludeRefurbished,
+  getPreferredStores,
+  persistUser
+} from "../utils";
 import {fetchRequiredResources} from "../react-utils/redux/utils";
 import {filterApiResourceObjectsByType} from "../react-utils/ApiResource";
 
@@ -52,6 +56,7 @@ export const initializeUser = (authToken, state, ctx) => async dispatch => {
   }
   const preferredCountry = await getPreferredCountry(user, state, ctx);
   const preferredStores = getPreferredStores(user, state);
+  const preferredExcludeRefurbished = getPreferredExcludeRefurbished(user, state);
 
   if (user) {
     let userChanges = {};
@@ -64,6 +69,10 @@ export const initializeUser = (authToken, state, ctx) => async dispatch => {
       userChanges['preferred_stores'] = preferredStores.map(store => store.url);
     }
 
+    if (user.preferred_exclude_refurbished !== preferredExcludeRefurbished) {
+      userChanges['preferred_exclude_refurbished'] = preferredExcludeRefurbished
+    }
+
     if (Object.keys(userChanges).length > 0) {
       user = await persistUser(authToken, userChanges);
     }
@@ -74,6 +83,7 @@ export const initializeUser = (authToken, state, ctx) => async dispatch => {
     dispatch(setLocalUser(user));
     dispatch(setSessionPreferredCountryId(null, ctx));
     dispatch(setSessionPreferredStoreIds(null, ctx));
+    dispatch(setSessionPreferredExcludeRefurbished(null, ctx));
   } else {
     if (state.preferredCountryId !== preferredCountry.id) {
       dispatch(setSessionPreferredCountryId(preferredCountry.id, ctx));
@@ -81,6 +91,10 @@ export const initializeUser = (authToken, state, ctx) => async dispatch => {
 
     if (!areListsEqual(state.preferredStoreIds, preferredStores.map(store => store.id))) {
       dispatch(setSessionPreferredStoreIds(preferredStores.map(store => store.id), ctx));
+    }
+
+    if (state.preferredExcludeRefurbished !== preferredExcludeRefurbished) {
+      dispatch(setSessionPreferredExcludeRefurbished(preferredExcludeRefurbished, ctx))
     }
 
     // Delete the local user AFTER setting the new prefereces so that
@@ -132,6 +146,21 @@ export const updatePreferredStores = (storeIds, user, authToken) => dispatch => 
     return dispatch(setSessionPreferredStoreIds(storeIds))
   }
 };
+
+export const updatePreferredExcludeRefurbished = (preferred_exclude_refurbished, user, authToken) => dispatch => {
+  if (user) {
+    const userChanges = {
+      preferred_exclude_refurbished: preferred_exclude_refurbished
+    };
+
+    persistUser(authToken, userChanges).then(updatedUser => {
+      dispatch(setLocalUser(updatedUser));
+    });
+  } else {
+    dispatch(setSessionPreferredExcludeRefurbished(preferred_exclude_refurbished));
+  }
+};
+
 
 //////////////////////////
 // Utility methods
@@ -197,3 +226,25 @@ const setSessionPreferredStoreIds = (preferredStoreIds, ctx) => dispatch => {
     preferredStoreIds: preferredStoreIds
   });
 };
+
+/***************************************
+ * Exclude refurbished utility actions *
+ ***************************************/
+
+const setSessionPreferredExcludeRefurbished = (preferredExcludeRefurbished, ctx) => dispatch => {
+  if (preferredExcludeRefurbished === null) {
+    destroyCookie(ctx, 'preferredExcludeRefurbished');
+  } else {
+    setCookie(ctx, 'preferredExcludeRefurbished', JSON.stringify(preferredExcludeRefurbished), {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 14
+    });
+  }
+
+  return dispatch({
+    type: 'setPreferredExcludeRefurbished',
+    preferredExcludeRefurbished: Boolean(preferredExcludeRefurbished)
+  });
+};
+
+

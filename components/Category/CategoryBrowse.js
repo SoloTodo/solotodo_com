@@ -32,7 +32,7 @@ import AnnouncementAlert from "../AnnouncementAlert";
 
 class CategoryBrowse extends React.Component {
   static async getInitialProps(category, reduxState, asPath) {
-    const {preferredCountry, preferredCountryStores, currencies, preferredNumberFormat} = solotodoStateToPropsUtils(reduxState);
+    const {preferredCountry, preferredCountryStores, preferredExcludeRefurbished, currencies, preferredNumberFormat} = solotodoStateToPropsUtils(reduxState);
 
     const formLayouts = filterApiResourceObjectsByType(reduxState.apiResourceObjects, 'category_specs_form_layouts');
     const websiteUrl = convertIdToUrl(settings.websiteId, 'websites');
@@ -56,7 +56,7 @@ class CategoryBrowse extends React.Component {
     if (priceRange) {
       promises.push(priceRange.priceRange)
     } else {
-      promises.push(getGlobalFieldRanges(category, preferredCountryStores))
+      promises.push(getGlobalFieldRanges(category, preferredCountryStores, preferredExcludeRefurbished))
     }
     const result = await Promise.all(promises);
 
@@ -74,8 +74,7 @@ class CategoryBrowse extends React.Component {
     const conversionCurrency = currencies.filter(currency => currency.url === preferredCountry.currency)[0];
 
     const {initialFormData, initialSearchResults} = await this.getInitialFormDataAndSearchResults(
-      usdCurrency, conversionCurrency, preferredCountry, formLayout, priceRange, preferredNumberFormat, category, preferredCountryStores, asPath
-    );
+      usdCurrency, conversionCurrency, preferredCountry, formLayout, priceRange, preferredNumberFormat, category, preferredCountryStores, preferredExcludeRefurbished, asPath);
 
     return {
       category,
@@ -88,9 +87,9 @@ class CategoryBrowse extends React.Component {
     }
   }
 
-  static getInitialFormDataAndSearchResults(usdCurrency, conversionCurrency, preferredCountry, formLayout, priceRange, preferredNumberFormat, category, preferredCountryStores, asPath) {
+  static getInitialFormDataAndSearchResults(usdCurrency, conversionCurrency, preferredCountry, formLayout, priceRange, preferredNumberFormat, category, preferredCountryStores, preferredExcludeRefurbished, asPath) {
     const processedFormLayout = processFormLayout(formLayout, priceRange, usdCurrency, conversionCurrency, preferredNumberFormat, preferredCountry);
-    const endpoint = this.apiEndpoint(category, preferredCountryStores);
+    const endpoint = this.apiEndpoint(category, preferredCountryStores, preferredExcludeRefurbished);
     return ApiFormNext.getInitialProps(processedFormLayout, asPath, [endpoint], fetchJson);
   }
 
@@ -119,8 +118,8 @@ class CategoryBrowse extends React.Component {
       this.props.saveCategoryBrowsePriceRange(this.props.category, storeIds, this.props.priceRange);
     }
 
-    if (!areObjectListsEqual(this.props.stores, prevProps.stores)) {
-      const asPath = `${window.location.pathname}${window.location.search}`
+    if (!areObjectListsEqual(this.props.stores, prevProps.stores) || this.props.excludeRefurbished !== prevProps.excludeRefurbished) {
+      const asPath = `${window.location.pathname}${window.location.search}`;
 
       CategoryBrowse.getInitialFormDataAndSearchResults(
         this.props.usdCurrency,
@@ -131,6 +130,7 @@ class CategoryBrowse extends React.Component {
         this.props.numberFormat,
         this.props.category,
         this.props.stores,
+        this.props.excludeRefurbished,
         asPath)
         .then(({initialFormData, initialSearchResults}) => {
           this.setState({
@@ -192,10 +192,10 @@ class CategoryBrowse extends React.Component {
     });
   };
 
-  static apiEndpoint = (category, stores) => {
+  static apiEndpoint = (category, stores, excludeRefurbished) => {
     const categoryBrowseParams = settings.categoryBrowseParameters[category.id] || {};
 
-    let endpoint = `categories/${category.id}/browse/?page_size=${settings.categoryBrowseResultsPerPage}`;
+    let endpoint = `categories/${category.id}/browse/?exclude_refurbished=${excludeRefurbished}&page_size=${settings.categoryBrowseResultsPerPage}`;
 
     if (categoryBrowseParams.bucketField) {
       endpoint += '&bucket_field=' + categoryBrowseParams.bucketField
@@ -228,7 +228,7 @@ class CategoryBrowse extends React.Component {
 
   render() {
     const {formLayout, searchResults} = this.state;
-    const {numberFormat, priceRange, usdCurrency, conversionCurrency, category, stores, initialFormData, isExtraSmall, preferredCountry} = this.props;
+    const {numberFormat, priceRange, usdCurrency, conversionCurrency, category, stores, initialFormData, isExtraSmall, preferredCountry, excludeRefurbished} = this.props;
     const categoryBrowseParams = settings.categoryBrowseParameters[category.id];
 
     const {filtersLayout, ordering, pagination} = processFormLayout(formLayout, priceRange, usdCurrency, conversionCurrency, numberFormat, preferredCountry);
@@ -412,7 +412,7 @@ class CategoryBrowse extends React.Component {
     ordering.props.initialValue = initialFormData['ordering'].fieldValues;
 
     const products = searchResults.productsPage;
-    const endpoint = CategoryBrowse.apiEndpoint(category, stores);
+    const endpoint = CategoryBrowse.apiEndpoint(category, stores, excludeRefurbished);
 
     const filtersComponent = <Accordion allowMultiple={true}>
       {filtersLayout.map(fieldset => (
@@ -541,7 +541,7 @@ class CategoryBrowse extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  const {preferredCountry, preferredCountryStores, preferredNumberFormat, currencies} = solotodoStateToPropsUtils(state);
+  const {preferredCountry, preferredCountryStores, preferredNumberFormat, preferredExcludeRefurbished} = solotodoStateToPropsUtils(state);
 
   const formLayouts = filterApiResourceObjectsByType(state.apiResourceObjects, 'category_specs_form_layouts');
   const websiteUrl = convertIdToUrl(settings.websiteId, 'websites');
@@ -555,6 +555,7 @@ function mapStateToProps(state, ownProps) {
 
   return {
     preferredCountry,
+    excludeRefurbished: preferredExcludeRefurbished,
     isExtraSmall: state.browser.is.extraSmall,
     stores: preferredCountryStores,
     numberFormat: preferredNumberFormat,
@@ -832,9 +833,9 @@ const processFormLayout = (formLayout, priceRange, usdCurrency, conversionCurren
   };
 };
 
-const getGlobalFieldRanges = async (category, stores) => {
+const getGlobalFieldRanges = async (category, stores, excludeRefurbished) => {
   // Make an empty call to the endpoint to obtain the global min / max and 80th percentile values
-  const endpoint = CategoryBrowse.apiEndpoint(category, stores);
+  const endpoint = CategoryBrowse.apiEndpoint(category, stores, excludeRefurbished);
 
   const json = await fetchJson(endpoint);
 

@@ -1,8 +1,7 @@
 import React from 'react'
 import {connect} from "react-redux";
 import {
-  NavItem,
-  NavLink,
+  DropdownItem,
   Button,
   Modal,
   ModalHeader,
@@ -86,15 +85,12 @@ class NavBarPreferredStores extends React.Component {
     const countryStoresCount = this.props.countryStores.length;
     const preferredCountryStoresCount = this.props.preferredCountryStores.length;
 
-    return <NavItem>
-      <NavLink href="#"
-               className={`navbar-icon-item preferred-stores-button ${preferredCountryStoresCount !== countryStoresCount ? 'preferred-stores-button-margin' : ''}`}
-               onClick={this.togglePreferredStoresModal}>
-        <i className="fas fa-store">&nbsp;</i>
+    return <DropdownItem onClick={this.togglePreferredStoresModal}>
+      <span>
+        Tiendas&nbsp;
         {countryStoresCount !== preferredCountryStoresCount &&
-        <span className="badge badge-light">{preferredCountryStoresCount} de {countryStoresCount}</span>
-        }
-      </NavLink>
+        <span>({preferredCountryStoresCount} de {countryStoresCount})</span>}
+      </span>
       <Modal id="preferred_stores" isOpen={this.state.preferredStoresModalIsActive}
              toggle={this.togglePreferredStoresModal} size="lg">
         <ModalHeader toggle={this.togglePreferredStoresModal}>
@@ -111,15 +107,14 @@ class NavBarPreferredStores extends React.Component {
               key={store.id}
               isChecked={this.state.preferredCountryStores.includes(store)}
               store={store}
-              handleCheckBoxClick={this.handleCheckBoxClick}/>
-          ))}
+              handleCheckBoxClick={this.handleCheckBoxClick}/>))}
         </ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={this.save}>Guardar</Button>
           <Button color="danger" onClick={this.togglePreferredStoresModal}>Cancelar</Button>
         </ModalFooter>
       </Modal>
-    </NavItem>
+    </DropdownItem>
   }
 }
 

@@ -32,6 +32,8 @@ class BudgetViewTable extends React.Component {
       }, () => {
         this.componentUpdate(budget)
       });
+    } else if (prevProps.preferredExcludeRefurbished !== this.props.preferredExcludeRefurbished) {
+      this.componentUpdate(budget)
     }
   }
 
@@ -54,6 +56,8 @@ class BudgetViewTable extends React.Component {
           url += `stores=${store.id}&`;
         }
       }
+
+      url += `&exclude_refurbished=${this.props.preferredExcludeRefurbished}`;
 
       fetchJson(url).then(response => {
         this.setState({
@@ -141,11 +145,12 @@ class BudgetViewTable extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const {stores, currencies, formatCurrency} = solotodoStateToPropsUtils(state);
+  const {stores, currencies, formatCurrency, preferredExcludeRefurbished} = solotodoStateToPropsUtils(state);
   const {fetchAuth} = apiResourceStateToPropsUtils(state);
 
   return {
     stores,
+    preferredExcludeRefurbished,
     clpCurrency: currencies.filter(currency => currency.id === settings.clpCurrencyId)[0],
     formatCurrency,
     fetchAuth,
