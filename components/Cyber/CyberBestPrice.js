@@ -1,45 +1,25 @@
 import React from 'react'
 import {connect} from "react-redux";
-import {
-  Container, Col, Row, Card, CardHeader, CardBody,
-  Button, Input, InputGroup, InputGroupAddon} from "reactstrap"
+import {Col, Card, CardHeader, CardBody} from "reactstrap"
 
-import {fetchJson} from "../../react-utils/utils";
+import ProductPricesTable from "../Product/ProductPricesTable";
+
 import {solotodoStateToPropsUtils} from "../../redux/utils";
 
 
 class CyberBestPrice extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      entities: undefined
-    }
-  }
-
-  componentDidMount() {
-    let url = `products/available_entities/?ids=${this.props.entity.product.id}`;
-    for (const store of this.props.preferredCountryStores){
-      url = url + `&${store.id}`
-    }
-
-    fetchJson(url).then(response => {
-      this.setState({
-        entities: response.results[0].entities
-      })
-    })
-  }
-
   render() {
-    console.log(this.state.entities);
     return <Col sm={{size:8, offset: 2}} className="mt-4">
       <Card>
-        <CardHeader><h2>Mejor precio del mercado</h2></CardHeader>
+        <CardHeader><h2>Precios</h2></CardHeader>
         <CardBody>
-          <Row>
-            <Col sm="5">
-              <img style={{width:"100%"}} src={this.props.entity.picture_urls[0]}/>
-            </Col>
-          </Row>
+          <ProductPricesTable
+            product={this.props.entity.product}
+            category={this.props.categories.filter(category => category.url === this.props.entity.category)[0]}
+            onEntitiesChange={() => {}}
+            entityHighlight={this.props.entity.id}
+            excludeRefurbished={true}
+            hideRatings={true}/>
         </CardBody>
       </Card>
     </Col>
@@ -47,10 +27,9 @@ class CyberBestPrice extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const {preferredCountryStores, user} = solotodoStateToPropsUtils(state);
+  const {categories} = solotodoStateToPropsUtils(state);
   return {
-    preferredCountryStores,
-    user
+    categories
   }
 }
 

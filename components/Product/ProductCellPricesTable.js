@@ -33,17 +33,18 @@ class ProductCellPricesTable extends React.Component {
           <td colSpan="3">
             <div className="d-flex flex-row">
               <span className="mr-2">{group.store.name}</span>
-              <ProductRatingStars
-                value={group.store.rating || 0}
-                linkHref={`/store_ratings?id=${group.store.id}`}
-                linkAs={`/stores/${group.store.id}/ratings`}/>
+              {this.props.hideRatings ? null:
+                <ProductRatingStars
+                  value = {group.store.rating || 0}
+                  linkHref={`/store_ratings?id=${group.store.id}`}
+                  linkAs={`/stores/${group.store.id}/ratings`}/>}
             </div>
           </td>
         </tr>
       );
       for (const entity of group.entities) {
         tableRows.push(
-          <tr key={entity.url}>
+          <tr key={entity.url} style={this.props.entityHighlight === entity.id? {backgroundColor: 'yellow'} : null}>
             <td>
               <SoloTodoLeadLink
                 className="cellphone-table-product-link pl-2"

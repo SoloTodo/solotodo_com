@@ -12,7 +12,9 @@ class ProductNormalPricesTable extends React.Component {
       <thead>
       <tr>
         <th scope="col">Tienda</th>
-        <th scope="col">Rating</th>
+        {this.props.hideRatings? null:
+          <th scope="col">Rating</th>
+        }
         <th scope="col" className="text-right">
           <ReactTooltip id="offer-price" type="info" effect="solid" place="top">
             <span>Con el medio de pago preferido de la tienda</span>
@@ -34,7 +36,7 @@ class ProductNormalPricesTable extends React.Component {
       <tbody>
       {this.props.entities.length? this.props.entities.map(entity => {
         const storeEntry = this.props.storeEntries[entity.store];
-        return <tr key={entity.id}>
+        return <tr key={entity.id} style={this.props.entityHighlight === entity.id? {backgroundColor: 'yellow'} : null}>
           <td>
             <SoloTodoLeadLink
               className="normal-table-product-link"
@@ -45,12 +47,14 @@ class ProductNormalPricesTable extends React.Component {
             </SoloTodoLeadLink>
             <ProductRefurbishedWarning entity={entity}/>
           </td>
-          <td>
-            <ProductRatingStars
-              value={storeEntry.rating}
-              linkHref={`/store_ratings?id=${storeEntry.id}`}
-              linkAs={`/stores/${storeEntry.id}/ratings`}/>
-          </td>
+          {this.props.hideRatings? null:
+            <td>
+              <ProductRatingStars
+                value={storeEntry.rating}
+                linkHref={`/store_ratings?id=${storeEntry.id}`}
+                linkAs={`/stores/${storeEntry.id}/ratings`}/>
+            </td>
+          }
           <td className="text-right">
             <SoloTodoLeadLink
               className="price-container"

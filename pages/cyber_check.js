@@ -12,6 +12,8 @@ import TopBanner from "../components/TopBanner";
 import {toast} from "react-toastify";
 import CyberBestPrice from "../components/Cyber/CyberBestPrice";
 import {solotodoStateToPropsUtils} from "../redux/utils";
+import CyberBestStoreHistoricPrice
+  from "../components/Cyber/CyberBestStoreHistoricPrice";
 
 class CyberCheck extends React.Component {
   constructor(props) {
@@ -41,7 +43,6 @@ class CyberCheck extends React.Component {
   };
 
   render() {
-    console.log(this.state.entity)
     return <React.Fragment>
       <Head>
         <title>Cyber Check - SoloTodo</title>
@@ -82,7 +83,10 @@ class CyberCheck extends React.Component {
             </Col>:null
           }
           {this.state.entity?
-            <CyberBestPrice entity={this.state.entity}/>:null
+            <React.Fragment>
+              <CyberBestStoreHistoricPrice/>
+              <CyberBestPrice entity={this.state.entity}/>
+            </React.Fragment>:null
           }
         </Row>
       </Container>
