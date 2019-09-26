@@ -20,7 +20,7 @@ import PricingHistoryModal from "./PricingHistoryModal";
 class PricingHistory extends React.Component {
   constructor(props) {
     super(props);
-    const startDate = moment().subtract(settings.defaultDaysForPricingHistory, 'days').startOf('day');
+    const startDate = this.props.startDate || moment().subtract(settings.defaultDaysForPricingHistory, 'days').startOf('day');
     const offSet = startDate.utcOffset();
     this.state = {
       offSet,
@@ -242,7 +242,9 @@ class PricingHistory extends React.Component {
       <div className="d-flex justify-content-between">
         <h3>Precio histórico</h3>
         <div className="form-group">
-            <PricingHistoryModal product={this.props.product}/>
+            <PricingHistoryModal
+              product={this.props.product}
+              startDate={this.props.startDate}/>
         </div>
       </div>
       <div className="form-inline prices-chart-container mb-3">

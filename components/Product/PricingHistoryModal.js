@@ -17,7 +17,7 @@ import PricingHistoryModalChart from "./PricingHistoryModalChart";
 class PricingHistoryModal extends React.Component {
   constructor(props) {
     super(props);
-    const startDate = moment().subtract(settings.defaultDaysForPricingHistory, 'days').startOf('day');
+    const startDate = this.props.startDate || moment().subtract(settings.defaultDaysForPricingHistory, 'days').startOf('day');
     const offSet = startDate.utcOffset();
     this.state = {
       priceType: 'offerPrice',

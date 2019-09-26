@@ -14,6 +14,8 @@ import CyberBestPrice from "../components/Cyber/CyberBestPrice";
 import {solotodoStateToPropsUtils} from "../redux/utils";
 import CyberBestStoreHistoricPrice
   from "../components/Cyber/CyberBestStoreHistoricPrice";
+import CyberBestMarketHistoricPrice
+  from "../components/Cyber/CyberBestMarketHistoricPrice";
 
 class CyberCheck extends React.Component {
   constructor(props) {
@@ -84,10 +86,10 @@ class CyberCheck extends React.Component {
           }
           {this.state.entity?
             <React.Fragment>
-              <CyberBestStoreHistoricPrice/>
+              <CyberBestStoreHistoricPrice entity={this.state.entity}/>
+              <CyberBestMarketHistoricPrice entity={this.state.entity}/>
               <CyberBestPrice entity={this.state.entity}/>
-            </React.Fragment>:null
-          }
+            </React.Fragment>:null}
         </Row>
       </Container>
     </React.Fragment>
