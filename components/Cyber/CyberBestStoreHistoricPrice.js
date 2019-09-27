@@ -4,7 +4,7 @@ import {Card, CardBody, CardHeader, Col} from "reactstrap";
 
 import {fetchJson} from "../../react-utils/utils";
 import {solotodoStateToPropsUtils} from "../../redux/utils";
-import CyberStorePricingHistory from "./CyberStorePricingHistory";
+import CyberStorePricingHistoryChart from "./CyberStorePricingHistoryChart";
 
 
 class CyberBestStoreHistoricPrice extends React.Component{
@@ -47,7 +47,7 @@ class CyberBestStoreHistoricPrice extends React.Component{
         <CardHeader><h2>Mejor Precio Tienda últimos 2 Meses</h2></CardHeader>
         <CardBody>
           {this.state.bestStorePrice['min_price']}
-          <CyberStorePricingHistory/>
+          <CyberStorePricingHistoryChart entity={this.props.entity}/>
         </CardBody>
       </Card>
     </Col>
