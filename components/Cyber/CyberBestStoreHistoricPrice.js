@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from "react-redux";
-import {Card, CardBody, CardHeader, Col} from "reactstrap";
+import {Card, CardBody, CardHeader, Col, Row, Alert} from "reactstrap";
+import moment from "moment";
 
 import {fetchJson} from "../../react-utils/utils";
 import {solotodoStateToPropsUtils} from "../../redux/utils";
@@ -29,7 +30,7 @@ class CyberBestStoreHistoricPrice extends React.Component{
   componentUpdate = () => {
     const product_id = this.props.entity.product.id;
     const store_id = this.props.preferredCountryStores.filter(store => store.url ===this.props.entity.store)[0].id;
-    const url = `/products/${product_id}/min_history_price/?&stores=${store_id}&timestamp_0=2019-08-01T00:00:00.000Z&timestamp_1=2019-10-06T23:59:59.9`;
+    const url = `/products/${product_id}/min_history_price/?&stores=${store_id}&timestamp_0=2019-08-01T00:00:00.000Z&timestamp_1=2019-09-29T23:59:59.9`;
     fetchJson(url).then(bestStorePrice => {
       this.setState({
         bestStorePrice
@@ -42,11 +43,40 @@ class CyberBestStoreHistoricPrice extends React.Component{
       return null
     }
 
+    const bestPrice = this.state.bestStorePrice;
+    const entity = this.props.entity;
+
+    const formattedBestPrice = this.props.formatCurrency(bestPrice['min_price']);
+    const formattedEntityPrice = this.props.formatCurrency(entity.active_registry.offer_price);
+    const formattedBestPriceDate = moment(bestPrice['stores_data'][0]['timestamp']).format('DD [de] MMMM');
+
+    let answer = null;
+
+    if(entity.active_registry.offer_price < bestPrice['min_price']){
+      answer = <Alert color="success" className="d-flex">
+        <div className="pr-3 d-flex align-items-center">
+          <i className="fas fa-check"/>
+        </div>
+        <div>
+          <span><strong>¡Sí!</strong> El precio actual de {formattedEntityPrice} es mejor que el de los últimos 2 meses ({formattedBestPrice}).</span>
+        </div>
+      </Alert>
+    } else {
+      answer = <Alert color="danger" className="d-flex">
+        <div className="pr-3 d-flex align-items-center">
+          <i className="fas fa-times"/>
+        </div>
+        <div>
+          <span><strong>¡No!</strong> El día {formattedBestPriceDate} el producto estuvo a {formattedBestPrice}, que es menor o igual al precio actual de {formattedEntityPrice}.</span>
+        </div>
+      </Alert>
+    }
+
     return <Col sm={{size:8, offset: 2}} className="mt-4">
       <Card>
-        <CardHeader><h2>Mejor Precio Tienda últimos 2 Meses</h2></CardHeader>
+        <CardHeader><h2>¿Es el mejor precio que ha tenido la tienda?</h2></CardHeader>
         <CardBody>
-          {this.state.bestStorePrice['min_price']}
+          {answer}
           <CyberStorePricingHistoryChart entity={this.props.entity}/>
         </CardBody>
       </Card>
@@ -55,9 +85,10 @@ class CyberBestStoreHistoricPrice extends React.Component{
 }
 
 function mapStateToProps(state) {
-  const {preferredCountryStores} = solotodoStateToPropsUtils(state);
+  const {preferredCountryStores, formatCurrency} = solotodoStateToPropsUtils(state);
   return {
     preferredCountryStores,
+    formatCurrency
   }
 }
 

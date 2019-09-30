@@ -16,6 +16,16 @@ class CyberStorePricingHistoryChart extends React.Component {
   }
 
   componentDidMount() {
+    this.componentUpdate()
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevProps.entity.id !== this.props.entity.id){
+      this.componentUpdate()
+    }
+  }
+
+  componentUpdate() {
     const entity = this.props.entity;
     fetchJson(`entities/${entity.id}/pricing_history?timestamp_0=2019-08-01T00:00:00.000Z`).then(json => {
       this.setState({
@@ -23,6 +33,8 @@ class CyberStorePricingHistoryChart extends React.Component {
       })
     })
   }
+
+
 
   preparePricingHistoryChartData() {
     const entity = this.props.entity;
@@ -68,12 +80,12 @@ class CyberStorePricingHistoryChart extends React.Component {
     for (const pricingHistory of datapoints) {
       if (typeof lastPriceHistorySeen !== 'undefined') {
         result = result.concat(this.fillTimeLapse(
-            lastPriceHistorySeen.timestamp, pricingHistory.timestamp, lastPriceHistorySeen.isAvailable))
+          lastPriceHistorySeen.timestamp, pricingHistory.timestamp, lastPriceHistorySeen.isAvailable))
       }
       lastPriceHistorySeen = pricingHistory;
 
       const subresult = {
-        timestamp: pricingHistory.timestamp,
+        timestamp: moment(pricingHistory.timestamp),
         normalPrice: pricingHistory.normalPrice,
         offerPrice: pricingHistory.offerPrice,
         cellMonthlyPayment: pricingHistory.cellMonthlyPayment,
@@ -112,7 +124,6 @@ class CyberStorePricingHistoryChart extends React.Component {
     if (!this.state.data) {
       return null
     }
-    const entity = this.props.entity;
     const filledChartData = this.preparePricingHistoryChartData();
 
     const maxPriceValue = filledChartData.reduce((acum, datapoint) => {
@@ -125,8 +136,6 @@ class CyberStorePricingHistoryChart extends React.Component {
       {
         id: 'price-axis',
         ticks: {
-          beginAtZero: true,
-          suggestedMax: maxPriceValue * 1.1,
           callback: value => {
             return formatCurrency(value)
           }
@@ -137,7 +146,10 @@ class CyberStorePricingHistoryChart extends React.Component {
     const datasets = [
       {
         label: 'Precio oferta',
-        data: filledChartData.map(datapoint => datapoint.offerPrice),
+        data: filledChartData.map(datapoint => ({
+          x: datapoint.timestamp,
+          y: datapoint.offerPrice.toString()
+        })),
         yAxisID: 'price-axis',
         fill: false,
         borderColor: '#5CB9E6',
@@ -166,9 +178,9 @@ class CyberStorePricingHistoryChart extends React.Component {
       tooltips: {
         callbacks: {
           title: (tooltipItems, data) => {
-            if(tooltipItems) {
-              const xData = tooltipItems[0].xLabel;
-              return moment(xData).format('ll')
+            if (tooltipItems) {
+              const xData = data.datasets[tooltipItems[0].datasetIndex].data[tooltipItems[0].index].x;
+              return xData.format('ll')
             }
             return false
           },
@@ -195,8 +207,10 @@ class CyberStorePricingHistoryChart extends React.Component {
       datasets: datasets
     };
 
-    return <div id="chart-container" className="flex-grow">
-      <Line data={chartData} options={chartOptions} />
+    return <div className="product-pricing-history">
+      <div className="chart-container flex-grow">
+        <Line data={chartData} options={chartOptions} />
+      </div>
     </div>
   }
 }

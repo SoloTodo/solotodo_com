@@ -87,8 +87,8 @@ class CyberCheck extends React.Component {
           {this.state.entity?
             <React.Fragment>
               <CyberBestStoreHistoricPrice entity={this.state.entity}/>
-              <CyberBestMarketHistoricPrice entity={this.state.entity}/>
               <CyberBestPrice entity={this.state.entity}/>
+              <CyberBestMarketHistoricPrice entity={this.state.entity}/>
             </React.Fragment>:null}
         </Row>
       </Container>
