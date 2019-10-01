@@ -32,6 +32,20 @@
       "headers": { "cache-control": "no-cache" }
     },
     {
+      "src": "/cells/(?<id>[^/]+?)/?",
+      "status": 301,
+      "headers": {
+        "Location": "/products/$id"
+      }
+    },
+    {
+      "src": "/cells/(?<id>[^/]+?)-(?<slug>[^/]*)/?",
+      "status": 301,
+      "headers": {
+        "Location": "/products/$id-$slug"
+      }
+    },
+    {
       "src": "/products/(?<id>[^/]+?)/ratings/?",
       "dest": "/products/ratings?id=$id",
       "headers": { "cache-control": "no-cache" }
