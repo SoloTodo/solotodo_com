@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from "react-redux";
-import {Card, CardBody, CardHeader, Col} from "reactstrap";
+import {Alert, Card, CardBody, CardHeader, Col} from "reactstrap";
 
 import {fetchJson} from "../../react-utils/utils";
 import {solotodoStateToPropsUtils} from "../../redux/utils";
@@ -46,13 +46,48 @@ class CyberBestMarketHistoricPrice extends React.Component{
       return null
     }
 
+    const bestPrice = this.state.bestPrice;
+    const entity = this.props.entity;
+
+    const formattedBestPrice = this.props.formatCurrency(bestPrice['min_price']);
+    const formattedEntityPrice = this.props.formatCurrency(entity.active_registry.offer_price);
+
+    let answer = null;
+
+    if(entity.active_registry.offer_price < bestPrice['min_price']){
+      answer = <Alert color="success" className="d-flex">
+        <div className="pr-3 d-flex align-items-center">
+          <i className="fas fa-check"/>
+        </div>
+        <div>
+          <span><strong>¡Sí!</strong> El precio actual de {formattedEntityPrice} es el mejor que ha tenido el mercado en los últimos 2 meses.</span>
+        </div>
+      </Alert>
+    } else {
+      answer = <Alert color="danger" className="d-flex">
+        <div className="pr-3 d-flex align-items-center">
+          <i className="fas fa-times"/>
+        </div>
+        <div>
+          <span><strong>¡No!</strong> El producto estuvo a {formattedBestPrice} en las siguientes tiendas:</span>
+          <ul className="mb-0">
+            {bestPrice.stores_data.map(store_data => {
+              const store = this.props.preferredCountryStores.filter(store => store.url === store_data.store)[0]
+              const formattedDate = moment(store_data.timestamp).format('DD [de] MMMM');
+              return <li key={store.id}>{store.name}, el día {formattedDate}</li>
+            })}
+          </ul>
+        </div>
+      </Alert>
+    }
+
     const startDate = moment('2019-08-01').startOf('day');
 
     return <Col sm={{size:8, offset: 2}} className="mt-4">
       <Card>
-        <CardHeader><h2>Mejor Precio Mercado últimos 2 Meses</h2></CardHeader>
+        <CardHeader><h2>¿Es el mejor precio que ha tenido el mercado?</h2></CardHeader>
         <CardBody>
-          {this.state.bestPrice['min_price']}
+          {answer}
           <PricingHistory
             product={this.props.entity.product}
             startDate={startDate}/>
@@ -63,9 +98,10 @@ class CyberBestMarketHistoricPrice extends React.Component{
 }
 
 function mapStateToProps(state) {
-  const {preferredCountryStores} = solotodoStateToPropsUtils(state);
+  const {preferredCountryStores, formatCurrency} = solotodoStateToPropsUtils(state);
   return {
     preferredCountryStores,
+    formatCurrency
   }
 }
 

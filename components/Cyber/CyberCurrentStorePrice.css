@@ -1,0 +1,9 @@
+.cyber-container {
+    width: 100%;
+}
+
+.cyber-container .cyber-offer-price {
+    font-size: 40px;
+    font-weight: bold;
+    color: #ca0000;
+}

@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from "react-redux";
-import {withRouter} from "next/router";
+import Router, {withRouter} from "next/router";
 import Head from "next/head";
 import {
   Container, Col, Row, Card, CardHeader, CardBody,
@@ -16,14 +16,30 @@ import CyberBestStoreHistoricPrice
   from "../components/Cyber/CyberBestStoreHistoricPrice";
 import CyberBestMarketHistoricPrice
   from "../components/Cyber/CyberBestMarketHistoricPrice";
+import CyberCurrentStorePrice
+  from "../components/Cyber/CyberCurrentStorePrice";
 
 class CyberCheck extends React.Component {
+  static async getInitialProps(ctx) {
+    const {query} = ctx;
+
+    return {
+      initialUrl: query.product_url
+    }
+  }
+
   constructor(props) {
     super(props);
     this.state = {
-      url: undefined,
+      url: props.initialUrl,
       entity: undefined,
       product: undefined
+    }
+  }
+
+  componentDidMount() {
+    if (this.state.url) {
+      this.handleCheckButtonClick()
     }
   }
 
@@ -35,12 +51,16 @@ class CyberCheck extends React.Component {
 
   handleCheckButtonClick = () => {
     const url = `entities/by_url/?url=${this.state.url}`;
+    Router.push({
+      pathname: '/cyber_check',
+      query: {product_url: this.state.url}
+    });
     fetchJson(url).then(entity => {
       this.setState({
         entity
       })
     }).catch(async err => {
-      toast.error('URL no válida')
+      toast.error('URL de producto no válida')
     })
   };
 
@@ -59,33 +79,15 @@ class CyberCheck extends React.Component {
           </Col>
           <Col sm={{size:8, offset: 2}}>
             <InputGroup>
-              <Input onChange={this.entityUrlChange}/>
+              <Input value={this.state.url} onChange={this.entityUrlChange}/>
               <InputGroupAddon addonType="append">
                 <Button color="success" onClick={this.handleCheckButtonClick}>Check</Button>
               </InputGroupAddon>
             </InputGroup>
           </Col>
           {this.state.entity?
-            <Col sm={{size:8, offset: 2}} className="mt-4">
-              <Card>
-                <CardHeader><h2>{this.state.entity.name}</h2></CardHeader>
-                <CardBody>
-                  <Row>
-                    <Col sm="5">
-                      <img style={{width:"100%"}} src={this.state.entity.picture_urls[0]}/>
-                    </Col>
-                    <Col sm="7">
-                      <span>Tienda: {this.props.preferredCountryStores.filter(store => store.url ===this.state.entity.store)[0].name}</span><br/>
-                      <span>Precio Normal: {this.state.entity.active_registry.normal_price}</span><br/>
-                      <span>Precio Oferta: {this.state.entity.active_registry.offer_price}</span><br/>
-                    </Col>
-                  </Row>
-                </CardBody>
-              </Card>
-            </Col>:null
-          }
-          {this.state.entity?
             <React.Fragment>
+              <CyberCurrentStorePrice entity={this.state.entity}/>
               <CyberBestStoreHistoricPrice entity={this.state.entity}/>
               <CyberBestPrice entity={this.state.entity}/>
               <CyberBestMarketHistoricPrice entity={this.state.entity}/>
