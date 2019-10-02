@@ -36,7 +36,7 @@ class ProductNormalPricesTable extends React.Component {
       <tbody>
       {this.props.entities.length? this.props.entities.map(entity => {
         const storeEntry = this.props.storeEntries[entity.store];
-        return <tr key={entity.id} style={this.props.entityHighlight === entity.id? {backgroundColor: 'yellow'} : null}>
+        return <tr key={entity.id} style={this.props.entityHighlight === entity.id? {backgroundColor: '#d1ecf1'} : null}>
           <td>
             <SoloTodoLeadLink
               className="normal-table-product-link"

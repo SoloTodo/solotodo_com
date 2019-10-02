@@ -39,7 +39,8 @@ class CyberCheck extends React.Component {
 
   componentDidMount() {
     if (this.state.url) {
-      this.handleCheckButtonClick()
+      const url = `entities/by_url/?url=${this.state.url}`;
+      this.checkUrl(url)
     }
   }
 
@@ -55,7 +56,15 @@ class CyberCheck extends React.Component {
       pathname: '/cyber_check',
       query: {product_url: this.state.url}
     });
+    this.checkUrl(url)
+  };
+
+  checkUrl = (url) => {
     fetchJson(url).then(entity => {
+      if (!entity.active_registry) {
+        toast.error('Producto no Disponible');
+        return
+      }
       this.setState({
         entity
       })
@@ -65,6 +74,7 @@ class CyberCheck extends React.Component {
   };
 
   render() {
+
     return <React.Fragment>
       <Head>
         <title>Cyber Check - SoloTodo</title>

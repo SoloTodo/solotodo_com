@@ -44,7 +44,7 @@ class ProductCellPricesTable extends React.Component {
       );
       for (const entity of group.entities) {
         tableRows.push(
-          <tr key={entity.url} style={this.props.entityHighlight === entity.id? {backgroundColor: 'yellow'} : null}>
+          <tr key={entity.url} style={this.props.entityHighlight === entity.id? {backgroundColor: '#d1ecf1'} : null}>
             <td>
               <SoloTodoLeadLink
                 className="cellphone-table-product-link pl-2"
