@@ -12,7 +12,7 @@ import Loading from "../../components/Loading";
 import moment from "moment";
 import ProductRatingStars from "../../components/Product/ProductRatingStars";
 import Head from "next/head";
-import AnnouncementAlert from "../../components/AnnouncementAlert";
+import CyberCheckBanner from "../../components/CyberCheckBanner";
 
 
 class ProductRatings extends React.Component {
@@ -81,7 +81,7 @@ class ProductRatings extends React.Component {
               <div className="row">
                 <TopBanner category={category.name}/>
                 <div className="col-12">
-                  <AnnouncementAlert />
+                  <CyberCheckBanner />
 
                   <nav aria-label="breadcrumb">
                     <ol className="breadcrumb">

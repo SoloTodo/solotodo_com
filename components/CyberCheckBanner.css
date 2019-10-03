@@ -1,0 +1,17 @@
+#cyber-check-banner {
+    background-color: #9d3140;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    color: white;
+    text-decoration: none;
+    margin-bottom: 10px;
+}
+
+.cyber-check-banner-mobile {
+    width: 320px;
+}
+
+.cyber-check-banner-desktop {
+    width: 768px;
+}
