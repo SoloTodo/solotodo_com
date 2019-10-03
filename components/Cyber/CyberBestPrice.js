@@ -58,7 +58,7 @@ class CyberBestPrice extends React.Component {
     let answer = null;
 
     for (const entity of entities) {
-      if(storeEntity.active_registry.offer_price > entity.active_registry.offer_price){
+      if(storeEntity.active_registry.offer_price < entity.active_registry.offer_price){
         isBest = false
       }
     }
@@ -83,7 +83,7 @@ class CyberBestPrice extends React.Component {
       </Alert>
     }
 
-    return <Col sm={{size:8, offset: 2}} className="mt-4">
+    return <Col sm="12" className="mt-4">
       <Card>
         <CardHeader><h2>¿Es el mejor precio del mercado actualmente?</h2></CardHeader>
         <CardBody>

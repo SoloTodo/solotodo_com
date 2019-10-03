@@ -54,7 +54,7 @@ class CyberBestMarketHistoricPrice extends React.Component{
 
     let answer = null;
 
-    if(entity.active_registry.offer_price < bestPrice['min_price']){
+    if(entity.active_registry.offer_price <= bestPrice['min_price']){
       answer = <Alert color="success" className="d-flex">
         <div className="pr-3 d-flex align-items-center">
           <i className="fas fa-check"/>
@@ -83,7 +83,7 @@ class CyberBestMarketHistoricPrice extends React.Component{
 
     const startDate = moment('2019-08-01').startOf('day');
 
-    return <Col sm={{size:8, offset: 2}} className="mt-4">
+    return <Col sm="12" className="mt-4">
       <Card>
         <CardHeader><h2>¿Es el mejor precio que ha tenido el mercado?</h2></CardHeader>
         <CardBody>

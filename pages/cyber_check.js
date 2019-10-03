@@ -3,12 +3,11 @@ import {connect} from "react-redux";
 import Router, {withRouter} from "next/router";
 import Head from "next/head";
 import {
-  Container, Col, Row, Card, CardHeader, CardBody,
+  Container, Col, Row,
   Button, Input, InputGroup, InputGroupAddon} from "reactstrap"
 
 import {fetchJson} from "../react-utils/utils";
 
-import TopBanner from "../components/TopBanner";
 import {toast} from "react-toastify";
 import CyberBestPrice from "../components/Cyber/CyberBestPrice";
 import {solotodoStateToPropsUtils} from "../redux/utils";
@@ -18,6 +17,8 @@ import CyberBestMarketHistoricPrice
   from "../components/Cyber/CyberBestMarketHistoricPrice";
 import CyberCurrentStorePrice
   from "../components/Cyber/CyberCurrentStorePrice";
+import CyberTopBanner from "../components/Cyber/CyberTopBanner";
+import CyberInstructions from "../components/Cyber/CyberInstructions";
 
 class CyberCheck extends React.Component {
   static async getInitialProps(ctx) {
@@ -50,7 +51,8 @@ class CyberCheck extends React.Component {
     })
   };
 
-  handleCheckButtonClick = () => {
+  handleSubmit = e => {
+    e.preventDefault();
     const url = `entities/by_url/?url=${this.state.url}`;
     Router.push({
       pathname: '/cyber_check',
@@ -62,14 +64,14 @@ class CyberCheck extends React.Component {
   checkUrl = (url) => {
     fetchJson(url).then(entity => {
       if (!entity.active_registry) {
-        toast.error('Producto no Disponible');
+        toast.error('Según nuestros registros, este producto no esta disponible para compra actualmente.');
         return
       }
       this.setState({
         entity
       })
     }).catch(async err => {
-      toast.error('URL de producto no válida')
+      toast.error('¡Lo sentimos! No econtramos este producto en nuestros registros.')
     })
   };
 
@@ -81,19 +83,21 @@ class CyberCheck extends React.Component {
         <meta property="og:title" content={`Cotiza y ahorra cotizando todos tus productos de tecnología en un sólo lugar - SoloTodo`} />
         <meta name="description" property="og:description" content={`Ahorra tiempo y dinero cotizando celulares, notebooks, etc. en un sólo lugar y comparando el precio de todas las tiendas.`} />
       </Head>
-      <Container fluid>
+      <Container>
         <Row>
-          <TopBanner category="Any" />
-          <Col sm={{size:8, offset: 2}}>
+          <CyberTopBanner/>
+          <Col sm="12">
             <h1>Ingrese la URL del producto:</h1>
           </Col>
-          <Col sm={{size:8, offset: 2}}>
+          <Col sm="12">
+            <form action="" onSubmit={this.handleSubmit}>
             <InputGroup>
-              <Input value={this.state.url} onChange={this.entityUrlChange}/>
+              <Input name="product_url" value={this.state.url} onChange={this.entityUrlChange}/>
               <InputGroupAddon addonType="append">
-                <Button color="success" onClick={this.handleCheckButtonClick}>Check</Button>
+                <Button type="submit" color="success">Verificar</Button>
               </InputGroupAddon>
             </InputGroup>
+            </form>
           </Col>
           {this.state.entity?
             <React.Fragment>
@@ -101,7 +105,9 @@ class CyberCheck extends React.Component {
               <CyberBestStoreHistoricPrice entity={this.state.entity}/>
               <CyberBestPrice entity={this.state.entity}/>
               <CyberBestMarketHistoricPrice entity={this.state.entity}/>
-            </React.Fragment>:null}
+            </React.Fragment>:
+            <CyberInstructions/>
+          }
         </Row>
       </Container>
     </React.Fragment>
