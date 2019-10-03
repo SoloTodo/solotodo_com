@@ -54,7 +54,7 @@ class CyberBestMarketHistoricPrice extends React.Component{
 
     let answer = null;
 
-    if(entity.active_registry.offer_price <= bestPrice['min_price']){
+    if(entity.active_registry.offer_price < bestPrice['min_price']){
       answer = <Alert color="success" className="d-flex">
         <div className="pr-3 d-flex align-items-center">
           <i className="fas fa-check"/>
@@ -69,7 +69,7 @@ class CyberBestMarketHistoricPrice extends React.Component{
           <i className="fas fa-times"/>
         </div>
         <div>
-          <span><strong>¡No!</strong> El producto estuvo a {formattedBestPrice} en las siguientes tiendas:</span>
+          <span><strong>¡No!</strong> El producto estuvo disponible a {formattedBestPrice}, que es menor o igual al precio actual ({formattedEntityPrice}) en las siguientes tiendas:</span>
           <ul className="mb-0">
             {bestPrice.stores_data.map(store_data => {
               const store = this.props.preferredCountryStores.filter(store => store.url === store_data.store)[0]

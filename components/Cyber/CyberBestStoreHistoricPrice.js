@@ -52,7 +52,7 @@ class CyberBestStoreHistoricPrice extends React.Component{
 
     let answer = null;
 
-    if(entity.active_registry.offer_price <= bestPrice['min_price']){
+    if(entity.active_registry.offer_price < bestPrice['min_price']){
       answer = <Alert color="success" className="d-flex">
         <div className="pr-3 d-flex align-items-center">
           <i className="fas fa-check"/>

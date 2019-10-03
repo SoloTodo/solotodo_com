@@ -58,7 +58,7 @@ class CyberBestPrice extends React.Component {
     let answer = null;
 
     for (const entity of entities) {
-      if(storeEntity.active_registry.offer_price < entity.active_registry.offer_price){
+      if(parseInt(storeEntity.active_registry.offer_price) > parseInt(entity.active_registry.offer_price)){
         isBest = false
       }
     }
