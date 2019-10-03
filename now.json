@@ -72,6 +72,11 @@
       "headers": { "cache-control": "no-cache" }
     },
     {
+      "src": "/cyber_check/?",
+      "dest": "/cyber_check",
+      "headers": { "cache-control": "no-cache" }
+    },
+    {
       "src": "/video_card_gpus/(?<id>[^/]+?)/?",
       "dest": "/video_card_gpus?id=$id",
       "headers": { "cache-control": "no-cache" }

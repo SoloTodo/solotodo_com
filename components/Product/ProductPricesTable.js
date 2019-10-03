@@ -43,7 +43,7 @@ class ProductPricesTable extends React.Component {
       storesUrl += `&stores=${store.id}`
     }
 
-    fetchJson(`${productsUrl}available_entities/?ids=${product.id}${storesUrl}&exclude_refurbished=${this.props.preferredExcludeRefurbished}`).then(availableEntities => {
+    fetchJson(`${productsUrl}available_entities/?ids=${product.id}${storesUrl}&exclude_refurbished=${this.props.preferredExcludeRefurbished || this.props.excludeRefurbished}`).then(availableEntities => {
       const entities = availableEntities.results[0].entities.filter(entity => entity.active_registry.cell_monthly_payment === null);
       this.props.onEntitiesChange(entities);
 
@@ -88,7 +88,9 @@ class ProductPricesTable extends React.Component {
     return <PricesTableComponent
       entities={this.state.entities}
       storeEntries={this.state.storeEntries}
-      formatCurrency={this.props.formatCurrency}/>
+      formatCurrency={this.props.formatCurrency}
+      entityHighlight={this.props.entityHighlight}
+      hideRatings={this.props.hideRatings}/>
   }
 }
 
