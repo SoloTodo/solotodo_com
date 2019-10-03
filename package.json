@@ -34,7 +34,7 @@
     "react-chartjs-2": "^2.7.6",
     "react-copy-to-clipboard": "^5.0.1",
     "react-debounce-input": "^3.2.0",
-    "react-dfp": "^0.10.3",
+    "react-dfp": "^0.14.2",
     "react-disqus-comments": "^1.4.0",
     "react-dom": "^16.8.3",
     "react-facebook-login": "^4.1.1",

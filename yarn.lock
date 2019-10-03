@@ -5588,10 +5588,10 @@ react-debounce-input@^3.2.0:
     lodash.debounce "^4"
     prop-types "^15"
 
-react-dfp@^0.10.3:
-  version "0.10.3"
-  resolved "https://registry.yarnpkg.com/react-dfp/-/react-dfp-0.10.3.tgz#4d9ce9f33e2e79876f2cbd16584092cc4b50a349"
-  integrity sha512-/96oxwQt/CwYObWjARmE+VBD6+wnPUeC8/rD3/TPVlU15viobjZcBC6fvnPMwCgiz+7wkDHfk9/D6eDqaUwaIA==
+react-dfp@^0.14.2:
+  version "0.14.2"
+  resolved "https://registry.yarnpkg.com/react-dfp/-/react-dfp-0.14.2.tgz#b282713d3c8f0b9fc3a8ae06b5f993c38fa33b8a"
+  integrity sha512-4NxVaH9+zUlUIOYTpPYrcJyEnR8iuus2rz/dbxGB5XZDqYQL1I6H6ZARjduepDzoTavGitXNyL+qkujX+x8mrA==
   dependencies:
     babel-plugin-transform-object-assign "^6.22.0"
     prop-types "^15.6.1"

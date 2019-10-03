@@ -9,7 +9,8 @@ import {fetchJson} from '../../react-utils/utils'
 import AccountFacebookLogin from "../../components/Account/AccountFacebookLogin";
 import TopBanner from "../../components/TopBanner";
 import {settings} from "../../settings";
-import AnnouncementAlert from "../../components/AnnouncementAlert";
+import CyberCheckBanner from "../../components/CyberCheckBanner";
+
 
 class Signup extends React.Component {
   static getInitialProps ({ reduxStore, res }) {
@@ -108,7 +109,7 @@ class Signup extends React.Component {
         <div className="row">
           <TopBanner category="Any" />
           <div className="col-12">
-            <AnnouncementAlert />
+            <CyberCheckBanner />
 
             <h1>Registro de usuario</h1>
             <hr />

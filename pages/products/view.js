@@ -25,7 +25,7 @@ import ProductAlternatives from "../../components/Product/ProductAlternatives";
 import PricingHistory from "../../components/Product/PricingHistory";
 import ProductAddToBudgetButton from "../../components/Product/ProductAddToBudgetButton";
 import ProductVideo from "../../components/Product/ProductVideo";
-import AnnouncementAlert from "../../components/AnnouncementAlert";
+import CyberCheckBanner from "../../components/CyberCheckBanner";
 
 
 class Products extends React.Component {
@@ -122,7 +122,7 @@ class Products extends React.Component {
               <div className="row">
                 <TopBanner category={category.name}/>
                 <div className="col-12">
-                  <AnnouncementAlert />
+                  <CyberCheckBanner />
 
                   <nav aria-label>
                     <ol className="breadcrumb">

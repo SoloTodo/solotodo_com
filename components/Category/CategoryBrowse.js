@@ -27,7 +27,7 @@ import {
   ApiFormContinuousRangeFieldNext
 } from "../../react-utils/api_forms/ApiFormFieldsNext";
 import {filterApiResourceObjectsByType} from "../../react-utils/ApiResource";
-import AnnouncementAlert from "../AnnouncementAlert";
+import CyberCheckBanner from "../CyberCheckBanner";
 
 
 class CategoryBrowse extends React.Component {
@@ -480,7 +480,7 @@ class CategoryBrowse extends React.Component {
 
             {topBanner}
 
-            <AnnouncementAlert />
+            <CyberCheckBanner />
 
             <div className="d-flex pt-2 pl-2 pr-2" id="filters-and-results">
               {isExtraSmall ||

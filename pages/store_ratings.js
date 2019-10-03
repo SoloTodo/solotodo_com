@@ -12,7 +12,7 @@ import TopBanner from "../components/TopBanner";
 import ProductRatingStars from "../components/Product/ProductRatingStars";
 import Loading from "../components/Loading";
 import Head from "next/head";
-import AnnouncementAlert from "../components/AnnouncementAlert";
+import CyberCheckBanner from "../components/CyberCheckBanner";
 
 class StoreRatings extends React.Component {
   static async getInitialProps(ctx) {
@@ -81,7 +81,7 @@ class StoreRatings extends React.Component {
                 </div>
 
                 <div className="col-12">
-                  <AnnouncementAlert />
+                  <CyberCheckBanner />
 
                   <h1>Ratings {store.name}</h1>
                 </div>
