@@ -11,7 +11,7 @@ import TopBanner from "./TopBanner";
 import CategoryBrowseResult
   from "./Category/CategoryBrowseResult";
 import {settings} from "../settings";
-import AnnouncementAlert from "./AnnouncementAlert";
+import CyberCheckBanner from "./CyberCheckBanner";
 
 
 class NotebookComponentList extends React.Component {
@@ -98,7 +98,7 @@ class NotebookComponentList extends React.Component {
     return <div className="row">
       <TopBanner category="Notebooks" />
       <div className="col-12">
-        <AnnouncementAlert />
+        <CyberCheckBanner />
 
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb">

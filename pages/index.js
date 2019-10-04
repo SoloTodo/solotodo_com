@@ -10,7 +10,7 @@ import { solotodoStateToPropsUtils } from "../redux/utils";
 import ProductsReel from "../components/Product/ProductsReel";
 import TopBanner from "../components/TopBanner";
 import FrontPageBudgets from "../components/Budget/FrontPageBudgets";
-import AnnouncementAlert from "../components/AnnouncementAlert";
+import CyberCheckBanner from "../components/CyberCheckBanner";
 
 
 
@@ -32,7 +32,7 @@ class Index extends React.Component {
           <TopBanner category="Any" />
 
           <div className="col-12">
-            <AnnouncementAlert />
+            <CyberCheckBanner />
           </div>
 
           <div className="col-12">
