@@ -43,6 +43,14 @@ class CyberCurrentStorePrice extends React.Component {
       return null
     }
 
+    let pictureUrl = null;
+
+    if (this.props.entity.picture_urls && this.props.entity.picture_urls.length) {
+      pictureUrl = this.props.entity.picture_urls[0]
+    } else {
+      pictureUrl = `${this.props.entity.product.url}picture/?width=600&height=600`;
+    }
+
     const formattedRetrieveDate = moment(this.props.entity.active_registry.timestamp).format('DD [de] MMMM [a las ] HH:MM');
     const offerPrice = this.props.entity.active_registry.offer_price;
     const normalPrice = this.props.entity.active_registry.normal_price;
@@ -54,7 +62,7 @@ class CyberCurrentStorePrice extends React.Component {
         <CardBody>
           <Row>
             <Col sm="5">
-              <img style={{width:"100%"}} src={this.props.entity.picture_urls[0]}/>
+              <img style={{width:"100%"}} src={pictureUrl}/>
               <div className="d-flex flex-column cyber-container">
                 <div className="d-flex justify-content-center">
                   <strong>{this.props.preferredCountryStores.filter(store => store.url ===this.props.entity.store)[0].name.toUpperCase()}</strong><br/>

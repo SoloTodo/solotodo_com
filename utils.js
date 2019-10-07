@@ -5,6 +5,8 @@ import Handlebars from "handlebars/dist/handlebars.min";
 import {convertIdToUrl, fetchAuth} from "./react-utils/utils";
 import {filterApiResourceObjectsByType} from "./react-utils/ApiResource";
 import withTracker from './react-utils/components/GoogleAnalyticsNextJsTracker'
+import { DFPManager } from 'react-dfp';
+
 
 import {settings} from "./settings";
 
@@ -129,8 +131,8 @@ export function withSoloTodoTracker(WrappedComponent, mapPropsToGAField){
         }
     }
 
-    window.gtag('config', settings.googleAnalyticsId, analyticsParams)
-    window.gtag('config', settings.lgAdWordsConversionId)
+    window.gtag('config', settings.googleAnalyticsId, analyticsParams);
+    window.gtag('config', settings.lgAdWordsConversionId);
   };
 
   return withTracker(WrappedComponent, trackPageHandler)
