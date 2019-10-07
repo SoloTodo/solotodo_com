@@ -19,6 +19,7 @@ import CyberCurrentStorePrice
   from "../components/Cyber/CyberCurrentStorePrice";
 import CyberTopBanner from "../components/Cyber/CyberTopBanner";
 import CyberInstructions from "../components/Cyber/CyberInstructions";
+import {withSoloTodoTracker} from "../utils";
 
 class CyberCheck extends React.Component {
   static async getInitialProps(ctx) {
@@ -79,20 +80,19 @@ class CyberCheck extends React.Component {
 
     return <React.Fragment>
       <Head>
-        <title>Cyber Check - SoloTodo</title>
-        <meta property="og:title" content={`Cotiza y ahorra cotizando todos tus productos de tecnología en un sólo lugar - SoloTodo`} />
-        <meta name="description" property="og:description" content={`Ahorra tiempo y dinero cotizando celulares, notebooks, etc. en un sólo lugar y comparando el precio de todas las tiendas.`} />
+        <title>Cyber Check: ¡Verifica las ofertas del Cyber de forma rápida y simple! - SoloTodo</title>
+        <meta property="og:title" content={`Cyber Check: ¡Verifica las ofertas del Cyber de forma rápida y simple!`} />
       </Head>
       <Container>
         <Row>
           <CyberTopBanner/>
           <Col sm="12">
-            <h1>Ingrese la URL del producto:</h1>
+            <h1>Ingresa la URL del producto</h1>
           </Col>
           <Col sm="12">
             <form action="" onSubmit={this.handleSubmit}>
             <InputGroup>
-              <Input name="product_url" value={this.state.url} onChange={this.entityUrlChange}/>
+              <Input name="product_url" value={this.state.url} onChange={this.entityUrlChange} placeholder="Ejemplo: https://simple.ripley.cl/huawei-y6-2019-black-608-2000374007566p"/>
               <InputGroupAddon addonType="append">
                 <Button type="submit" color="success">Verificar</Button>
               </InputGroupAddon>
@@ -122,4 +122,11 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(withRouter(CyberCheck))
+function mapPropsToGAField(props) {
+  return {
+    pageTitle: 'Cyber Check: ¡Verifica las ofertas del Cyber de forma rápida y simple!'
+  }
+}
+
+const TrackedCyberCheck = withSoloTodoTracker(CyberCheck, mapPropsToGAField);
+export default withRouter(connect(mapStateToProps)(TrackedCyberCheck))
