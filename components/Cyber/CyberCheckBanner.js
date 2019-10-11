@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 class CyberCheckBanner extends React.Component {
   render() {
-    return null;
+    // return null;
 
     const imgSrc = this.props.isSmallOrSmaller ? 'mobile.png' : 'desktop.png';
     const imgWidth = this.props.isSmallOrSmaller ? 320 : 768;
@@ -22,7 +22,7 @@ class CyberCheckBanner extends React.Component {
             height={imgHeight}
           />
         </div>
-        <div className="p-2">
+        <div className="p-2 pl-3">
           <strong>¿Vienes por el Cyber?</strong> <span>¡Entra acá para verificar las ofertas de las tiendas!</span>
         </div>
       </a>

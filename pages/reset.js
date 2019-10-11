@@ -4,7 +4,7 @@ import Router from 'next/router';
 import {toast} from 'react-toastify';
 import { fetchJson } from "../react-utils/utils";
 import TopBanner from "../components/TopBanner";
-import CyberCheckBanner from "../components/CyberCheckBanner";
+
 
 class PasswordResetConfirm extends React.Component {
   static getInitialProps ({ query }) {
@@ -80,8 +80,6 @@ class PasswordResetConfirm extends React.Component {
         <div className="row">
           <TopBanner category="Any" />
           <div className="col-12">
-            <CyberCheckBanner />
-
             <h1>Cambio de contraseña</h1>
             <hr />
           </div>

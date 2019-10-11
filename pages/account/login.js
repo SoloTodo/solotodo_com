@@ -11,7 +11,7 @@ import AccountFacebookLogin from "../../components/Account/AccountFacebookLogin"
 import {login} from "../../redux/actions";
 import {settings} from "../../settings";
 import TopBanner from "../../components/TopBanner";
-import CyberCheckBanner from "../../components/CyberCheckBanner";
+
 
 class Login extends React.Component {
   static getInitialProps ({ reduxStore, res }) {
@@ -123,8 +123,6 @@ class Login extends React.Component {
           <TopBanner category="Any" />
 
           <div className="col-12">
-            <CyberCheckBanner />
-
             <h1>Iniciar sesión</h1>
             <hr />
           </div>

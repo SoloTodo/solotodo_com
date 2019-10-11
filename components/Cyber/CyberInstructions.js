@@ -13,7 +13,7 @@ class CyberInstructions extends React.Component {
             y nosotros responderemos tu consulta!</h3>
           <span> Recuerda que solo funciona para productos de Tecnología y Electrónica
             de las siguientes tiendas: Falabella, Ripley, Paris, AbcDin, La Polar, Corona
-            Hites, Lider, PC Factory, Linio, Easy, Sodimac y SpDigital.</span><br/><br/>
+            Hites, Lider, PC Factory, Linio, Easy, Sodimac, SpDigital, y Winpy.</span><br/><br/>
           <span>Por ejemplo:</span>
           <ul style={{listStyleType: "none"}}>
             <li><a href="/cyber_check?product_url=https%3A%2F%2Fwww.pcfactory.cl%2Fproducto%2F34538-hp-notebooks-gamer-omen-i7-9750h-nvidia-rtx-2070-max-q-8gb-15-6-fhd-144hz-16gb--32gb-optane-512gb-ssd-intel-windows-10-15-dh0005la">https://www.pcfactory.cl/producto/34538-hp-notebooks-gamer-omen-i7-9750h-nvidia-rtx-2070-max-q-8gb-15-6-fhd-144hz-16gb--32gb-optane-512gb-ssd-intel-windows-10-15-dh0005la</a></li>

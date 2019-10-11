@@ -12,7 +12,6 @@ import RatingStarsEditable from "../../components/RatingStarsEditable";
 import {apiResourceStateToPropsUtils} from "../../react-utils/ApiResource";
 import {connect} from "react-redux";
 import Head from "next/head";
-import CyberCheckBanner from "../../components/CyberCheckBanner";
 
 
 class NewProductRating extends React.Component {
@@ -139,7 +138,6 @@ class NewProductRating extends React.Component {
             <div>
               <div className="row">
                 <TopBanner category={category.name}/>
-                <CyberCheckBanner />
 
                 <div className="col-12">
                   <ol className="breadcrumb">

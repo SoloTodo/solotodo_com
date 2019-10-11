@@ -3,7 +3,6 @@ import ReactDisqusComments from 'react-disqus-comments';
 import {settings} from "../../settings";
 import TopBanner from "../../components/TopBanner";
 import Head from "next/head";
-import CyberCheckBanner from "../../components/CyberCheckBanner";
 
 
 class CompatibilityCheckAbout extends React.Component {
@@ -17,8 +16,6 @@ class CompatibilityCheckAbout extends React.Component {
         <div className="row">
           <TopBanner category="Hardware" />
           <div className="col-12">
-            <CyberCheckBanner />
-
             <h1>Chequeo automático de compatibilidad</h1>
           </div>
 

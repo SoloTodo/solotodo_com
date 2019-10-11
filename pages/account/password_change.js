@@ -6,7 +6,6 @@ import {apiResourceStateToPropsUtils} from "../../react-utils/ApiResource";
 import {toast} from 'react-toastify';
 import TopBanner from "../../components/TopBanner";
 import {settings} from "../../settings";
-import CyberCheckBanner from "../../components/CyberCheckBanner";
 
 
 class PasswordChange extends React.Component {
@@ -94,8 +93,6 @@ class PasswordChange extends React.Component {
         <div className="row">
           <TopBanner category="Any" />
           <div className="col-12">
-            <CyberCheckBanner />
-
             <h1>Cambio de contraseña</h1>
             <hr />
           </div>

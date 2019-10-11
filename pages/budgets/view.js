@@ -6,7 +6,6 @@ import {withRouter} from 'next/router'
 import {apiResourceStateToPropsUtils} from "../../react-utils/ApiResource";
 import TopBanner from "../../components/TopBanner";
 import BudgetViewTable from "../../components/Budget/BudgetViewTable";
-import CyberCheckBanner from "../../components/CyberCheckBanner";
 
 
 class Budget extends React.Component {
@@ -46,8 +45,6 @@ class Budget extends React.Component {
         <div className="row">
           <TopBanner category="Hardware"/>
           <div className="col-12">
-            <CyberCheckBanner />
-
             <h1>{budget.name}</h1>
           </div>
         </div>

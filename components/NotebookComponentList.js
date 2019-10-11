@@ -11,7 +11,6 @@ import TopBanner from "./TopBanner";
 import CategoryBrowseResult
   from "./Category/CategoryBrowseResult";
 import {settings} from "../settings";
-import CyberCheckBanner from "./CyberCheckBanner";
 
 
 class NotebookComponentList extends React.Component {
@@ -98,8 +97,6 @@ class NotebookComponentList extends React.Component {
     return <div className="row">
       <TopBanner category="Notebooks" />
       <div className="col-12">
-        <CyberCheckBanner />
-
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb">
             <li className="breadcrumb-item"><Link href={`/browse?category_slug=notebooks`} as={`notebooks`}>
