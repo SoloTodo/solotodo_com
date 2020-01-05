@@ -39,34 +39,34 @@ export const settings = {
       {
         label: '3DMark 11',
         field: 'gpu_tdmark_11_score',
-        maxValue: 25000
+        maxValue: 30000
       },
       {
         label: '3DMark Cloud Gate',
         field: 'gpu_tdmark_cloud_gate_score',
-        maxValue: 35000
+        maxValue: 40000
       },
       {
         label: '3DMark Fire Strike',
         field: 'gpu_tdmark_fire_strike_score',
-        maxValue: 20000
+        maxValue: 25000
       }
     ],
     3: [
       {
         label: 'PCMark 7',
         field: 'pcmark_7_score',
-        maxValue: 6000
+        maxValue: 9000
       },
       {
         label: 'PCMark 8',
         field: 'pcmark_8_score',
-        maxValue: 5500
+        maxValue: 5000
       },
       {
         label: 'Passmark',
         field: 'passmark_score',
-        maxValue: 23000
+        maxValue: 30000
       }
     ],
     6: [
