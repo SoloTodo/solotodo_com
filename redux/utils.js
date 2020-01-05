@@ -7,7 +7,8 @@ import {filterApiResourceObjectsByType} from "../react-utils/ApiResource";
 export function solotodoStateToPropsUtils(state) {
   const user = state.apiResourceObjects[settings.ownUserUrl] || null;
   const countries = filterApiResourceObjectsByType(state.apiResourceObjects, 'countries');
-  const stores = filterApiResourceObjectsByType(state.apiResourceObjects, 'stores').filter(store => store.last_activation);
+  // Only consider active stores. Also manually exclude "Travel Tienda" store as it is exclusive to clients of Banco de Chile
+  const stores = filterApiResourceObjectsByType(state.apiResourceObjects, 'stores').filter(store => store.last_activation && store.id !== 231);
   const categories = filterApiResourceObjectsByType(state.apiResourceObjects, 'categories');
   const currencies = filterApiResourceObjectsByType(state.apiResourceObjects, 'currencies');
 

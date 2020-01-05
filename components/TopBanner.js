@@ -13,14 +13,14 @@ class TopBanner extends React.Component {
   }
 
   componentDidMount() {
-    console.log('componentDidMount')
+    // console.log('componentDidMount')
     // console.log('reloading banner')
     // DFPManager.reload();
     Router.events.on('routeChangeComplete', this.routeChangeHandler)
   }
 
   componentWillUnmount() {
-    console.log('componentWillUnmount')
+    // console.log('componentWillUnmount')
     Router.events.off('routeChangeStart', this.routeChangeHandler)
   }
 
@@ -48,7 +48,7 @@ class TopBanner extends React.Component {
   // }
 
   render() {
-    console.log('render')
+    // console.log('render')
 
     // if (!this.state.category) {
     //   console.log('Invalidating banner');
@@ -56,8 +56,6 @@ class TopBanner extends React.Component {
     // }
 
     const sizes = this.props.isExtraSmall ? [[320, 50], [300, 50]] : [[728,90], [970, 90]];
-
-    console.log('Rendering banner: ' + this.props.category);
 
     return <div className="col-12 mt-2 mb-2 d-flex flex-row justify-content-center">
       <AdSlot
