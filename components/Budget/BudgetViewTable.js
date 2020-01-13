@@ -136,7 +136,7 @@ class BudgetViewTable extends React.Component {
             </td>
         }
         <td className="budget-total-price text-right" colSpan="2">
-          {this.props.formatCurrency(totalPrice, this.props.clpCurrency)}
+          {this.props.formatCurrency(totalPrice)}
         </td>
       </tr>
       </tbody>

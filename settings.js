@@ -205,30 +205,41 @@ export const settings = {
       ]
     },
   },
-  frontPageBudgets: [
-    {
-      label: "Básico",
-      labelXS:"Bas.",
-      intelBudget: 3181,
-      amdBudget: 3182
-    },
-    {
-      label: "Medio",
-      labelXS: "Medio",
-      intelBudget: 12337,
-      amdBudget: 12338
-    },
-    {
-      label: "Alto",
-      labelXS: "Alto",
-      intelBudget: 12339,
-      amdBudget: 12340
-    },
-    {
-      label: "Avanzado",
-      labelXS: "Avanz.",
-      intelBudget: 12341,
-      amdBudget: 12342
-    },
-  ],
+  frontPageBudgets: {
+    'CL': [
+      { label: "Básico",
+        labelXS:"Bas.",
+        intelBudget: 3181,
+        amdBudget: 3182 },
+      { label: "Medio",
+        labelXS: "Medio",
+        intelBudget: 12337,
+        amdBudget: 12338 },
+      { label: "Alto",
+        labelXS: "Alto",
+        intelBudget: 12339,
+        amdBudget: 12340 },
+      { label: "Avanzado",
+        labelXS: "Avanz.",
+        intelBudget: 12341,
+        amdBudget: 12342 }],
+    'MX': [
+      { label: "Básico",
+        labelXS: "Bas.",
+        intelBudget: 376172,
+        amdBudget: 376172 },
+      { label: "Medio",
+        labelXS: "Medio",
+        intelBudget: 376172,
+        amdBudget: 376172 },
+      { label: "Alto",
+        labelXS: "Alto",
+        intelBudget: 376172,
+        amdBudget: 376172 },
+      { label: "Avanzado",
+        labelXS: "Avanz.",
+        intelBudget: 376172,
+        amdBudget: 376172 }]
+
+  },
 };

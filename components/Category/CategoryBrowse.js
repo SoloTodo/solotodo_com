@@ -11,7 +11,6 @@ import {
 } from "../../react-utils/utils";
 import ApiFormNext from "../../react-utils/api_forms/ApiFormNext";
 import CategoryBrowseResults from "../../components/Category/CategoryBrowseResults";
-import {formatCurrency} from "../../react-utils/utils";
 import {settings} from '../../settings'
 
 import CategoryResultCount from "./CategoryBrowseResultCount";
@@ -31,7 +30,7 @@ import {filterApiResourceObjectsByType} from "../../react-utils/ApiResource";
 
 class CategoryBrowse extends React.Component {
   static async getInitialProps(category, reduxState, asPath) {
-    const {preferredCountry, preferredCountryStores, preferredExcludeRefurbished, currencies, preferredNumberFormat} = solotodoStateToPropsUtils(reduxState);
+    const {preferredCountry, preferredCountryStores, preferredExcludeRefurbished, currencies, preferredNumberFormat, preferredCurrency} = solotodoStateToPropsUtils(reduxState);
 
     const formLayouts = filterApiResourceObjectsByType(reduxState.apiResourceObjects, 'category_specs_form_layouts');
     const websiteUrl = convertIdToUrl(settings.websiteId, 'websites');
@@ -70,10 +69,9 @@ class CategoryBrowse extends React.Component {
     }
 
     const usdCurrency = currencies.filter(currency => currency.id === settings.usdCurrencyId)[0];
-    const conversionCurrency = currencies.filter(currency => currency.url === preferredCountry.currency)[0];
 
     const {initialFormData, initialSearchResults} = await this.getInitialFormDataAndSearchResults(
-      usdCurrency, conversionCurrency, preferredCountry, formLayout, priceRange, preferredNumberFormat, category, preferredCountryStores, preferredExcludeRefurbished, asPath);
+      usdCurrency, preferredCurrency, preferredCountry, formLayout, priceRange, preferredNumberFormat, category, preferredCountryStores, preferredExcludeRefurbished, asPath);
 
     return {
       category,
@@ -81,13 +79,12 @@ class CategoryBrowse extends React.Component {
       priceRange,
       initialFormData,
       usdCurrency,
-      conversionCurrency,
       initialProductsPageState: this.getNewProductsPageState(initialSearchResults[0])
     }
   }
 
-  static getInitialFormDataAndSearchResults(usdCurrency, conversionCurrency, preferredCountry, formLayout, priceRange, preferredNumberFormat, category, preferredCountryStores, preferredExcludeRefurbished, asPath) {
-    const processedFormLayout = processFormLayout(formLayout, priceRange, usdCurrency, conversionCurrency, preferredNumberFormat, preferredCountry);
+  static getInitialFormDataAndSearchResults(usdCurrency, preferredCurrency, preferredCountry, formLayout, priceRange, preferredNumberFormat, category, preferredCountryStores, preferredExcludeRefurbished, asPath) {
+    const processedFormLayout = processFormLayout(formLayout, priceRange, usdCurrency, preferredCurrency, preferredNumberFormat, preferredCountry);
     const endpoint = this.apiEndpoint(category, preferredCountryStores, preferredExcludeRefurbished);
     return ApiFormNext.getInitialProps(processedFormLayout, asPath, [endpoint], fetchJson);
   }
@@ -122,7 +119,7 @@ class CategoryBrowse extends React.Component {
 
       CategoryBrowse.getInitialFormDataAndSearchResults(
         this.props.usdCurrency,
-        this.props.conversionCurrency,
+        this.props.preferredCurrency,
         this.props.preferredCountry,
         this.props.formLayout,
         this.props.priceRange,
@@ -227,10 +224,10 @@ class CategoryBrowse extends React.Component {
 
   render() {
     const {formLayout, searchResults} = this.state;
-    const {numberFormat, priceRange, usdCurrency, conversionCurrency, category, stores, initialFormData, isExtraSmall, preferredCountry, excludeRefurbished} = this.props;
+    const {numberFormat, priceRange, usdCurrency, category, stores, initialFormData, isExtraSmall, preferredCountry, excludeRefurbished, preferredCurrency} = this.props;
     const categoryBrowseParams = settings.categoryBrowseParameters[category.id];
 
-    const {filtersLayout, ordering, pagination} = processFormLayout(formLayout, priceRange, usdCurrency, conversionCurrency, numberFormat, preferredCountry);
+    const {filtersLayout, ordering, pagination} = processFormLayout(formLayout, priceRange, usdCurrency, preferredCurrency, numberFormat, preferredCountry);
     const apiFormFields = ['ordering', 'page'];
 
     for (const fieldset of filtersLayout) {
@@ -432,10 +429,6 @@ class CategoryBrowse extends React.Component {
       ))}
     </Accordion>;
 
-    const priceFormatter = (value, currency) => {
-      return formatCurrency(value, currency, conversionCurrency, numberFormat.thousands_separator, numberFormat.decimal_separator)
-    };
-
     const topBanner = <TopBanner category={category.name} /> || null;
 
     return (
@@ -514,7 +507,7 @@ class CategoryBrowse extends React.Component {
                   {products ? <CategoryBrowseResults
                     results={products}
                     page={this.state.formValues.page}
-                    priceFormatter={priceFormatter}
+                    priceFormatter={this.props.formatCurrency}
                     categoryBrowseParams={categoryBrowseParams}
                   /> : <Loading type="light" />}
 
@@ -538,7 +531,7 @@ class CategoryBrowse extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  const {preferredCountry, preferredCountryStores, preferredNumberFormat, preferredExcludeRefurbished} = solotodoStateToPropsUtils(state);
+  const {preferredCountry, preferredCountryStores, preferredNumberFormat, preferredExcludeRefurbished, preferredCurrency, formatCurrency} = solotodoStateToPropsUtils(state);
 
   const formLayouts = filterApiResourceObjectsByType(state.apiResourceObjects, 'category_specs_form_layouts');
   const websiteUrl = convertIdToUrl(settings.websiteId, 'websites');
@@ -556,6 +549,8 @@ function mapStateToProps(state, ownProps) {
     isExtraSmall: state.browser.is.extraSmall,
     stores: preferredCountryStores,
     numberFormat: preferredNumberFormat,
+    preferredCurrency,
+    formatCurrency,
     existingFormLayout,
     existingPriceRange
   }

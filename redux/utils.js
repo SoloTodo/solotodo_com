@@ -28,6 +28,8 @@ export function solotodoStateToPropsUtils(state) {
 
   const preferredExcludeRefurbished = Boolean(user ? user.preferred_exclude_refurbished : state.preferredExcludeRefurbished);
 
+  console.log(preferredCurrency);
+
   const _formatCurrency = (value, valueCurrency) => {
     if (!valueCurrency) {
       valueCurrency = preferredCurrency;
