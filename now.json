@@ -16,6 +16,14 @@
       "dest": "/tos",
       "headers": { "cache-control": "no-cache" }
     },
+    { "src": "/cl",
+      "dest": "/change_country?country=cl",
+      "headers": { "cache-control": "no-cache" }
+    },
+    { "src": "/mx",
+      "dest": "/change_country?country=mx",
+      "headers": { "cache-control": "no-cache" }
+    },
     {
       "src": "/reset/(?<uid>[^/]+?)/(?<token>[^/]+?)/?",
       "dest": "/reset?uid=$uid&token=$token",
