@@ -51,6 +51,7 @@ class BudgetEditDesktop extends React.Component {
       if (!pricingEntry) {
         continue
       }
+
       const matchingEntity = pricingEntry.entities.filter(entity => entity.store === budgetEntry.selected_store)[0] || null;
 
       if (matchingEntity) {
@@ -98,7 +99,7 @@ class BudgetEditDesktop extends React.Component {
               <tr>
                 <td colSpan="2"/>
                 <td className="budget-total-price" colSpan="2">
-                  {this.props.formatCurrency(totalPrice, this.props.clpCurrency)}
+                  {this.props.formatCurrency(totalPrice)}
                 </td>
               </tr>
               </tbody>

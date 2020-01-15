@@ -19,6 +19,8 @@ class Index extends React.Component {
       return `Bajó ${localizedDiscount}!`;
     };
 
+    const country_code = this.props.preferredCountry.iso_code;
+
     return <React.Fragment>
       <Head>
         <title>Cotiza y compara los precios de todas las tiendas - SoloTodo</title>
@@ -52,12 +54,13 @@ class Index extends React.Component {
               ordering="discount"
             />
           </div>
-          <div className="col-12 col-sm-12 col-md-10 col-lg-8 col-xl-7">
-            <div className="mt-3">
-              <h1>Cotizaciones gamer</h1>
-              <FrontPageBudgets/>
-            </div>
-          </div>
+          { country_code in settings.frontPageBudgets?
+            <div className="col-12 col-sm-12 col-md-10 col-lg-8 col-xl-7">
+              <div className="mt-3">
+                <h1>Cotizaciones gamer</h1>
+                <FrontPageBudgets country={this.props.preferredCountry}/>
+              </div>
+            </div> : null }
         </div>
       </div>
     </React.Fragment>
@@ -65,10 +68,11 @@ class Index extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const {currencies, formatCurrency} = solotodoStateToPropsUtils(state);
+  const {currencies, formatCurrency, preferredCountry} = solotodoStateToPropsUtils(state);
 
   return {
     formatCurrency,
+    preferredCountry,
     usdCurrency: currencies.filter(currency => currency.id === settings.usdCurrencyId)[0]
   }
 }

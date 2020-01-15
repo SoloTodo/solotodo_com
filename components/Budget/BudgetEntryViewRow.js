@@ -49,7 +49,7 @@ class BudgetEntryViewRow extends React.Component {
         "N/A"}
       </td>
       <td className="text-right">{matchingEntity ?
-        this.props.formatCurrency(matchingEntity.active_registry.offer_price, this.props.clpCurrency):
+        this.props.formatCurrency(matchingEntity.active_registry.offer_price):
         "N/A"}
       </td>
     </tr>

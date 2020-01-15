@@ -11,6 +11,7 @@ import Select from 'react-select';
 import Img from 'react-image'
 import Handlebars from 'handlebars/dist/handlebars.min'
 import {convertIdToUrl, isServer} from "../../react-utils/utils";
+import {solotodoStateToPropsUtils} from "../../redux/utils";
 
 
 class CategoryBrowseResult extends React.Component {
@@ -55,7 +56,7 @@ class CategoryBrowseResult extends React.Component {
     const product = selectedProductEntry.product;
     const pricingData = selectedProductEntry.metadata.prices_per_currency[0];
 
-    const currency = this.props.ApiResourceObject(this.props.currencies.filter(currency => currency.url === pricingData.currency)[0]);
+    const currency = this.props.preferredCurrency;
     const offerPrice = parseFloat(pricingData.offer_price);
 
     const formattedPrice = this.props.priceFormatter(offerPrice, currency);
@@ -110,12 +111,13 @@ class CategoryBrowseResult extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  const category = state.apiResourceObjects[ownProps.bucket.product_entries[0].product.category];
+  const {preferredCurrency} = solotodoStateToPropsUtils(state);
+  const category_url = ownProps.bucket.product_entries[0].product.category;
   const category_templates = filterApiResourceObjectsByType(state.apiResourceObjects, 'category_templates');
   const templateWebsiteUrl = convertIdToUrl(settings.websiteId, 'websites');
 
   let template = category_templates.filter(categoryTemplate => {
-    return categoryTemplate.category === category.url &&
+    return categoryTemplate.category === category_url &&
         categoryTemplate.purpose === settings.categoryBrowseResultPurposeUrl &&
         categoryTemplate.website === templateWebsiteUrl
   })[0] || null;
@@ -125,9 +127,8 @@ function mapStateToProps(state, ownProps) {
   }
 
   return {
-    category,
     template,
-    currencies: filterApiResourceObjectsByType(state.apiResourceObjects, 'currencies'),
+    preferredCurrency,
   }
 }
 

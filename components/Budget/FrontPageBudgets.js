@@ -12,15 +12,30 @@ class FrontPageBudgets extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeBudgetTier: settings.frontPageBudgets[0].label,
+      activeBudgetTier: settings.frontPageBudgets[this.props.country.iso_code][0].label,
       activeProcessorBrand: 'intelBudget',
       budgetsDict: undefined
     }
   }
 
   componentDidMount() {
+    this.componentUpdate()
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if(this.props.country !== prevProps.country){
+      this.setState({
+        budgetsDict:undefined
+      });
+      this.componentUpdate()
+    }
+  }
+
+  componentUpdate(){
     let url = 'budgets/?';
-    for (const budget of settings.frontPageBudgets) {
+    const frontPageBudgets = settings.frontPageBudgets[this.props.country.iso_code];
+
+    for (const budget of frontPageBudgets) {
       url += `ids=${budget.intelBudget}&ids=${budget.amdBudget}&`
     }
 
@@ -54,8 +69,14 @@ class FrontPageBudgets extends React.Component {
       return <Loading/>
     }
 
-    const matchingBudgetId = settings.frontPageBudgets.filter(budget => budget.label === this.state.activeBudgetTier)[0][this.state.activeProcessorBrand];
-    const budgetTierChoices = settings.frontPageBudgets.map(budget => (
+    const frontPageBudgets = settings.frontPageBudgets[this.props.country.iso_code];
+    const matchingBudgetId = frontPageBudgets.filter(budget => budget.label === this.state.activeBudgetTier)[0][this.state.activeProcessorBrand];
+
+    if (!(matchingBudgetId in this.state.budgetsDict)) {
+      return <Loading/>
+    }
+
+    const budgetTierChoices = frontPageBudgets.map(budget => (
       {
         displayName: this.props.isExtraSmall ? budget.labelXS : budget.label,
         value: budget.label
