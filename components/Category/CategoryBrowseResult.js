@@ -112,12 +112,12 @@ class CategoryBrowseResult extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   const {preferredCurrency} = solotodoStateToPropsUtils(state);
-  const category = state.apiResourceObjects[ownProps.bucket.product_entries[0].product.category];
+  const category_url = ownProps.bucket.product_entries[0].product.category;
   const category_templates = filterApiResourceObjectsByType(state.apiResourceObjects, 'category_templates');
   const templateWebsiteUrl = convertIdToUrl(settings.websiteId, 'websites');
 
   let template = category_templates.filter(categoryTemplate => {
-    return categoryTemplate.category === category.url &&
+    return categoryTemplate.category === category_url &&
         categoryTemplate.purpose === settings.categoryBrowseResultPurposeUrl &&
         categoryTemplate.website === templateWebsiteUrl
   })[0] || null;
@@ -127,10 +127,8 @@ function mapStateToProps(state, ownProps) {
   }
 
   return {
-    category,
     template,
     preferredCurrency,
-    currencies: filterApiResourceObjectsByType(state.apiResourceObjects, 'currencies'),
   }
 }
 
