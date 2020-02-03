@@ -222,8 +222,8 @@ export const settings = {
       { label: "Avanzado",
         labelXS: "Avanz.",
         intelBudget: 12341,
-        amdBudget: 12342 }],
-    'MX': [
+        amdBudget: 12342 }]
+    /*'MX': [
       { label: "Básico",
         labelXS: "Bas.",
         intelBudget: 376172,
@@ -239,7 +239,7 @@ export const settings = {
       { label: "Avanzado",
         labelXS: "Avanz.",
         intelBudget: 376172,
-        amdBudget: 376172 }]
-
-  },
+        amdBudget: 376172 }
+      ]*/
+  }
 };

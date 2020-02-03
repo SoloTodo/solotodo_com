@@ -1,6 +1,7 @@
 {
   "name": "solotodo_com",
   "version": "1.0.0",
+  "engines": { "node": "10.x" },
   "scripts": {
     "dev": "node server.js",
     "build": "next build",
