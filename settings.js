@@ -25,7 +25,7 @@ export const settings = {
         maxValue: 1000
       },
       {
-        label: 'Juegos 3D',
+        label: 'Gaming',
         field: 'score_games',
         maxValue: 1000
       },
