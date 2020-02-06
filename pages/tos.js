@@ -1,6 +1,5 @@
 import React from 'react';
 import Head from 'next/head'
-import TopBanner from "../components/TopBanner";
 
 
 class Tos extends React.Component {
@@ -11,8 +10,7 @@ class Tos extends React.Component {
       </Head>
       <div className="container">
         <div className="row">
-          <TopBanner category="Any" />
-          <div className="col-12">
+          <div className="col-12 mt-2">
             <h1>Condiciones de servicio</h1>
           </div>
 

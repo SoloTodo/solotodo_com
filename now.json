@@ -16,6 +16,11 @@
       "dest": "/tos",
       "headers": { "cache-control": "no-cache" }
     },
+    {
+      "src": "/privacy_policy",
+      "dest": "/privacy_policy",
+      "headers": { "cache-control": "no-cache" }
+    },
     { "src": "/cl",
       "dest": "/change_country?country=cl",
       "headers": { "cache-control": "no-cache" }
