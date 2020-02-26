@@ -51,7 +51,6 @@ class ProductVideo extends React.Component {
     if (this.props.isExtraSmall) {
       videoWidth = 300;
       videoHeight = 169;
-
     }
 
     return <div className="content-card">

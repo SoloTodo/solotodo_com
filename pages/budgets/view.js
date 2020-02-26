@@ -2,10 +2,10 @@ import React from 'react'
 import Head from "next/head";
 import ReactDisqusComments from 'react-disqus-comments';
 import {settings} from '../../settings'
-import {withRouter} from 'next/router'
 import {apiResourceStateToPropsUtils} from "../../react-utils/ApiResource";
 import TopBanner from "../../components/TopBanner";
 import BudgetViewTable from "../../components/Budget/BudgetViewTable";
+import {connect} from "react-redux";
 
 
 class Budget extends React.Component {
@@ -37,6 +37,16 @@ class Budget extends React.Component {
 
   render() {
     const budget = this.props.budget;
+
+    let videoWidth = 560;
+    let videoHeight = 315;
+
+    if (this.props.isExtraSmall) {
+      videoWidth = 300;
+      videoHeight = 169;
+    }
+
+
     return <React.Fragment>
       <Head>
         <title key="title">{budget.name} - SoloTodo</title>
@@ -49,37 +59,28 @@ class Budget extends React.Component {
           </div>
         </div>
         <div className="row">
-          <div className="col-8 ">
+          <div className="col-12 col-md-8">
             <div className="content-card mb-3">
               <BudgetViewTable budget={budget}/>
             </div>
           </div>
           {budget.is_public &&
-          <div className="col-12 col-xl-4">
-            <div className="content-card mb-3">
-              <h4>Si va a pedir ayuda sobre una cotización</h4>
-
-              <ul className="mb-0">
-                <li>
-                  Diga con todo el detalle posible el uso
-                  que le va a dar al PC y su presupuesto.
-                </li>
-                <li>
-                  Si ya tiene alguna de las partes, dígalo
-                </li>
-                <li>
-                  Si sólo puede / quiere comprar en una tienda, dígalo
-                </li>
-                <li>
-                  Si tiene amor u odio por alguna marca en particular
-                  (Intel / AMD / NVIDIA), dígalo.
-                </li>
-                <li>
-                  <a href="https://www.youtube.com/watch?v=Uyq8-7tc5Eo" target="_blank" rel="noopener noreferrer">
-                    Recomendamos pedir las cosas como corresponde
-                  </a>
-                </li>
-              </ul>
+          <div className="col-12 col-lg-8 mb-3">
+            <div className="content-card">
+              <div className="row">
+                <div className="col-12">
+                  <h3>¡Aprende a armar tu PC!</h3>
+                </div>
+              </div>
+              <div className="row d-flex justify-content-center mb-2">
+                <iframe
+                  width={`${videoWidth}`}
+                  height={`${videoHeight}`}
+                  src="https://www.youtube.com/embed/vfg3tCMhENo"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen/>
+              </div>
             </div>
           </div>}
           {budget.is_public &&
@@ -98,4 +99,10 @@ class Budget extends React.Component {
   }
 }
 
-export default withRouter(Budget)
+function mapStateToProps(state) {
+  return {
+    isExtraSmall: state.browser.is.extraSmall
+  }
+}
+
+export default connect(mapStateToProps)(Budget)
