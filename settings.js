@@ -72,11 +72,11 @@ export const settings = {
     6: [
       {
         label: 'Rendimiento general',
-        field: 'soc_basemark_os_score',
-        maxValue: 5000
+        field: 'general_score',
+        maxValue: 1000
       },
       {
-        label: 'Velocidad en juegos 3D',
+        label: 'Rendimiento en gaming',
         field: 'soc_gpu_gfx_bench_score',
         maxValue: 2500
       }
