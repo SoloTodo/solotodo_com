@@ -83,8 +83,8 @@ export const settings = {
     ],
     14: [
       {
-        label: 'Aplicaciones (BaseMark OS)',
-        field: 'soc_basemark_os_score',
+        label: 'Rendimiento general',
+        field: 'general_score',
         maxValue: 1000
       },
       {
