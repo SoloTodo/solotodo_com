@@ -6,7 +6,6 @@ import { Provider } from 'react-redux'
 import {ToastContainer} from "react-toastify";
 import {
   initializeUser,
-  loadFilteredRequiredResources,
   updateNavigation
 } from '../redux/actions'
 import withReduxStore from '../lib/with-redux-store'
@@ -21,6 +20,7 @@ import NProgress from "next-nprogress/component";
 // Import theme here because ajax-loader.gif import breaks otherwise
 import 'slick-carousel/slick/slick-theme.scss';
 import '../styles.scss';
+import {loadRequiredResources} from "../react-utils/redux/actions";
 
 class MyApp extends App {
   static async getInitialProps(appContext) {
@@ -29,8 +29,7 @@ class MyApp extends App {
     if (appContext.ctx.req) {
       // Load the required resources and initialize the user only on the first request (on the server)
 
-      await reduxStore.dispatch(loadFilteredRequiredResources(['countries', 'currencies', 'store_types', 'stores', 'number_formats', 'categories', 'category_templates']));
-
+      await reduxStore.dispatch(loadRequiredResources(['countries', 'currencies', 'store_types', 'stores', 'number_formats', 'categories', 'category_templates']));
       const {authToken} = parseCookies(appContext.ctx);
       await reduxStore.dispatch(initializeUser(authToken, reduxStore.getState(), appContext.ctx));
       const {preferredCountry} = solotodoStateToPropsUtils(reduxStore.getState());

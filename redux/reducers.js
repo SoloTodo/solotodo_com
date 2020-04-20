@@ -8,18 +8,6 @@ import {
   loadedBundleReducer
 } from '../react-utils/redux/reducers'
 
-function preferredCountryIdReducer(state, action) {
-  if (typeof state === 'undefined') {
-    return null
-  }
-
-  if (action.type === 'setPreferredCountryId') {
-    return action.preferredCountryId
-  }
-
-  return state
-}
-
 function preferredStoreIdsReducer(state, action) {
   if (typeof state === 'undefined') {
     return []
@@ -96,7 +84,6 @@ function categoryBrowsePriceRangesReducer(state, action) {
 }
 
 export const createReducer = isMobile => combineReducers({
-  preferredCountryId: preferredCountryIdReducer,
   preferredStoreIds: preferredStoreIdsReducer,
   preferredStoresLastUpdated: preferredStoresLastUpdatedReducer,
   preferredExcludeRefurbished: preferredExcludeRefurbished,

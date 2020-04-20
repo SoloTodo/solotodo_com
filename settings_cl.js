@@ -6,10 +6,8 @@ export const settings = {
   defaultCountryUrl: apiSettings.apiResourceEndpoints.countries + '1/',
   websiteId: 2,
   ownWebsiteUrl: convertIdToUrl(2, 'websites'),
-  domain: 'https://www.solotodo.com',
-  // domain: 'http://localhost:3000',
+  domain: 'https://www.solotodo.cl',
   shortDescriptionPurposeId: 2,
-  defaultDaysForOrdering: 3,
   categoryBrowseResultsPerPage: 12,
   disqusShortName: 'solotodo3',
   googleAnalyticsId: 'UA-11970222-11',
@@ -205,8 +203,7 @@ export const settings = {
       ]
     },
   },
-  frontPageBudgets: {
-    'CL': [
+  frontPageBudgets: [
       { label: "Básico",
         labelXS:"Bas.",
         intelBudget: 3181,
@@ -222,24 +219,6 @@ export const settings = {
       { label: "Avanzado",
         labelXS: "Avanz.",
         intelBudget: 12341,
-        amdBudget: 12342 }]
-    /*'MX': [
-      { label: "Básico",
-        labelXS: "Bas.",
-        intelBudget: 376172,
-        amdBudget: 376172 },
-      { label: "Medio",
-        labelXS: "Medio",
-        intelBudget: 376172,
-        amdBudget: 376172 },
-      { label: "Alto",
-        labelXS: "Alto",
-        intelBudget: 376172,
-        amdBudget: 376172 },
-      { label: "Avanzado",
-        labelXS: "Avanz.",
-        intelBudget: 376172,
-        amdBudget: 376172 }
-      ]*/
-  }
+        amdBudget: 12342
+      }]
 };

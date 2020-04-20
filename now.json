@@ -1,8 +1,5 @@
 {
   "version": 2,
-  "alias": [
-    "www.solotodo.com"
-  ],
   "builds": [{ "src": "package.json", "use": "@now/next" }],
   "routes": [
     {
@@ -18,14 +15,6 @@
     {
       "src": "/privacy_policy",
       "dest": "/privacy_policy",
-      "headers": { "cache-control": "no-cache" }
-    },
-    { "src": "/cl",
-      "dest": "/change_country?country=cl",
-      "headers": { "cache-control": "no-cache" }
-    },
-    { "src": "/mx",
-      "dest": "/change_country?country=mx",
       "headers": { "cache-control": "no-cache" }
     },
     {

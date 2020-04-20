@@ -20,40 +20,6 @@ export const parseBrowsePathToNextJs = path => {
   }
 };
 
-export const getPreferredCountry = async (user, state, ctx) => {
-  if (user && state.apiResourceObjects[user.preferred_country]) {
-    return state.apiResourceObjects[user.preferred_country]
-  }
-
-  const sessionPreferredCountryUrl = state.preferredCountryId ?
-    convertIdToUrl(state.preferredCountryId, 'countries') : null;
-  const sessionPreferredCountry = sessionPreferredCountryUrl ?
-    state.apiResourceObjects[sessionPreferredCountryUrl] :
-    null;
-
-  if (sessionPreferredCountry) {
-    return sessionPreferredCountry
-  }
-
-  let clientIp = settings.customIp;
-
-  if (!clientIp && ctx && ctx.req) {
-    clientIp = ctx.req.headers['cf-connecting-ip'] || ctx.req.headers['x-real-ip'] || ctx.req.headers['x-forwarded-for'] || ctx.req.connection.remoteAddress;
-  }
-
-  const countryByIpArgs = clientIp ? `?ip=${clientIp}` : '';
-  const countryByIpUrl = `${settings.endpoint}countries/by_ip/${countryByIpArgs}`;
-
-  return await fetch(countryByIpUrl)
-    .then(res => res.json())
-    .then(json => {
-      if (json.url && state.apiResourceObjects[json.url]) {
-        return state.apiResourceObjects[json.url]
-      }
-      return state.apiResourceObjects[settings.defaultCountryUrl];
-    });
-};
-
 export const getPreferredStores = (user, state) => {
   const stores = filterApiResourceObjectsByType(state.apiResourceObjects, 'stores').filter(store => store.last_activation);
   const sessionPreferredStoreIds = state.preferredStoreIds;
