@@ -4,6 +4,7 @@ import {convertIdToUrl} from './react-utils/utils'
 export const settings = {
   ...apiSettings,
   defaultCountryUrl: apiSettings.apiResourceEndpoints.countries + '1/',
+  countryCode: 'cl',
   websiteId: 2,
   ownWebsiteUrl: convertIdToUrl(2, 'websites'),
   domain: 'https://www.solotodo.cl',

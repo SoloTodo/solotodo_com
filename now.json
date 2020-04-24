@@ -110,17 +110,11 @@
     },
     {
       "src": "/robots.txt",
-      "status": 301,
-      "headers": {
-        "Location": "/static/robots.txt"
-      }
+      "dest": "/robots"
     },
     {
       "src": "/sitemap.xml",
-      "status": 301,
-      "headers": {
-        "Location": "https://solotodo-core.s3.amazonaws.com/sitemaps/sitemap.xml"
-      }
+      "dest": "/sitemap"
     },
     {
       "src": "/(?<categoryslug>[^/]+)/?",
