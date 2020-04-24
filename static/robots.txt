@@ -1,4 +1,0 @@
-User-agent: *
-Disallow:
-
-Sitemap: https://solotodo-core.s3.amazonaws.com/sitemaps/sitemap.xml

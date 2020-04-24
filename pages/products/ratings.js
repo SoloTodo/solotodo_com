@@ -1,5 +1,5 @@
 import React from 'react'
-import Router, {withRouter} from "next/router";
+import Router from "next/router";
 import Link from "next/link";
 import ReactPaginate from 'react-paginate';
 import queryString from 'query-string';
@@ -12,6 +12,7 @@ import Loading from "../../components/Loading";
 import moment from "moment";
 import ProductRatingStars from "../../components/Product/ProductRatingStars";
 import Head from "next/head";
+import {connect} from "react-redux";
 
 
 class ProductRatings extends React.Component {
@@ -60,14 +61,14 @@ class ProductRatings extends React.Component {
 
   render() {
     const product = this.props.product;
-    const stores = this.props.preferredCountryStores;
     const category = this.props.category;
     const userIsStaff = this.props.user && this.props.user.is_staff;
 
-    const ratings = this.props.ratings.results.filter(rating => stores.filter(store => store.url === rating.store)[0]);
+    const ratings = this.props.ratings.results;
     const pageCount = Math.ceil(this.props.ratings.count/10);
     const previousLabel = <span>&lsaquo;</span>;
     const nextLabel = <span>&rsaquo;</span>;
+    const stores = this.props.stores;
 
     return <React.Fragment>
       <Head>
@@ -179,4 +180,12 @@ class ProductRatings extends React.Component {
   }
 }
 
-export default withRouter(ProductRatings)
+function mapStateToProps(state) {
+  const {stores} = solotodoStateToPropsUtils(state);
+
+  return {
+    stores,
+  }
+}
+
+export default connect(mapStateToProps)(ProductRatings)

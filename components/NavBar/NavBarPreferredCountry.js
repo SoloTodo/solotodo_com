@@ -5,26 +5,25 @@ import {
   UncontrolledDropdown
 } from "reactstrap";
 import {solotodoStateToPropsUtils} from "../../redux/utils";
-import {apiResourceStateToPropsUtils} from "../../react-utils/ApiResource";
-import {updatePreferredCountry} from "../../redux/actions";
-import {getAuthToken} from "../../react-utils/utils";
+import {withRouter} from "next/router";
 
 class NavBarPreferredCountry extends React.Component {
-  handleCountryClick = (evt, country) => {
-    evt.preventDefault();
-
-    this.props.updatePreferredCountry(country, this.props.user)
-  };
-
   render() {
+    const countryDomains = {
+      1: 'https://www.solotodo.cl',
+      4: 'https://www.solotodo.com.mx',
+    };
+
+    const countries = this.props.countries.filter(country => countryDomains[country.id]);
+
     return <UncontrolledDropdown nav>
       <DropdownToggle nav caret>
         <img src={this.props.preferredCountry.flag} alt={this.props.preferredCountry.name} width="30" height="20" />
       </DropdownToggle>
       <DropdownMenu>
-        {this.props.countries.map(country => (
-            <DropdownItem key={country.id} onClick={evt => this.handleCountryClick(evt, country)}>
-              {country.name}
+        {countries.map(country => (
+            <DropdownItem key={country.id}>
+              {country.id === this.props.preferredCountry.id ? country.name : <a href={countryDomains[country.id] + this.props.router.asPath}>{country.name}</a>}
             </DropdownItem>
         ))}
       </DropdownMenu>
@@ -33,26 +32,12 @@ class NavBarPreferredCountry extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const { ApiResourceObject } = apiResourceStateToPropsUtils(state);
-  const { user, preferredCountry, countries } = solotodoStateToPropsUtils(state);
+  const { preferredCountry, countries } = solotodoStateToPropsUtils(state);
 
   return {
-    ApiResourceObject,
-    user,
     preferredCountry,
     countries
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    updatePreferredCountry: (country, user) => {
-      dispatch(updatePreferredCountry(country, user, getAuthToken()))
-    }
-  };
-}
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(NavBarPreferredCountry);
+export default withRouter(connect(mapStateToProps)(NavBarPreferredCountry));

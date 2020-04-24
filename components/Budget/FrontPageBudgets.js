@@ -12,28 +12,15 @@ class FrontPageBudgets extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeBudgetTier: settings.frontPageBudgets[this.props.country.iso_code][0].label,
+      activeBudgetTier: settings.frontPageBudgets[0].label,
       activeProcessorBrand: 'intelBudget',
       budgetsDict: undefined
     }
   }
 
-  componentDidMount() {
-    this.componentUpdate()
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if(this.props.country !== prevProps.country){
-      this.setState({
-        budgetsDict:undefined
-      });
-      this.componentUpdate()
-    }
-  }
-
-  componentUpdate(){
+  componentDidMount(){
     let url = 'budgets/?';
-    const frontPageBudgets = settings.frontPageBudgets[this.props.country.iso_code];
+    const frontPageBudgets = settings.frontPageBudgets;
 
     for (const budget of frontPageBudgets) {
       url += `ids=${budget.intelBudget}&ids=${budget.amdBudget}&`
@@ -69,7 +56,7 @@ class FrontPageBudgets extends React.Component {
       return <Loading/>
     }
 
-    const frontPageBudgets = settings.frontPageBudgets[this.props.country.iso_code];
+    const frontPageBudgets = settings.frontPageBudgets;
     const matchingBudgetId = frontPageBudgets.filter(budget => budget.label === this.state.activeBudgetTier)[0][this.state.activeProcessorBrand];
 
     if (!(matchingBudgetId in this.state.budgetsDict)) {

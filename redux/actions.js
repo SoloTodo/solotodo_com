@@ -8,33 +8,10 @@ import {
 } from '../react-utils/utils';
 import { settings } from '../settings'
 import {
-  getPreferredCountry, getPreferredExcludeRefurbished,
+  getPreferredExcludeRefurbished,
   getPreferredStores,
   persistUser
 } from "../utils";
-import {fetchRequiredResources} from "../react-utils/redux/utils";
-import {filterApiResourceObjectsByType} from "../react-utils/ApiResource";
-
-export const loadFilteredRequiredResources = resources => dispatch => {
-  return fetchRequiredResources(resources).then(bundle => {
-    const countries = filterApiResourceObjectsByType(bundle, 'countries');
-    const stores = filterApiResourceObjectsByType(bundle, 'stores').filter(store => store.last_activation);
-    const countriesToRemove = [];
-
-    for (const country of countries) {
-      if (!stores.some(store => store.country === country.url)) {
-        countriesToRemove.push(country.url)
-      }
-    }
-
-    bundle = bundle.filter(bundleItem => !countriesToRemove.includes(bundleItem.url));
-
-    dispatch({
-      type: 'addBundle',
-      apiResourceObjects: bundle
-    });
-  });
-};
 
 export const login = (authToken, state) => dispatch => {
   setCookie(null, 'authToken', authToken, {
@@ -54,16 +31,12 @@ export const initializeUser = (authToken, state, ctx) => async dispatch => {
       // The token is not valid, do nothing as user is already null
     }
   }
-  const preferredCountry = await getPreferredCountry(user, state, ctx);
+
   const preferredStores = getPreferredStores(user, state);
   const preferredExcludeRefurbished = getPreferredExcludeRefurbished(user, state);
 
   if (user) {
     let userChanges = {};
-
-    if (user.preferred_country !== preferredCountry.url) {
-      userChanges['preferred_country'] = preferredCountry.url;
-    }
 
     if (!areListsEqual(user.preferred_stores, preferredStores.map(store => store.url))) {
       userChanges['preferred_stores'] = preferredStores.map(store => store.url);
@@ -81,14 +54,9 @@ export const initializeUser = (authToken, state, ctx) => async dispatch => {
     // the preferences are available between dispatches.
 
     dispatch(setLocalUser(user));
-    dispatch(setSessionPreferredCountryId(null, ctx));
     dispatch(setSessionPreferredStoreIds(null, ctx));
     dispatch(setSessionPreferredExcludeRefurbished(null, ctx));
   } else {
-    if (state.preferredCountryId !== preferredCountry.id) {
-      dispatch(setSessionPreferredCountryId(preferredCountry.id, ctx));
-    }
-
     if (!areListsEqual(state.preferredStoreIds, preferredStores.map(store => store.id))) {
       dispatch(setSessionPreferredStoreIds(preferredStores.map(store => store.id), ctx));
     }
@@ -109,22 +77,6 @@ export const invalidateLocalUser = ctx => dispatch => {
     type: 'deleteApiResourceObject',
     url: settings.ownUserUrl
   })
-};
-
-export const updatePreferredCountry = (country, user, authToken) => dispatch => {
-  if (user) {
-    const userChanges = {
-      preferred_country: country.url
-    };
-
-    persistUser(authToken, userChanges).then(updatedUser => {
-      dispatch(setLocalUser(updatedUser));
-    });
-  } else {
-    dispatch(setSessionPreferredCountryId(country.id));
-  }
-
-  return dispatch(updateNavigation(country.url));
 };
 
 export const updatePreferredStores = (storeIds, user, authToken) => dispatch => {
@@ -182,25 +134,6 @@ export const updateNavigation = countryUrl => dispatch => {
   })
 };
 
-/**************************************
- * Country validation utility actions *
- **************************************/
-
-const setSessionPreferredCountryId = (preferredCountryId, ctx) => dispatch => {
-  if (preferredCountryId) {
-    setCookie(ctx, 'preferredCountryId', preferredCountryId, {
-      maxAge: 60 * 60 * 24 * 14,
-      path: '/'
-    })
-  } else {
-    destroyCookie(ctx, 'preferredCountryId');
-  }
-
-  dispatch({
-    type: 'setPreferredCountryId',
-    preferredCountryId: preferredCountryId
-  })
-};
 
 /************************************
  * Store validation utility actions *
