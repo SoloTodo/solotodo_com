@@ -8,7 +8,8 @@
     "dev": "node server.js",
     "build": "next build",
     "start": "NODE_ENV=production node server.js",
-    "switch_mx": "rm -f settings.js && rm -rf .now && ln -s settings_mx.js settings.js && ln -s .now_mx .now"
+    "switch_mx": "rm -f settings.js && rm -rf .now && ln -s settings_mx.js settings.js && ln -s .now_mx .now",
+    "switch_cl": "rm -f settings.js && rm -rf .now && ln -s settings_cl.js settings.js && ln -s .now_cl .now"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.7.2",

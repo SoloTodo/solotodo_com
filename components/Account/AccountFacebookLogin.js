@@ -42,7 +42,7 @@ class AccountFacebookLogin extends React.Component {
         fields="name,email"
         callback={this.responseFacebook}
         textButton="Entrar con Facebook"
-        redirectUri="https://www.solotodo.com/account/login"
+        redirectUri={`${settings.domain}/account/login`}
     />
   }
 }
