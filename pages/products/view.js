@@ -88,6 +88,19 @@ class Products extends React.Component {
     }
   }
 
+  componentDidMount() {
+    const product = this.props.product;
+
+    if (window.exponea && product.name.indexOf('LG') === 0) {
+      const data = {
+        product_id: product.id,
+        title: product.name,
+      };
+
+      window.exponea.track('solotodo_visit', data);
+    }
+  }
+
   handleEntitiesChange = (entities) => {
     this.setState({
       cheapestEntity: entities[0]
