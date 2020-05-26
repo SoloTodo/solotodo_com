@@ -176,9 +176,9 @@ class Products extends React.Component {
                       {category.budget_ordering &&
                       <ProductAddToBudgetButton
                         product={product}/>}
-                      {cheapestEntity && <ProductAlertButton
+                      <ProductAlertButton
                         entity={cheapestEntity}
-                        product={this.props.product}/>}
+                        product={this.props.product}/>
                       <Link href={`/products/new_rating?id=${product.id}`} as={`/products/${product.id}/ratings/new`}>
                         <a className="ml-2 mt-2 btn btn-info btn-large">
                           ¿Lo compraste? ¡Danos tu opinión!
