@@ -5,9 +5,7 @@
     "node": "10.x"
   },
   "scripts": {
-    "dev": "node server.js",
-    "build": "next build",
-    "start": "NODE_ENV=production node server.js",
+    "dev": "now dev",
     "switch_mx": "rm -f settings.js && rm -rf .now && ln -s settings_mx.js settings.js && ln -s .now_mx .now",
     "switch_cl": "rm -f settings.js && rm -rf .now && ln -s settings_cl.js settings.js && ln -s .now_cl .now"
   },
