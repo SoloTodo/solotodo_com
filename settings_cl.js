@@ -58,6 +58,11 @@ export const settings = {
         maxValue: 7000
       },
       {
+        label: 'Cinebench R20 (Multi core)',
+        field: 'cinebench_r20_multi_score',
+        maxValue: 14000
+      },
+      {
         label: 'Passmark',
         field: 'passmark_score',
         maxValue: 60000
