@@ -53,19 +53,14 @@ export const settings = {
     ],
     3: [
       {
-        label: 'PCMark 7',
-        field: 'pcmark_7_score',
-        maxValue: 9000
-      },
-      {
-        label: 'PCMark 8',
-        field: 'pcmark_8_score',
-        maxValue: 5000
+        label: 'PCMark 10',
+        field: 'pcmark_10_score',
+        maxValue: 7000
       },
       {
         label: 'Passmark',
         field: 'passmark_score',
-        maxValue: 30000
+        maxValue: 60000
       }
     ],
     6: [
