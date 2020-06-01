@@ -49,8 +49,11 @@ class NotebookProcessors extends React.Component {
           score_field="speed_score"
           speed_tooltip="Según PassMark"
           columns={[
-            { Header: 'Cores',
-              accessor: 'core_count_unicode',
+            { Header: 'Núcleos',
+              accessor: 'core_count_value',
+              width: 100},
+            { Header: 'Hilos',
+              accessor: 'thread_count_value',
               width: 100},
             { Header: 'Frecuencia',
               accessor: 'frequency_unicode',
