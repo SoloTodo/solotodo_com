@@ -51,7 +51,7 @@ class ProductNormalPricesTable extends React.Component {
             <td>
               <ProductRatingStars
                 value={storeEntry.rating}
-                linkHref={`/store_ratings?id=${storeEntry.id}`}
+                linkHref={`/stores/[id]/ratings?id=${storeEntry.id}`}
                 linkAs={`/stores/${storeEntry.id}/ratings`}/>
             </td>
           }

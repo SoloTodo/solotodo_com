@@ -83,7 +83,7 @@ class NavBarBudgets extends React.Component {
         {
           user.budgets.length ?
             user.budgets.map(budget => (
-              <Link key={budget.id} href={`/budgets/edit?id=${budget.id}`} as={`/budgets/${budget.id}/edit`}>
+              <Link key={budget.id} href={`/budgets/[id]/edit?id=${budget.id}`} as={`/budgets/${budget.id}/edit`}>
                 <a className="dropdown-item">{budget.name}</a>
               </Link>
             ))

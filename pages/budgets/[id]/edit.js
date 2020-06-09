@@ -3,17 +3,17 @@ import {connect} from "react-redux";
 import Router, {withRouter} from 'next/router'
 import Big from 'big.js';
 
-import {apiResourceStateToPropsUtils} from "../../react-utils/ApiResource";
+import {apiResourceStateToPropsUtils} from "../../../react-utils/ApiResource";
 import {
   areObjectListsEqual,
   convertIdToUrl,
   fetchJson
-} from "../../react-utils/utils";
+} from "../../../react-utils/utils";
 
-import {solotodoStateToPropsUtils} from "../../redux/utils";
-import Loading from "../../components/Loading";
-import BudgetEditDesktop from "../../components/Budget/BudgetEditDesktop";
-import BudgetEditMobile from "../../components/Budget/BudgetEditMobile";
+import {solotodoStateToPropsUtils} from "../../../redux/utils";
+import Loading from "../../../components/Loading";
+import BudgetEditDesktop from "../../../components/Budget/BudgetEditDesktop";
+import BudgetEditMobile from "../../../components/Budget/BudgetEditMobile";
 import Head from "next/head";
 import {toast} from "react-toastify";
 

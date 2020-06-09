@@ -36,7 +36,7 @@ class ProductCellPricesTable extends React.Component {
               {this.props.hideRatings ? null:
                 <ProductRatingStars
                   value = {group.store.rating || 0}
-                  linkHref={`/store_ratings?id=${group.store.id}`}
+                  linkHref={`/stores/[id]/ratings?id=${group.store.id}`}
                   linkAs={`/stores/${group.store.id}/ratings`}/>}
             </div>
           </td>

@@ -1,10 +1,10 @@
 import React from 'react'
 import Head from "next/head";
 import ReactDisqusComments from 'react-disqus-comments';
-import {settings} from '../../settings'
-import {apiResourceStateToPropsUtils} from "../../react-utils/ApiResource";
-import TopBanner from "../../components/TopBanner";
-import BudgetViewTable from "../../components/Budget/BudgetViewTable";
+import {settings} from '../../../settings'
+import {apiResourceStateToPropsUtils} from "../../../react-utils/ApiResource";
+import TopBanner from "../../../components/TopBanner";
+import BudgetViewTable from "../../../components/Budget/BudgetViewTable";
 import {connect} from "react-redux";
 
 

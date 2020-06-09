@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import ImageGallery from 'react-image-gallery';
 import {connect} from "react-redux";
-import './ProductPicture.css';
 
 
 class ProductPicture extends Component {

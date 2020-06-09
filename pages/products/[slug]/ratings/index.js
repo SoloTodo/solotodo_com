@@ -4,13 +4,13 @@ import Link from "next/link";
 import ReactPaginate from 'react-paginate';
 import queryString from 'query-string';
 
-import {fetchJson} from "../../react-utils/utils";
-import {solotodoStateToPropsUtils} from "../../redux/utils";
-import {settings} from "../../settings";
-import TopBanner from "../../components/TopBanner";
-import Loading from "../../components/Loading";
+import {fetchJson} from "../../../../react-utils/utils";
+import {solotodoStateToPropsUtils} from "../../../../redux/utils";
+import {settings} from "../../../../settings";
+import TopBanner from "../../../../components/TopBanner";
+import Loading from "../../../../components/Loading";
 import moment from "moment";
-import ProductRatingStars from "../../components/Product/ProductRatingStars";
+import ProductRatingStars from "../../../../components/Product/ProductRatingStars";
 import Head from "next/head";
 import {connect} from "react-redux";
 
@@ -21,7 +21,7 @@ class ProductRatings extends React.Component {
     const reduxState = reduxStore.getState();
 
     const {user, categories, preferredCountryStores} = solotodoStateToPropsUtils(reduxState);
-    const productId = query.id;
+    const productId = query.slug;
 
     let page = queryString.parse(asPath.split('?')[1])['page'] || 1;
 
@@ -54,7 +54,7 @@ class ProductRatings extends React.Component {
 
   onPageChange = selection => {
     const nextPage = selection.selected;
-    const nextHref = `/products/ratings?id=${this.props.product.id}&page=${nextPage+1}`;
+    const nextHref = `/products/[slug]/ratings?slug=${this.props.product.id}&page=${nextPage+1}`;
     const nextAs = `/products/${this.props.product.id}/ratings?page=${nextPage+1}`;
     Router.push(nextHref, nextAs)
   };
@@ -89,7 +89,7 @@ class ProductRatings extends React.Component {
                         </Link>
                       </li>
                       <li className="breadcrumb-item">
-                        <Link href= {`/products/view?id=${product.id}&slug=${product.slug}`} as={`/products/${product.id}-${product.slug}`}>
+                        <Link href= {`/products/[slug]?slug=${product.id}-${product.slug}`} as={`/products/${product.id}-${product.slug}`}>
                           <a>{product.name}</a>
                         </Link>
                       </li>

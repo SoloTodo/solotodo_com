@@ -1,0 +1,39 @@
+{
+  "version": 2,
+  "routes": [
+    {
+      "src": "/reset/(?<uid>[^/]+?)/(?<token>[^/]+?)/?",
+      "dest": "/reset?uid=$uid&token=$token",
+      "headers": { "cache-control": "no-cache" }
+    },
+    {
+      "src": "/cells/(?<id>[^/]+?)/?",
+      "status": 301,
+      "headers": {
+        "Location": "/products/$id"
+      }
+    },
+    {
+      "src": "/cells/(?<id>[^/]+?)-(?<slug>[^/]*)/?",
+      "status": 301,
+      "headers": {
+        "Location": "/products/$id-$slug"
+      }
+    },
+    {
+      "src": "/ads.txt",
+      "status": 301,
+      "headers": {
+        "Location": "/static/ads.txt"
+      }
+    },
+    {
+      "src": "robots.txt",
+      "dest": "/robots"
+    },
+    {
+      "src": "sitemap.xml",
+      "dest": "/sitemap"
+    }
+  ]
+}

@@ -4,27 +4,27 @@ import Link from "next/link";
 import Router, {withRouter} from 'next/router'
 import ReactDisqusComments from "react-disqus-comments";
 
-import {fetchJson} from "../../react-utils/utils";
-import {filterApiResourceObjectsByType} from "../../react-utils/ApiResource";
+import {fetchJson} from "../../../react-utils/utils";
+import {filterApiResourceObjectsByType} from "../../../react-utils/ApiResource";
 
-import {solotodoStateToPropsUtils} from "../../redux/utils";
-import {getProductShortDescription, withSoloTodoTracker} from "../../utils";
-import {settings} from "../../settings";
-import {endpoint} from "../../endpoint";
+import {solotodoStateToPropsUtils} from "../../../redux/utils";
+import {getProductShortDescription, withSoloTodoTracker} from "../../../utils";
+import {settings} from "../../../settings";
+import {endpoint} from "../../../endpoint";
 
-import TopBanner from "../../components/TopBanner";
-import ProductDetailRating from "../../components/Product/ProductDetailRating";
-import ProductPicture from "../../components/Product/ProductPicture";
-import ProductVariants from "../../components/Product/ProductVariants";
-import ProductTechSpecs from "../../react-utils/components/Product/ProductTechSpecs";
-import ProductStaffActionsButton from "../../components/Product/ProductStaffActionsButton";
-import ProductPricesTable from "../../components/Product/ProductPricesTable"
-import ProductAlertButton from "../../components/Product/ProductAlertButton";
-import ProductBenchmarks from "../../components/Product/ProductBenchmarks";
-import ProductAlternatives from "../../components/Product/ProductAlternatives";
-import PricingHistory from "../../components/Product/PricingHistory";
-import ProductAddToBudgetButton from "../../components/Product/ProductAddToBudgetButton";
-import ProductVideo from "../../components/Product/ProductVideo";
+import TopBanner from "../../../components/TopBanner";
+import ProductDetailRating from "../../../components/Product/ProductDetailRating";
+import ProductPicture from "../../../components/Product/ProductPicture";
+import ProductVariants from "../../../components/Product/ProductVariants";
+import ProductTechSpecs from "../../../react-utils/components/Product/ProductTechSpecs";
+import ProductStaffActionsButton from "../../../components/Product/ProductStaffActionsButton";
+import ProductPricesTable from "../../../components/Product/ProductPricesTable"
+import ProductAlertButton from "../../../components/Product/ProductAlertButton";
+import ProductBenchmarks from "../../../components/Product/ProductBenchmarks";
+import ProductAlternatives from "../../../components/Product/ProductAlternatives";
+import PricingHistory from "../../../components/Product/PricingHistory";
+import ProductAddToBudgetButton from "../../../components/Product/ProductAddToBudgetButton";
+import ProductVideo from "../../../components/Product/ProductVideo";
 
 
 class Products extends React.Component {
@@ -33,11 +33,15 @@ class Products extends React.Component {
     const reduxState = reduxStore.getState();
 
     const {user, categories, preferredCountryStores, currencies} = solotodoStateToPropsUtils(reduxState);
-    const productId = query.id;
+    const idWithSlug = query.slug;
+    const [productId, ...givenSlugParts] = idWithSlug.split('-');
+    const givenSlug = givenSlugParts.join('-');
 
     const productsUrl = settings.apiResourceEndpoints.products;
 
     let product;
+
+    console.log(`${productsUrl}${productId}/`);
 
     try {
       product = await fetchJson(`${productsUrl}${productId}/`);
@@ -49,8 +53,10 @@ class Products extends React.Component {
       }
     }
 
-    const givenSlug = query.slug;
     const expectedSlug = product.slug;
+
+    console.log(expectedSlug)
+    console.log(givenSlug)
 
     if (givenSlug !== expectedSlug) {
       if (res) {
@@ -59,7 +65,7 @@ class Products extends React.Component {
         });
         res.end()
       } else {
-        const href = `/products/view?id=${productId}&slug=${expectedSlug}`;
+        const href = `/products/[slug]?slug=${productId}-${expectedSlug}`;
         const as = `/products/${productId}-${expectedSlug}`;
 
         Router.push(href, as)
@@ -179,7 +185,7 @@ class Products extends React.Component {
                       <ProductAlertButton
                         entity={cheapestEntity}
                         product={this.props.product}/>
-                      <Link href={`/products/new_rating?id=${product.id}`} as={`/products/${product.id}/ratings/new`}>
+                      <Link href={`/products/[slug]/ratings/new?slug=${product.id}`} as={`/products/${product.id}/ratings/new`}>
                         <a className="ml-2 mt-2 btn btn-info btn-large">
                           ¿Lo compraste? ¡Danos tu opinión!
                         </a>

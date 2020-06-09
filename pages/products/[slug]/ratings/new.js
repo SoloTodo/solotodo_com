@@ -4,12 +4,12 @@ import Router, {withRouter} from "next/router";
 import {toast} from 'react-toastify';
 import LaddaButton, { MD, EXPAND_LEFT } from "react-ladda";
 
-import {fetchJson} from "../../react-utils/utils";
-import {solotodoStateToPropsUtils} from "../../redux/utils";
-import {settings} from "../../settings";
-import TopBanner from "../../components/TopBanner";
-import RatingStarsEditable from "../../components/RatingStarsEditable";
-import {apiResourceStateToPropsUtils} from "../../react-utils/ApiResource";
+import {fetchJson} from "../../../../react-utils/utils";
+import {solotodoStateToPropsUtils} from "../../../../redux/utils";
+import {settings} from "../../../../settings";
+import TopBanner from "../../../../components/TopBanner";
+import RatingStarsEditable from "../../../../components/RatingStarsEditable";
+import {apiResourceStateToPropsUtils} from "../../../../react-utils/ApiResource";
 import {connect} from "react-redux";
 import Head from "next/head";
 
@@ -20,7 +20,7 @@ class NewProductRating extends React.Component {
     const reduxState = reduxStore.getState();
 
     const {user, categories, preferredCountryStores} = solotodoStateToPropsUtils(reduxState);
-    const productId = query.id;
+    const productId = query.slug;
 
     const productsUrl = settings.apiResourceEndpoints.products;
 
@@ -116,7 +116,7 @@ class NewProductRating extends React.Component {
         'Content-Type': null
       }
     }).then(rating => {
-      Router.push(`/products/view?id=${this.props.product.id}&slug=${this.props.product.slug}`, `/products/${this.props.product.id}-${this.props.product.slug}`);
+      Router.push(`/products/[slug]?slug=${this.props.product.id}-${this.props.product.slug}`, `/products/${this.props.product.id}-${this.props.product.slug}`);
       toast.success('Rating enviado exitosamente. Gracias! Apenas lo verifiquemos aparecerá publicado en el sitio.', {
         autoClose: false
       });
@@ -142,7 +142,7 @@ class NewProductRating extends React.Component {
                 <div className="col-12">
                   <ol className="breadcrumb">
                     <li className="breadcrumb-item"><Link  href={`/browse?category_slug=${category.slug}`} as={`/${category.slug}`}><a>{category.name}</a></Link></li>
-                    <li className="breadcrumb-item"><Link href={`/products/view?id=${product.id}&slug=${product.slug}`} as={`/products/${product.id}-${product.slug}`}><a>{product.name}</a></Link></li>
+                    <li className="breadcrumb-item"><Link href={`/products/[slug]?slug=${product.id}-${product.slug}`} as={`/products/${product.id}-${product.slug}`}><a>{product.name}</a></Link></li>
                     <li className="breadcrumb-item active" aria-current="page">Nuevo rating</li>
                   </ol>
                 </div>

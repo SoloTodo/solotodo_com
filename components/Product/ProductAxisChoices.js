@@ -59,7 +59,7 @@ class AxisChoices extends React.Component {
           } else if (choice.redirectUrlData) {
             return <Link
               key={choice.labelValue}
-              href={`/products/view?id=${choice.redirectUrlData.id}&slug=${choice.redirectUrlData.slug}`}
+              href={`/products/[slug]?slug=${choice.redirectUrlData.id}-${choice.redirectUrlData.slug}`}
               as={`/products/${choice.redirectUrlData.id}-${choice.redirectUrlData.slug}`}>
               <button type="button" className="btn btn-outline-secondary btn-sm">{choice.labelValue}</button>
             </Link>

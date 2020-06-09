@@ -30,8 +30,8 @@ class BudgetEntryViewRow extends React.Component {
       <td>{this.props.categories.filter(category => category.url === budgetEntry.category)[0].name}</td>}
       <td>{product ?
         <Link
-          href={`/products/view?id=${product.id}`}
-          as={`/products/${product.id}`}>
+          href={`/products/[slug]?slug=${product.id}-${product.slug}`}
+          as={`/products/${product.id}-${product.slug}`}>
           <a>
             {product.name}
           </a>

@@ -5,12 +5,12 @@ import ReactPaginate from "react-paginate";
 import queryString from "query-string";
 import moment from "moment";
 
-import {solotodoStateToPropsUtils} from "../redux/utils";
-import {fetchJson} from "../react-utils/utils";
+import {solotodoStateToPropsUtils} from "../../../redux/utils";
+import {fetchJson} from "../../../react-utils/utils";
 
-import TopBanner from "../components/TopBanner";
-import ProductRatingStars from "../components/Product/ProductRatingStars";
-import Loading from "../components/Loading";
+import TopBanner from "../../../components/TopBanner";
+import ProductRatingStars from "../../../components/Product/ProductRatingStars";
+import Loading from "../../../components/Loading";
 import Head from "next/head";
 
 
@@ -118,7 +118,7 @@ class StoreRatings extends React.Component {
                           <dt>Fecha</dt>
                           <dd>{moment(rating.creation_date).format('lll')}</dd>
                           <dt>Producto comprado</dt>
-                          <dd><Link href={`/products/view?id=${rating.product.id}&slug=${rating.product.slug}`} as={`/products/${rating.product.id}-${rating.product.slug}`}>
+                          <dd><Link href={`/products/[slug]?slug=$rating.{product.id}-${rating.product.slug}`} as={`/products/${rating.product.id}-${rating.product.slug}`}>
                             <a>{rating.product.name}</a>
                           </Link></dd>
                           <dt>Evaluación de la tienda</dt>

@@ -4,19 +4,17 @@ import {withRouter} from "next/dist/client/router";
 import Link from "next/link";
 import Head from "next/head";
 
-import {fetchJson, areListsEqual} from "../react-utils/utils";
-import {solotodoStateToPropsUtils} from "../redux/utils";
-import {settings} from "../settings";
-import CategoryBrowseResult from "../components/Category/CategoryBrowseResult";
-import TopBanner from "../components/TopBanner";
+import {fetchJson, areListsEqual} from "../../react-utils/utils";
+import {solotodoStateToPropsUtils} from "../../redux/utils";
+import {settings} from "../../settings";
+import CategoryBrowseResult from "../../components/Category/CategoryBrowseResult";
+import TopBanner from "../../components/TopBanner";
 
 
 class VideoCardGpuDetail extends React.Component {
   static async getInitialProps(ctx) {
     const { res, query } = ctx;
-
     const gpuId = query.id;
-
     let gpu;
 
     try {
@@ -119,6 +117,7 @@ class VideoCardGpuDetail extends React.Component {
                 <dd>{gpu.rops}</dd>
 
                 <dt>Frecuencias</dt>
+                <br />
                 <dd>
                   <ul>
                     <li>Core: {gpu.default_core_clock} MHz</li>

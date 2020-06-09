@@ -29,7 +29,7 @@ class ProductDetailRating extends React.Component {
   render() {
     const ratingsData = this.state.ratingsData;
     const linkAs = `/products/${this.props.product.id}/ratings`;
-    const linkHref = `/products/ratings?id=${this.props.product.id}`;
+    const linkHref = `/products/[slug]/ratings?slug=${this.props.product.id}`;
 
     if (!ratingsData || !ratingsData.count) {
       return null

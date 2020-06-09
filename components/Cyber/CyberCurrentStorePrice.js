@@ -3,7 +3,6 @@ import {connect} from "react-redux";
 import {Card, CardBody, Col, Row} from "reactstrap";
 import {solotodoStateToPropsUtils} from "../../redux/utils";
 
-import './CyberCurrentStorePrice.css'
 import moment from "moment";
 import {fetchJson} from "../../react-utils/utils";
 import ProductTechSpecs

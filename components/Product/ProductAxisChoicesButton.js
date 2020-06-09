@@ -35,7 +35,7 @@ class AxisChoices extends React.Component {
               {choice.matchingAxisPricingEntries.map(pricingEntry => (
                 <p key={pricingEntry.product.id}>
                   <Link
-                    href={`/products/view?id=${pricingEntry.product.id}&slug=${pricingEntry.product.slug}`}
+                    href={`/products/[slug]?slug=${product.id}-${product.slug}`}
                     as={`/products/${pricingEntry.product.id}-${pricingEntry.product.slug}`}>
                     <a>{pricingEntry.product.name}</a>
                   </Link>
