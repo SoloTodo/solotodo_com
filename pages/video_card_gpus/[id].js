@@ -116,11 +116,15 @@ class VideoCardGpuDetail extends React.Component {
                 <dt>ROPs</dt>
                 <dd>{gpu.rops}</dd>
 
+                <dt>Ray tracing cores</dt>
+                <dd>{gpu.ray_tracing_cores}</dd>
+
                 <dt>Frecuencias</dt>
                 <br />
                 <dd>
                   <ul>
-                    <li>Core: {gpu.default_core_clock} MHz</li>
+                    <li>Core Base: {gpu.default_core_clock} MHz</li>
+                    <li>Core Boost: {gpu.boost_core_clock} MHz</li>
                     <li>Memorias: {gpu.default_memory_clock} MHz</li>
                   </ul>
                 </dd>
@@ -147,16 +151,19 @@ class VideoCardGpuDetail extends React.Component {
                 <dd>{gpu.ogl_version_unicode}</dd>
               </dl>
 
-              <h2>Puntajes</h2>
+              <h2>Puntajes estimados</h2>
               <dl>
-                <dt>3DMark 11</dt>
-                <dd>{gpu.tdmark_11_score}</dd>
-
-                <dt>3DMark Cloud Gate</dt>
-                <dd>{gpu.tdmark_cloud_gate_score}</dd>
-
                 <dt>3DMark Fire Strike</dt>
                 <dd>{gpu.tdmark_fire_strike_score}</dd>
+
+                <dt>3DMark Time Spy</dt>
+                <dd>{gpu.tdmark_time_spy_score}</dd>
+
+                <dt>3DMark Port Royal (Ray tracing)</dt>
+                <dd>{gpu.tdmark_port_royal_score}</dd>
+
+                <dt>3DMark VR Room Orange (VR)</dt>
+                <dd>{gpu.tdmark_vr_room_orange_score}</dd>
               </dl>
             </div>
           </div>

@@ -41,8 +41,6 @@ class Products extends React.Component {
 
     let product;
 
-    console.log(`${productsUrl}${productId}/`);
-
     try {
       product = await fetchJson(`${productsUrl}${productId}/`);
     } catch (e) {
@@ -54,9 +52,6 @@ class Products extends React.Component {
     }
 
     const expectedSlug = product.slug;
-
-    console.log(expectedSlug)
-    console.log(givenSlug)
 
     if (givenSlug !== expectedSlug) {
       if (res) {

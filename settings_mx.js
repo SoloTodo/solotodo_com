@@ -36,19 +36,19 @@ export const settings = {
     ],
     2: [
       {
-        label: '3DMark 11',
-        field: 'gpu_tdmark_11_score',
-        maxValue: 30000
+        label: '3DMark Time Spy',
+        field: 'gpu_tdmark_time_spy_score',
+        maxValue: 13000
       },
       {
-        label: '3DMark Cloud Gate',
-        field: 'gpu_tdmark_cloud_gate_score',
-        maxValue: 40000
+        label: '3DMark Port Royal (Ray tracing)',
+        field: 'gpu_tdmark_port_royal_score',
+        maxValue: 8900
       },
       {
-        label: '3DMark Fire Strike',
-        field: 'gpu_tdmark_fire_strike_score',
-        maxValue: 25000
+        label: '3DMark VR Room Orange (VR)',
+        field: 'gpu_tdmark_vr_room_orange_score',
+        maxValue: 11000
       }
     ],
     3: [
