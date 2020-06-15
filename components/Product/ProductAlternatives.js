@@ -69,7 +69,7 @@ class ProductAlternatives extends React.Component {
       }
       return `categories/${category.id}/browse/?exclude_refurbished=${excludeRefurbished}&${url}&page_size=4`
     } else if (mode === BUTTON_MODE) {
-      return `${url}`.replace(/_0/gi, '_start').replace(/_1/gi, '_end')
+      return `${url}`.replace(/_after/gi, '_start').replace(/_before/gi, '_end')
     }
   };
 

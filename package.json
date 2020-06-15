@@ -6,8 +6,8 @@
   },
   "scripts": {
     "build": "next build",
-    "switch_mx": "rm -f settings.js && rm -rf .now && ln -s settings_mx.js settings.js && ln -s .vercel_mx .vercel",
-    "switch_cl": "rm -f settings.js && rm -rf .now && ln -s settings_cl.js settings.js && ln -s .vercel_cl .vercel"
+    "switch_mx": "rm -f settings.js && rm -rf .vercel && ln -s settings_mx.js settings.js && ln -s .vercel_mx .vercel",
+    "switch_cl": "rm -f settings.js && rm -rf .vercel && ln -s settings_cl.js settings.js && ln -s .vercel_cl .vercel"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.13.0",
