@@ -685,7 +685,7 @@ const processFormLayout = (formLayout, priceRange, usdCurrency, conversionCurren
           props: {
             key: filter.id,
             name: filter.name,
-            apiField: filter.name + '_before',
+            apiField: filter.name + '_max',
             urlField: filter.name + '_end',
             choices: originalFilterChoices,
             placeholder: filter.label,
@@ -697,7 +697,7 @@ const processFormLayout = (formLayout, priceRange, usdCurrency, conversionCurren
           props: {
             key: filter.id,
             name: filter.name,
-            apiField: filter.name + '_after',
+            apiField: filter.name + '_min',
             urlField: filter.name + '_start',
             choices: originalFilterChoices,
             placeholder: filter.label,

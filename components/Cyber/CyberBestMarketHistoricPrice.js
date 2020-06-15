@@ -28,7 +28,7 @@ class CyberBestMarketHistoricPrice extends React.Component{
 
   componentUpdate = () => {
     const product_id = this.props.entity.product.id;
-    let url = `/products/${product_id}/min_history_price/?timestamp_0=2019-08-01T00:00:00.000Z&timestamp_1=2019-10-01T12:00:00`;
+    let url = `/products/${product_id}/min_history_price/?timestamp_after=2019-08-01T00:00:00.000Z&timestamp_before=2019-10-01T12:00:00`;
 
     for (const store of this.props.preferredCountryStores){
       url = url + `&stores=${store.id}`

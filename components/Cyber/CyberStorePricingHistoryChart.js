@@ -27,7 +27,7 @@ class CyberStorePricingHistoryChart extends React.Component {
 
   componentUpdate() {
     const entity = this.props.entity;
-    fetchJson(`entities/${entity.id}/pricing_history?timestamp_0=2019-08-01T00:00:00.000Z`).then(json => {
+    fetchJson(`entities/${entity.id}/pricing_history?timestamp_after=2019-08-01T00:00:00.000Z`).then(json => {
       this.setState({
         data: json
       })

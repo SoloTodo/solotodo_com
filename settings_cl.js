@@ -100,9 +100,9 @@ export const settings = {
     4: {
       ordering: "offer_price_usd",
       filters: {
-        size_0: "size_family_id",
-        resolution_0: "resolution_id",
-        refresh_rate_0: "refresh_rate_id"
+        size_min: "size_family_id",
+        resolution_min: "resolution_id",
+        refresh_rate_min: "refresh_rate_id"
       }
     }
   },

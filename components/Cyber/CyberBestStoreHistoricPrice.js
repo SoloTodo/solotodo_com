@@ -30,7 +30,7 @@ class CyberBestStoreHistoricPrice extends React.Component{
   componentUpdate = () => {
     const product_id = this.props.entity.product.id;
     const store_id = this.props.preferredCountryStores.filter(store => store.url ===this.props.entity.store)[0].id;
-    const url = `/products/${product_id}/min_history_price/?&stores=${store_id}&timestamp_0=2019-08-01T00:00:00.000Z&timestamp_1=2019-10-01T12:00:00`;
+    const url = `/products/${product_id}/min_history_price/?&stores=${store_id}&timestamp_after=2019-08-01T00:00:00.000Z&timestamp_before=2019-10-01T12:00:00`;
     fetchJson(url).then(bestStorePrice => {
       this.setState({
         bestStorePrice

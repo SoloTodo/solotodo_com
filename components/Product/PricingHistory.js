@@ -63,7 +63,7 @@ class PricingHistory extends React.Component {
       url += `stores=${store.id}&`
     }
 
-    url += `timestamp_0=${moment(this.state.startDate).toISOString()}&timestamp_1=${moment(this.state.endDate).toISOString()}`;
+    url += `timestamp_after=${moment(this.state.startDate).toISOString()}&timestamp_before=${moment(this.state.endDate).toISOString()}`;
 
     fetchJson(url).then(pricingData => {
       const dayMinimumPrices = {
