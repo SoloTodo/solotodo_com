@@ -25,6 +25,8 @@ import ProductAlternatives from "../../../components/Product/ProductAlternatives
 import PricingHistory from "../../../components/Product/PricingHistory";
 import ProductAddToBudgetButton from "../../../components/Product/ProductAddToBudgetButton";
 import ProductVideo from "../../../components/Product/ProductVideo";
+import PricingHistoryButton
+  from "../../../components/Product/PricingHistoryButton";
 
 
 class Products extends React.Component {
@@ -202,10 +204,8 @@ class Products extends React.Component {
 
                 {/*{cheapestEntity &&*/}
                 {/*<ProductAlternatives product={product} category={category} entity={cheapestEntity}/>}*/}
-                {/**/}
-                {/*<div id="product-detail-pricing-history" className="content-card">*/}
-                {/*  <PricingHistory product={product}/>*/}
-                {/*</div>*/}
+
+                <PricingHistoryButton product={product}/>
 
               </div>
 
