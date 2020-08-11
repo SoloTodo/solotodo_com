@@ -200,12 +200,12 @@ class Products extends React.Component {
                   <ProductVideo product={product}/>
                 </div>
 
-                {cheapestEntity &&
-                <ProductAlternatives product={product} category={category} entity={cheapestEntity}/>}
-
-                <div id="product-detail-pricing-history" className="content-card">
-                  <PricingHistory product={product}/>
-                </div>
+                {/*{cheapestEntity &&*/}
+                {/*<ProductAlternatives product={product} category={category} entity={cheapestEntity}/>}*/}
+                {/**/}
+                {/*<div id="product-detail-pricing-history" className="content-card">*/}
+                {/*  <PricingHistory product={product}/>*/}
+                {/*</div>*/}
 
               </div>
 
