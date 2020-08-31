@@ -1,0 +1,2 @@
+solotodoCl:
+  component: "@sls-next/serverless-component@1.15.0-alpha.5"

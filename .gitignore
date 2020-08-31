@@ -6,3 +6,5 @@ node_modules
 settings.js
 
 .vercel
+.serverless
+.serverless_nextjs
