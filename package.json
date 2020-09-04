@@ -15,7 +15,7 @@
     "devcert": "^1.0.0",
     "express": "^4.16.4",
     "file-loader": "^3.0.1",
-    "handlebars": "^4.1.0",
+    "handlebars": "^4.4.5",
     "history": "^4.7.2",
     "isomorphic-unfetch": "^3.0.0",
     "moment": "^2.24.0",
