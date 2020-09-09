@@ -8,3 +8,4 @@ settings.js
 .vercel
 .serverless
 .serverless_nextjs
+serverless.yml
