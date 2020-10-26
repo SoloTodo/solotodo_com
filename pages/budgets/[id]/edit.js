@@ -103,18 +103,9 @@ class BudgetEdit extends React.Component {
     const excludeRefurbished = this.props.preferredExcludeRefurbished;
 
     if (budget.products_pool.length) {
-      let url = 'products/available_entities/?';
-      for (const product of budget.products_pool) {
-        url += `ids=${product.id}&`
-      }
+      const url = `${budget.url}available_entities/`
 
-      for (const store of stores) {
-        url += `&stores=${store.id}`;
-      }
-
-      url += `&exclude_refurbished=${excludeRefurbished}`;
-
-      fetchJson(url).then(response => {
+      this.props.fetchAuth(url).then(response => {
         const pricingEntries = response.results;
         pricingEntries.sort((a, b) => a.product.name <= b.product.name ? -1 : 1);
 
