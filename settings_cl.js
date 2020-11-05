@@ -77,7 +77,7 @@ export const settings = {
       {
         label: 'Rendimiento en gaming',
         field: 'soc_gpu_gfx_bench_score',
-        maxValue: 2500
+        maxValue: 10000
       }
     ],
     14: [
