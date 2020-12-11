@@ -59,13 +59,14 @@ export default class Footer extends React.Component {
             Santiago - Chile
             <br/>
           </address>
-          <a href="http://blog.solotodo.com/contacto/"
+          <Link href="/contacto">
+          <a
             // eslint-disable-next-line
              className="font-weight-bold"
-             rel="noopener nofollow"
-          >
+             rel="noopener nofollow">
             Contáctanos vía web
           </a>
+          </Link>
         </div>
 
       </div>
