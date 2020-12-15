@@ -13,10 +13,10 @@ export default function Contact() {
     const handleSubmit = (event) => {
         event.preventDefault();
         const formData = JSON.stringify({
-            "name": name,
-            "email": email,
-            "subject": subject,
-            "message": message
+            name,
+            email,
+            subject,
+            message
         })
         fetchJson('users/send_contact_email/',{method:"POST",body:formData}).then(json => {
             toast.success('Su mensaje ha sido enviado',{autoClose:false})
@@ -49,7 +49,7 @@ export default function Contact() {
                             </ol>
                             <form onSubmit={handleSubmit}>
                                 <div className="form-group">
-                                    <label for="contactNameInput">Su nombre (requerido)</label>
+                                    <label htmlFor="contactNameInput">Su nombre (requerido)</label>
                                     <input type="text" className="form-control" id="contactNameInput" name="contactName"
                                            value={name}
                                            onChange={e => setName(e.target.value)} required/>
