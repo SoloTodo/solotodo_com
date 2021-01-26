@@ -1,7 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
 import {settings} from '../settings';
-import exponea_tag from './exponea_tag'
 
 export default class SoloTodoHead extends React.Component {
   setGoogleTags() {
@@ -13,21 +12,6 @@ export default class SoloTodoHead extends React.Component {
       `
     };
   }
-
-  setExponeaTags() {
-    return {
-      __html: exponea_tag
-    };
-  }
-
-  componentDidMount() {
-    window.exponea && window.exponea.initialize({
-      "token": "b3458982-2e36-11ea-ad7a-9e27530e0693",
-      "ping": {
-        "enabled": false
-      }
-    })
-  };
 
   render() {
     return <Head>
@@ -41,7 +25,6 @@ export default class SoloTodoHead extends React.Component {
 
       <script async src={`https://www.googletagmanager.com/gtag/js?id=${settings.googleAnalyticsId}`}></script>
       <script dangerouslySetInnerHTML={this.setGoogleTags()} />
-      <script dangerouslySetInnerHTML={this.setExponeaTags()} />
     </Head>
   }
 }
