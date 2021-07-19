@@ -49,15 +49,27 @@ class NewProductRating extends React.Component {
     super(props);
     this.state = {
       formValues: {
-        product_rating: undefined,
+        product_rating: null,
         product_comments: '',
         store: this.props.preferredCountryStores[0].id,
-        store_rating: undefined,
+        store_rating: null,
         store_comments: '',
-        purchase_proof: undefined
+        purchase_proof: null
       },
-      rating: undefined
+      rating: undefined,
+      was_product_received: null
     }
+  }
+
+  handleWasProductReceivedChange = newValue => {
+    this.setState({
+      was_product_received: newValue,
+      formValues: {
+        ...this.state.formValues,
+        product_rating: null,
+        product_comments: ''
+      }
+    })
   }
 
   handleStarClick = (nextValue, prevValue, name) => {
@@ -88,12 +100,18 @@ class NewProductRating extends React.Component {
 
   handleFormSubmit = e => {
     e.preventDefault();
-    if(!this.state.formValues.product_rating){
+
+    if (this.state.was_product_received === null) {
+      toast.error('Por favor selecciona si recibiste el producto o no');
+      return;
+    }
+
+    if (this.state.was_product_received && !this.state.formValues.product_rating) {
       toast.error('Por favor ingrese el numero de estrellas (1 a 5) del producto.');
       return;
     }
 
-    if(!this.state.formValues.store_rating){
+    if (!this.state.formValues.store_rating) {
       toast.error('Por favor ingrese el numero de estrellas (1 a 5) de la tienda.');
       return;
     }
@@ -105,7 +123,13 @@ class NewProductRating extends React.Component {
     const formData = new FormData();
     formData.append('product', this.props.product.id);
 
+    const skippedFieldsWhenProductNotReceived = ['product_rating', 'product_comments']
+
     for (const key in this.state.formValues) {
+      if (!this.state.was_product_received && skippedFieldsWhenProductNotReceived.includes(key)) {
+        continue
+      }
+
       formData.append(key, this.state.formValues[key])
     }
 
@@ -161,32 +185,62 @@ class NewProductRating extends React.Component {
                           <td>{product.name}</td>
                         </tr>
                         <tr>
-                          <th className="align-middle">Evaluación del producto (de 1 a 5)</th>
+                          <th className="align-middle">¿Recibiste el producto?</th>
                           <td>
-                            <RatingStarsEditable
-                              name="product_rating"
-                              value={this.state.formValues.product_rating}
-                              onStarClick={this.handleStarClick}/>
+                            <div className="custom-control custom-radio">
+                              <input type="radio"
+                                     name="was_product_received"
+                                     id="was_product_received_yes"
+                                     className="custom-control-input"
+                                     checked={this.state.was_product_received === true}
+                                     onChange={evt => this.handleWasProductReceivedChange(true)}
+                              />
+                              <label className="custom-control-label"
+                                     htmlFor="was_product_received_yes">Sí, lo recibí</label>
+                            </div>
+                            <div className="custom-control custom-radio">
+                              <input type="radio"
+                                     name="was_product_received"
+                                     id="was_product_received_no"
+                                     className="custom-control-input"
+                                     checked={this.state.was_product_received === false}
+                                     onChange={evt => this.handleWasProductReceivedChange(false)}
+                              />
+                              <label className="custom-control-label"
+                                     htmlFor="was_product_received_no">No, no lo recibí</label>
+                            </div>
                           </td>
                         </tr>
-                        <tr>
-                          <th className="align-middle">Comentarios del producto</th>
-                          <td>
+                        {this.state.was_product_received &&
+                        <>
+                          <tr>
+                            <th className="align-middle">Evaluación del producto (de 1 a 5)</th>
+                            <td>
+                              <RatingStarsEditable
+                                  name="product_rating"
+                                  value={this.state.formValues.product_rating}
+                                  onStarClick={this.handleStarClick}/>
+                            </td>
+                          </tr>
+                          <tr>
+                            <th className="align-middle">Comentarios del producto</th>
+                            <td>
                           <textarea
-                            name="product_comments"
-                            value={this.state.formValues.product_comments}
-                            onChange={this.handleFieldChange}
-                            required={true}
-                            placeholder="Comentarios sobre la calidad o rendimiento del producto mismo. ¿Cumplió las expectativas?"
-                            className="form-control"/>
-                          </td>
-                        </tr>
+                              name="product_comments"
+                              value={this.state.formValues.product_comments}
+                              onChange={this.handleFieldChange}
+                              required={true}
+                              placeholder="Comentarios sobre la calidad o rendimiento del producto mismo. ¿Cumplió las expectativas?"
+                              className="form-control"/>
+                            </td>
+                          </tr>
+                        </>}
                         <tr>
                           <th className="align-middle">Tienda</th>
                           <td>
                             <select className="form-control" name="store" value={this.state.formValues.store} onChange={this.handleFieldChange}>
                               {this.props.preferredCountryStores.map(store => (
-                                <option key={store.id} value={store.id}>{store.name}</option>
+                                  <option key={store.id} value={store.id}>{store.name}</option>
                               ))}
                             </select>
                           </td>
@@ -195,32 +249,32 @@ class NewProductRating extends React.Component {
                           <th className="align-middle">Evaluación de la tienda (de 1 a 5)</th>
                           <td>
                             <RatingStarsEditable
-                              name="store_rating"
-                              value={this.state.formValues.store_rating}
-                              onStarClick={this.handleStarClick}/>
+                                name="store_rating"
+                                value={this.state.formValues.store_rating}
+                                onStarClick={this.handleStarClick}/>
                           </td>
                         </tr>
                         <tr>
                           <th className="align-middle">Comentarios de la tienda</th>
                           <td>
                           <textarea
-                            name="store_comments"
-                            value={this.state.formValues.store_comments}
-                            onChange={this.handleFieldChange}
-                            required={true}
-                            placeholder="Comentarios sobre tienda. ¿Te trataron bien? ¿Te atendieron rápido? ¿Cómo fue el despacho?"
-                            className="form-control"/>
+                              name="store_comments"
+                              value={this.state.formValues.store_comments}
+                              onChange={this.handleFieldChange}
+                              required={true}
+                              placeholder="Comentarios sobre tienda. ¿Te trataron bien? ¿Te atendieron rápido? ¿Cómo fue el despacho?"
+                              className="form-control"/>
                           </td>
                         </tr>
                         <tr>
                           <th className="align-middle">Archivo de confirmación</th>
                           <td>
                             <input
-                              type="file"
-                              name="purchase_proof"
-                              className="form-control-file"
-                              required={true}
-                              onChange={this.handleFileChange} />
+                                type="file"
+                                name="purchase_proof"
+                                className="form-control-file"
+                                required={true}
+                                onChange={this.handleFileChange} />
                             <p className="text-muted mt-2">
                               Boleta, factura, correo de confirmación, o cualquier foto o documento que verifique que compraste el producto en esa tienda. Tiene que aparecer el nombre del producto y de la tienda. Puede ser una foto, archivo PDF, o lo que prefieras.
                             </p>
@@ -229,11 +283,11 @@ class NewProductRating extends React.Component {
                         </tbody>
                       </table>
                       <LaddaButton
-                        loading={this.state.rating}
-                        type="submit"
-                        className="btn btn-primary"
-                        data-size={MD}
-                        data-style={EXPAND_LEFT}>
+                          loading={this.state.rating}
+                          type="submit"
+                          className="btn btn-primary"
+                          data-size={MD}
+                          data-style={EXPAND_LEFT}>
                         {this.state.rating === null ? 'Enviando' : 'Enviar'}
                       </LaddaButton>
                     </form>

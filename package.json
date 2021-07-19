@@ -70,5 +70,8 @@
   "resolutions": {
     "styled-jsx": "3.0.0"
   },
-  "license": "ISC"
+  "license": "ISC",
+  "volta": {
+    "node": "12.22.3"
+  }
 }

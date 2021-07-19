@@ -123,7 +123,7 @@ class StoreRatings extends React.Component {
                           </Link></dd>
                           <dt>Evaluación de la tienda</dt>
                           <dd><ProductRatingStars value={rating.store_rating}/></dd>
-                          <dt className="no-float">Comentarios del producto</dt>
+                          <dt className="no-float">Comentarios de la tienda</dt>
                           <dd>{rating.store_comments}</dd>
                         </dl>
                       </div>

@@ -39,7 +39,7 @@ class ProductRatings extends React.Component {
       }
     }
 
-    const ratings = await fetchJson(`ratings/?page_size=10&products=${product.id}&page=${page}`);
+    const ratings = await fetchJson(`ratings/?page_size=10&with_product_rating_only=1&products=${product.id}&page=${page}`);
     const category = categories.filter(localCategory => localCategory.url === product.category)[0];
 
     return {
