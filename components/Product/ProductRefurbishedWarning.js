@@ -45,16 +45,17 @@ class ProductRefurbishedWarning extends Component {
 
       <Modal isOpen={this.state.refurbishedModalIsOpen} toggle={this.toggleRefurbishedModal}>
         <ModalHeader toggle={this.toggleRefurbishedModal}>
-          Producto reacondicionado
+          Producto Open Box / Reacondicionado / Usado
         </ModalHeader>
           <ModalBody>
-            <p>Este producto es <em>reacondicionado</em>, esto significa que no está totalmente nuevo por algún motivo, como por ejemplo:</p>
+            <p>Este producto <strong>no es 100% nuevo / sellado</strong>, lo que puede ser por alguno de estos motivos:</p>
 
             <ul>
-              <li>Viene sin sus accesorios originales</li>
+              <li>El producto fue reacondicionado por el fabricante</li>
+              <li>Fue manipulado en alguna medida por la tienda que lo vende</li>
               <li>Tiene su caja dañada</li>
               <li>El producto estuvo en exposición</li>
-              <li>El producto fue devuelto por garantía por un motivo no relacionado con una falla técnica</li>
+              <li>El producto fue devuelto por garantía pero sigue siendo funcional</li>
               <li>etc.</li>
             </ul>
 
