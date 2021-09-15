@@ -69,7 +69,7 @@ class Tos extends React.Component {
 
               <h2>Solicitud de eliminación de datos y cuenta</h2>
 
-              <p>Si por cualquier motivo se desea eliminar la cuenta del usuario o cualquier información identificable del mismo (alertas de cambios de precio, cotizaciones, etc) se puede solicitar a través del <a href="/contacto">formulario de contacto de SoloTodo</a>, en donde será respondida en dos día hábiles o menos </p>
+              <p>Si por cualquier motivo se desea eliminar la cuenta del usuario o cualquier información identificable del mismo (alertas de cambios de precio, cotizaciones, etc) se puede solicitar a través del <a href="/data_deletion">formulario de contacto de SoloTodo</a>, en donde será respondida en dos día hábiles o menos </p>
 
               <h2>Sobre el acceso a sitios de terceras partes</h2>
 
