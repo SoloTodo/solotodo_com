@@ -47,11 +47,15 @@ class NewProductRating extends React.Component {
 
   constructor(props) {
     super(props);
+
+    const requestedStoreId = props.router.query.store && parseInt(props.router.query.store)
+    const matchingRequestedStore = props.preferredCountryStores.find(store => store.id === requestedStoreId)
+
     this.state = {
       formValues: {
         product_rating: null,
         product_comments: '',
-        store: this.props.preferredCountryStores[0].id,
+        store: matchingRequestedStore ? matchingRequestedStore.id : this.props.preferredCountryStores[0].id,
         store_rating: null,
         store_comments: '',
         purchase_proof: null
