@@ -48,14 +48,14 @@ class ProductNormalPricesTable extends React.Component {
             <ProductRefurbishedWarning entity={entity}/>
           </td>
           {this.props.hideRatings? null:
-            <td>
+            <td className="stars-container-cell">
               <ProductRatingStars
                 value={storeEntry.rating}
                 linkHref={`/stores/[id]/ratings?id=${storeEntry.id}`}
                 linkAs={`/stores/${storeEntry.id}/ratings`}/>
             </td>
           }
-          <td className="text-right">
+          <td className="text-right price-container-cell">
             <SoloTodoLeadLink
               className="price-container"
               entity={entity}
@@ -64,7 +64,7 @@ class ProductNormalPricesTable extends React.Component {
               {this.props.formatCurrency(entity.active_registry.offer_price)}
             </SoloTodoLeadLink>
           </td>
-          <td className="text-right">
+          <td className="text-right price-container-cell">
             <SoloTodoLeadLink
               className="price-container"
               entity={entity}
