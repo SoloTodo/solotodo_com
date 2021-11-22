@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.13.0",
-    "@sls-next/serverless-component": "^1.17.0",
+    "@sls-next/serverless-component": "^3.6.0",
     "@zeit/next-sass": "^1.0.1",
     "bootstrap": "4.3.1",
     "change-case": "^3.1.0",
@@ -27,7 +27,6 @@
     "next": "^9.4.4",
     "next-fonts": "^1.1.0",
     "next-nprogress": "^1.4.0",
-    "node-sass": "^4.11.0",
     "nookies": "^2.0.1",
     "query-string": "^6.3.0",
     "rc-progress": "^2.3.0",
@@ -63,9 +62,11 @@
     "redux-devtools-extension": "^2.13.2",
     "redux-responsive": "^4.3.8",
     "redux-thunk": "^2.1.0",
+    "sass": "^1.43.4",
     "slick-carousel": "^1.8.1",
     "ua-parser-js": "^0.7.19",
-    "url-loader": "^1.1.2"
+    "url-loader": "^1.1.2",
+    "uuid": "^8.3.2"
   },
   "resolutions": {
     "styled-jsx": "3.0.0"

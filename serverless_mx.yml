@@ -1,5 +1,5 @@
 solotodoMx:
-  component: "@sls-next/serverless-component@1.17.0"
+  component: "@sls-next/serverless-component@3.6.0"
   inputs:
     cloudfront:
       distributionId: "E2C4YGNF1L08XC"
