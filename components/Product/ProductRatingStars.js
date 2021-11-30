@@ -9,6 +9,9 @@ class ProductRatingStars extends React.Component {
       return null;
     }
 
+    // Round value to the "nearest 0.5" (0, 0.5, 1.0, 1.5, 2.0, ...)
+    const adjustedValue = Math.round(this.props.value * 2) / 2
+
     const renderStarIcon = (startIndex, rating) => {
       const starsComponent = startIndex <= rating?
         <i className="fas fa-star"/> : <i className="far fa-star"/>;
@@ -48,7 +51,7 @@ class ProductRatingStars extends React.Component {
     return <div className="rating-stars">
       <StartRatingComponent
         name="rating"
-        value={this.props.value}
+        value={adjustedValue}
         renderStarIcon={renderStarIcon}
         renderStarIconHalf={renderStarIconHalf}
         editing={false}
