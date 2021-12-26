@@ -43,6 +43,9 @@ class ProductCellPricesTable extends React.Component {
         </tr>
       );
       for (const entity of group.entities) {
+        const cellPlanName = entity.cell_plan ? entity.cell_plan.name : "Liberado"
+        const detailedLinkText = entity.bundle ? `${cellPlanName} / Incluye ${entity.bundle.name}` : cellPlanName
+
         tableRows.push(
           <tr key={entity.url} style={this.props.entityHighlight === entity.id? {backgroundColor: '#337ab71c'} : null}>
             <td>
@@ -51,7 +54,7 @@ class ProductCellPricesTable extends React.Component {
                 entity={entity}
                 storeEntry={group.store}
                 product={entity.product}>
-                {entity.cell_plan ? entity.cell_plan.name : "Liberado"}
+                {detailedLinkText}
               </SoloTodoLeadLink>
               <ProductRefurbishedWarning entity={entity}/>
             </td>
