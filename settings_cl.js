@@ -108,7 +108,7 @@ export const settings = {
   },
   categoryBrowseParameters: {
     6: {
-      bucketField: 'base_model_bundle_internal_storage_ram_key',
+      bucketField: 'base_model_internal_storage_ram_key',
       bucketProductLabelField: 'color_unicode'
     },
     14: {
@@ -126,19 +126,9 @@ export const settings = {
           orderingField: 'color_unicode'
         },
         {
-          label: 'Capacidad',
-          labelField: 'internal_storage_unicode',
+          label: 'Capacidad / RAM',
+          labelField: 'storage_and_ram',
           orderingField: 'internal_storage_value'
-        },
-        {
-          label: 'Ram',
-          labelField: 'ram_unicode',
-          orderingField: 'ram_value'
-        },
-        {
-          label: 'Bundle',
-          labelField: 'bundle_unicode',
-          orderingField: 'bundle_unicode'
         }
       ],
     },
