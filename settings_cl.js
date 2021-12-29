@@ -112,7 +112,7 @@ export const settings = {
       bucketProductLabelField: 'color_unicode'
     },
     14: {
-      bucketField: 'base_model_bundle_internal_storage_cell_connectivity_key',
+      bucketField: 'base_model_internal_storage_cell_connectivity_key',
       bucketProductLabelField: 'color_unicode'
     }
   },
@@ -149,11 +149,6 @@ export const settings = {
           label: 'Conectividad celular',
           labelField: 'cell_connectivity_unicode',
           orderingField: 'cell_connectivity_unicode'
-        },
-        {
-          label: 'Bundle',
-          labelField: 'bundle_unicode',
-          orderingField: 'bundle_unicode'
         }
       ],
     },
