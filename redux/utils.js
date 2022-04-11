@@ -8,7 +8,8 @@ export function solotodoStateToPropsUtils(state) {
   const user = state.apiResourceObjects[settings.ownUserUrl] || null;
   const countries = filterApiResourceObjectsByType(state.apiResourceObjects, 'countries');
   // Only consider active stores. Also manually exclude "Travel Tienda" store as it is exclusive to clients of Banco de Chile
-  const stores = filterApiResourceObjectsByType(state.apiResourceObjects, 'stores').filter(store => store.last_activation && store.id !== 231);
+  // Also exclude Hites while they reconsider the affiliate plan
+  const stores = filterApiResourceObjectsByType(state.apiResourceObjects, 'stores').filter(store => store.last_activation && store.id !== 231 && store.id !== 87);
   const categories = filterApiResourceObjectsByType(state.apiResourceObjects, 'categories');
   const currencies = filterApiResourceObjectsByType(state.apiResourceObjects, 'currencies');
 
