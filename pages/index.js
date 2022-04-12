@@ -19,8 +19,6 @@ class Index extends React.Component {
       return `Bajó ${localizedDiscount}!`;
     };
 
-    const country_code = this.props.preferredCountry.iso_code;
-
     return <React.Fragment>
       <Head>
         <title>Cotiza y compara los precios de todas las tiendas - SoloTodo</title>

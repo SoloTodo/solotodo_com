@@ -81,10 +81,10 @@ class ProductsReel extends Component {
     return <div className="products-reel">
       <Slider {...sliderSettings}>
         {this.state.productEntries.map(productEntry => {
-          return <div key={productEntry.product.id} className="products-reel__item">
-            <ProductShortDescription productEntry={productEntry} />
+          return <div key={productEntry.product_entries[0].product.id} className="products-reel__item">
+            <ProductShortDescription productEntry={productEntry.product_entries[0]} />
             <div className="ribbon">
-              <span className="ordering-ribbon">{this.props.ribbonFormatter(productEntry.metadata[this.props.ordering])}</span>
+              <span className="ordering-ribbon">{this.props.ribbonFormatter(productEntry.product_entries[0].metadata.score)}</span>
             </div>
           </div>
         })}
