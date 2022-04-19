@@ -64,11 +64,11 @@ class ProductSearch extends React.Component {
 
     if (json) {
       const results = json.payload.results.map(result => ({
-        bucket: result.product.id,
-        product_entries: [result]
+        bucket: result.bucket,
+        product_entries: result.product_entries
       }));
 
-      const categoryChoices = this.setCategoryChoices(json.payload.metadata.category_buckets);
+      const categoryChoices = this.setCategoryChoices(json.payload.aggs.categories);
 
       this.setState({
         productsPage: {
@@ -87,7 +87,7 @@ class ProductSearch extends React.Component {
   };
 
   render() {
-    let endpoint = `products/browse/?exclude_refurbished=${this.props.preferredExcludeRefurbished}&page_size=${settings.categoryBrowseResultsPerPage}`;
+    let endpoint = `products/browse/?ordering=relevance&exclude_refurbished=${this.props.preferredExcludeRefurbished}&page_size=${settings.categoryBrowseResultsPerPage}`;
 
     for (const store of this.props.preferredCountryStores) {
       endpoint += `&stores=${store.id}`
