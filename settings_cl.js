@@ -108,11 +108,11 @@ export const settings = {
   },
   categoryBrowseParameters: {
     6: {
-      bucketField: 'base_model_internal_storage_ram_key',
+      bucketField: 'specs.base_model_internal_storage_ram_key',
       bucketProductLabelField: 'color_unicode'
     },
     14: {
-      bucketField: 'base_model_internal_storage_cell_connectivity_key',
+      bucketField: 'specs.base_model_internal_storage_cell_connectivity_key',
       bucketProductLabelField: 'color_unicode'
     }
   },
