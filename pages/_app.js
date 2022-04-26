@@ -19,6 +19,7 @@ import NProgress from "next-nprogress/component";
 
 // Import theme here because ajax-loader.gif import breaks otherwise
 import 'slick-carousel/slick/slick-theme.scss';
+import 'react-simple-tree-menu/dist/main.css';
 import '../styles.scss';
 import {loadRequiredResources} from "../react-utils/redux/actions";
 
@@ -29,6 +30,7 @@ import '../react-utils/api_forms/ApiForm.css'
 import '../react-utils/api_forms/ApiFormDateRangeField.css'
 import '../react-utils/api_forms/ApiFormRemoveOnlyListField.css'
 import '../react-utils/api_forms/ApiFormResultsTable.css'
+import '../react-utils/api_forms/ApiFormTreeField.css'
 import '../react-utils/components/AxisChoices.css'
 import '../react-utils/components/BannerCarousel.css'
 import '../react-utils/components/Product/ProductPicture.css'

@@ -23,7 +23,7 @@ import {
   ApiFormChoiceFieldNext,
   ApiFormPaginationFieldNext,
   ApiFormDiscreteRangeFieldNext,
-  ApiFormContinuousRangeFieldNext
+  ApiFormContinuousRangeFieldNext, ApiFormTreeFieldNext
 } from "../../react-utils/api_forms/ApiFormFieldsNext";
 import {filterApiResourceObjectsByType} from "../../react-utils/ApiResource";
 
@@ -668,7 +668,18 @@ const processFormLayout = (formLayout, priceRange, usdCurrency, conversionCurren
 
       let filterComponent = null;
 
-      if (filter.type === 'exact') {
+      if (filter.name === 'grocery_categories') {
+        filterComponent = {
+          component: ApiFormTreeFieldNext,
+          props: {
+            key: filter.id,
+            name: filter.name,
+            choices: originalFilterChoices,
+            placeholder: filter.label,
+            multiple: Boolean(filter.choices)
+          }
+        };
+      } else if (filter.type === 'exact') {
         filterComponent = {
           component: ApiFormChoiceFieldNext,
           props: {
