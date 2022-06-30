@@ -58,7 +58,8 @@ class NewProductRating extends React.Component {
         store: matchingRequestedStore ? matchingRequestedStore.id : this.props.preferredCountryStores[0].id,
         store_rating: null,
         store_comments: '',
-        purchase_proof: null
+        purchase_proof: null,
+        email_or_phone: props.user ? props.user.email : ''
       },
       rating: undefined,
       was_product_received: null
@@ -117,6 +118,11 @@ class NewProductRating extends React.Component {
 
     if (!this.state.formValues.store_rating) {
       toast.error('Por favor ingrese el numero de estrellas (1 a 5) de la tienda.');
+      return;
+    }
+
+    if (!this.state.formValues.email_or_phone) {
+      toast.error('Por favor ingrese un correo o teléfono de contacto.');
       return;
     }
 
@@ -268,6 +274,22 @@ class NewProductRating extends React.Component {
                               required={true}
                               placeholder="Comentarios sobre tienda. ¿Te trataron bien? ¿Te atendieron rápido? ¿Cómo fue el despacho?"
                               className="form-control"/>
+                          </td>
+                        </tr>
+                        <tr>
+                          <th className="align-middle">E-mail o teléfono de contacto</th>
+                          <td>
+                          <input type="text"
+                              name="email_or_phone"
+                              value={this.state.formValues.email_or_phone}
+                              onChange={this.handleFieldChange}
+                              required={true}
+                              placeholder="tucorreo@dominio.com o +569 XXXXXXXX"
+                              className="form-control"/>
+
+                            <p className="text-muted mt-2">
+                              No vamos a compartir tus datos de contacto con nadie, pero te podemos tratar de contactar si necesitamos validar tu compra o tratar de ayudarte si tuviste algún problema con ella.
+                            </p>
                           </td>
                         </tr>
                         <tr>
