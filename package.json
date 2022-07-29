@@ -2,7 +2,7 @@
   "name": "solotodo_com",
   "version": "1.0.0",
   "engines": {
-    "node": "12.x"
+    "node": "14.x"
   },
   "scripts": {
     "build": "next build",
@@ -74,6 +74,6 @@
   },
   "license": "ISC",
   "volta": {
-    "node": "12.22.3"
+    "node": "14.20.0"
   }
 }
