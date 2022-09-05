@@ -18,8 +18,8 @@ export function solotodoStateToPropsUtils(state) {
   const preferredStoresUrls = user ? user.preferred_stores : state.preferredStoreIds.map(storeId => convertIdToUrl(storeId, 'stores'));
   const preferredStores = preferredStoresUrls.map(storeUrl => storesDict[storeUrl]).filter(store => store);
 
-  const preferredCountryStores = preferredStores.filter(store => store.country === country.url);
-  const countryStores = stores.filter(store => store.country === country.url);
+  const preferredCountryStores = preferredStores.filter(store => store.country === country.url && !settings.storeBlacklist.includes(store.id));
+  const countryStores = stores.filter(store => store.country === country.url && !settings.storeBlacklist.includes(store.id));
 
   const numberFormat = state.apiResourceObjects[country.number_format];
   const preferredCurrency = state.apiResourceObjects[country.currency];
