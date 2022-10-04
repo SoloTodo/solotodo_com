@@ -46,10 +46,10 @@ class ProductNormalPricesTable extends React.Component {
               {storeEntry.name}
             </SoloTodoLeadLink>
             {entity.bundle && <>
-              <ReactTooltip id="bundle" type="info" effect="solid" place="right">
+              <ReactTooltip id={`bundle_${entity.id}`} type="info" effect="solid" place="right">
                 <span>Incluye {entity.bundle.name}</span>
               </ReactTooltip>
-              <span data-tip data-for="bundle" className="ml-1 mr-1">
+              <span data-tip data-for={`bundle_${entity.id}`} className="ml-1 mr-1">
                  <i className="fas fa-gift"/>
               </span>
             </>}
