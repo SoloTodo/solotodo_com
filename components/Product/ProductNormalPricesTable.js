@@ -5,6 +5,7 @@ import ProductRatingStars from "./ProductRatingStars";
 import ProductRefurbishedWarning from './ProductRefurbishedWarning'
 
 import SoloTodoLeadLink from '../SoloTodoLeadLink'
+import {calculatePriceWithCoupon} from "../../utils";
 
 class ProductNormalPricesTable extends React.Component {
   render() {
@@ -36,6 +37,13 @@ class ProductNormalPricesTable extends React.Component {
       <tbody>
       {this.props.entities.length? this.props.entities.map(entity => {
         const storeEntry = this.props.storeEntries[entity.store];
+        const offerPriceToDisplay = entity.best_coupon ?
+            calculatePriceWithCoupon(entity.best_coupon.amount, entity.best_coupon.amount_type, entity.active_registry.offer_price) :
+            entity.active_registry.offer_price
+        const normalPriceToDisplay = entity.best_coupon ?
+            calculatePriceWithCoupon(entity.best_coupon.amount, entity.best_coupon.amount_type, entity.active_registry.normal_price) :
+            entity.active_registry.normal_price
+
         return <tr key={entity.id} style={this.props.entityHighlight === entity.id? {backgroundColor: '#337ab71c'} : null}>
           <td>
             <SoloTodoLeadLink
@@ -69,7 +77,7 @@ class ProductNormalPricesTable extends React.Component {
               entity={entity}
               storeEntry={storeEntry}
               product={entity.product}>
-              {this.props.formatCurrency(entity.active_registry.offer_price)}
+              {this.props.formatCurrency(offerPriceToDisplay)}
             </SoloTodoLeadLink>
           </td>
           <td className="text-right price-container-cell">
@@ -78,7 +86,7 @@ class ProductNormalPricesTable extends React.Component {
               entity={entity}
               storeEntry={storeEntry}
               product={entity.product}>
-              {this.props.formatCurrency(entity.active_registry.normal_price)}
+              {this.props.formatCurrency(normalPriceToDisplay)}
             </SoloTodoLeadLink>
           </td>
         </tr>

@@ -1,6 +1,8 @@
 import React from 'react'
 import {connect} from "react-redux";
 
+import Big from 'big.js';
+
 import {
   areObjectsEqual,
   areValueListsEqual,
@@ -12,6 +14,7 @@ import {settings} from "../../settings";
 import {solotodoStateToPropsUtils} from "../../redux/utils";
 import ProductNormalPricesTable from "./ProductNormalPricesTable";
 import ProductCellPricesTable from "./ProductCellPricesTable";
+import {calculatePriceWithCoupon} from "../../utils";
 
 class ProductPricesTable extends React.Component {
   constructor(props) {
@@ -85,8 +88,16 @@ class ProductPricesTable extends React.Component {
       ProductCellPricesTable :
       ProductNormalPricesTable;
 
+    const entities = [...this.state.entities]
+
+    entities.sort((a, b) => {
+      const aPrice = a.best_coupon ? calculatePriceWithCoupon(a.best_coupon.amount, a.best_coupon.amount_type, a.active_registry.offer_price) : new Big(a.active_registry.offer_price)
+      const bPrice = b.best_coupon ? calculatePriceWithCoupon(b.best_coupon.amount, b.best_coupon.amount_type, b.active_registry.offer_price) : new Big(b.active_registry.offer_price)
+      return aPrice - bPrice
+    })
+
     return <PricesTableComponent
-      entities={this.state.entities}
+      entities={entities}
       storeEntries={this.state.storeEntries}
       formatCurrency={this.props.formatCurrency}
       entityHighlight={this.props.entityHighlight}
