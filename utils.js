@@ -1,11 +1,10 @@
-import fetch from 'isomorphic-unfetch'
 import moment from "moment";
 import Handlebars from "handlebars/dist/handlebars.min";
 
 import {convertIdToUrl, fetchAuth} from "./react-utils/utils";
 import {filterApiResourceObjectsByType} from "./react-utils/ApiResource";
 import withTracker from './react-utils/components/GoogleAnalyticsNextJsTracker'
-import { DFPManager } from 'react-dfp';
+import Big from 'big.js';
 
 
 import {settings} from "./settings";
@@ -119,4 +118,17 @@ export function getProductShortDescription(product, categoryTemplates){
 
   template = Handlebars.compile(template.body);
   return template(product.specs)
+}
+
+export function calculatePriceWithCoupon(coupon_amount, coupon_type, value) {
+  coupon_amount = new Big(coupon_amount)
+  value = new Big(value)
+
+  if (coupon_type === 1) {
+    // Raw value
+    return value.minus(coupon_amount)
+  } else if (coupon_type === 2) {
+    // Percentage
+    return value.minus(value.times(coupon_amount.div(100)))
+  }
 }
