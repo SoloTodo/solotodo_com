@@ -68,7 +68,7 @@ class ProductRatings extends React.Component {
     const pageCount = Math.ceil(this.props.ratings.count/10);
     const previousLabel = <span>&lsaquo;</span>;
     const nextLabel = <span>&rsaquo;</span>;
-    const stores = this.props.stores;
+    const stores = this.props.allStores;
 
     return <React.Fragment>
       <Head>
@@ -181,10 +181,10 @@ class ProductRatings extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const {stores} = solotodoStateToPropsUtils(state);
+  const {allStores} = solotodoStateToPropsUtils(state);
 
   return {
-    stores,
+    allStores,
   }
 }
 

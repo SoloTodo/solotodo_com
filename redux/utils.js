@@ -7,8 +7,9 @@ import {filterApiResourceObjectsByType} from "../react-utils/ApiResource";
 export function solotodoStateToPropsUtils(state) {
   const user = state.apiResourceObjects[settings.ownUserUrl] || null;
   const countries = filterApiResourceObjectsByType(state.apiResourceObjects, 'countries');
+  const allStores = filterApiResourceObjectsByType(state.apiResourceObjects, 'stores')
   // Only consider active stores
-  const stores = filterApiResourceObjectsByType(state.apiResourceObjects, 'stores').filter(store => store.last_activation);
+  const stores = allStores.filter(store => store.last_activation);
   const categories = filterApiResourceObjectsByType(state.apiResourceObjects, 'categories');
   const currencies = filterApiResourceObjectsByType(state.apiResourceObjects, 'currencies');
 
@@ -38,6 +39,7 @@ export function solotodoStateToPropsUtils(state) {
     countries,
     categories,
     currencies,
+    allStores,
     stores,
     preferredCountry: country,
     preferredStores,
