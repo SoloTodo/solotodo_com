@@ -90,11 +90,11 @@ class ProductPricesTable extends React.Component {
 
     const entities = [...this.state.entities]
 
-    entities.sort((a, b) => {
-      const aPrice = a.best_coupon ? calculatePriceWithCoupon(a.best_coupon.amount, a.best_coupon.amount_type, a.active_registry.offer_price) : new Big(a.active_registry.offer_price)
-      const bPrice = b.best_coupon ? calculatePriceWithCoupon(b.best_coupon.amount, b.best_coupon.amount_type, b.active_registry.offer_price) : new Big(b.active_registry.offer_price)
-      return aPrice - bPrice
-    })
+    // entities.sort((a, b) => {
+    //   const aPrice = a.best_coupon ? calculatePriceWithCoupon(a.best_coupon.amount, a.best_coupon.amount_type, a.active_registry.offer_price) : new Big(a.active_registry.offer_price)
+    //   const bPrice = b.best_coupon ? calculatePriceWithCoupon(b.best_coupon.amount, b.best_coupon.amount_type, b.active_registry.offer_price) : new Big(b.active_registry.offer_price)
+    //   return aPrice - bPrice
+    // })
 
     return <PricesTableComponent
       entities={entities}

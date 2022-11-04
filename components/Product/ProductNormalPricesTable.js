@@ -37,9 +37,8 @@ class ProductNormalPricesTable extends React.Component {
       <tbody>
       {this.props.entities.length? this.props.entities.map(entity => {
         const storeEntry = this.props.storeEntries[entity.store];
-        const offerPriceToDisplay = entity.best_coupon ?
-            calculatePriceWithCoupon(entity.best_coupon.amount, entity.best_coupon.amount_type, entity.active_registry.offer_price) :
-            entity.active_registry.offer_price
+        const offerPriceWithCoupon = entity.best_coupon &&
+            calculatePriceWithCoupon(entity.best_coupon.amount, entity.best_coupon.amount_type, entity.active_registry.offer_price)
 
         return <tr key={entity.id} style={this.props.entityHighlight === entity.id? {backgroundColor: '#337ab71c'} : null}>
           <td>
@@ -74,7 +73,11 @@ class ProductNormalPricesTable extends React.Component {
               entity={entity}
               storeEntry={storeEntry}
               product={entity.product}>
-              {this.props.formatCurrency(offerPriceToDisplay)}
+              {offerPriceWithCoupon ?
+                  <><del>{this.props.formatCurrency(entity.active_registry.offer_price)}</del><br />
+                  <ins style={{textDecoration: "none"}}>{this.props.formatCurrency(offerPriceWithCoupon)}</ins></> :
+                  <>{this.props.formatCurrency(entity.active_registry.offer_price)}</>
+              }
             </SoloTodoLeadLink>
           </td>
           <td className="text-right price-container-cell">
