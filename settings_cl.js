@@ -16,7 +16,8 @@ export const settings = {
   defaultDaysForPricingHistory: 20,
   facebookAppId: '567644670062006',
   // customIp: '179.5.217.178',
-  storeBlacklist: [38, 181],
+  // storeBlacklist: [38, 181],
+  storeBlacklist: [],
   benchmarkCategories: {
     1: [
       {
