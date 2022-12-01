@@ -38,7 +38,7 @@ class VerifyAccount extends React.Component {
       return {}
     }
 
-    if (response['detail'] === 'Ok') {
+    if (response['detail'] === 'ok') {
       if (res) {
         res.writeHead(302, {
           Location: "/account/login?post_verify=1"
