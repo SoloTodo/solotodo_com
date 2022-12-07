@@ -25,7 +25,7 @@ class Tos extends React.Component {
                 Esta página detalla la información guardada por SoloTodo.com y el uso que se le da.
               </p>
 
-              <h2>Información guardada</h2>
+              <h2>Almacenamiento y procesamiento de información</h2>
 
               <p>SoloTodo almacena la siguiente información de sus visitantes</p>
 
@@ -33,16 +33,40 @@ class Tos extends React.Component {
                 <li>Preferencia regional de país y tiendas en donde cotizar</li>
                 <li>Correo electrónico en el caso de suscribirse a los cambios de precios de un producto</li>
                 <li>Correo electrónico en el caso de registrarse como usuario usando el sistema interno de SoloTodo</li>
-                <li>Correo electrónico, nombre completo e ID de Facebook en el caso de
-                  iniciar sesión en SoloTodo usando esta red social</li>
                 <li>Cotizaciones de PCs desktop hechas por usuarios registrados </li>
               </ul>
 
               <p>Adicionalmente, los siguientes servicios de terceros usados por SoloTodo
                 también pueden almacenar información, sujeto a sus propias políticas de privacidad.</p>
 
+              <h3>Facebook</h3>
+
+              Si utiliza la opción de iniciar sesión en Facebook SoloTodo almacena y procesa la siguiente información de su cuenta
+
               <ul>
-                <li>Facebook: En el caso de utilizar el inicio de sesión con esta red social</li>
+                <li>ID de usuario</li>
+                <li>Correo electrónico asociado a la cuenta de Facebook</li>
+                <li>Nombre y apellido</li>
+              </ul>
+
+              <p>SoloTodo procesa esta información internamente en su base de datos para los siguientes usos</p>
+
+              <ul>
+                <li>ID de usuario: Identificar de manera única al usuario en la base de datos de SoloTodo</li>
+                <li>Correo electrónico: Enviar correos transaccionales para funcionalidades básicas del sitio (recuperar contraseña, etc).</li>
+                <li>Nombre y apellido: Personalizar la experiencia de usuario mostrando su nombre en su panel de usuario</li>
+              </ul>
+
+              <h4>Eliminación de datos de usuario</h4>
+
+              <p>Los usuarios de SoloTodo pueden solicitar la eliminación total de los datos asociados a su cuenta desde el siguiente link: <a href="/data_deletion">Eliminación de usuario y datos asociados</a></p>
+              <p>El sistema procederá a eliminar todos los datos hasta en 24 horas hábiles</p>
+
+              <h3>Google y Disqus</h3>
+
+              <p>SoloTodo trabaja con Google y Disqus como proveedores de servicios necesarios para la operación del sitio, detallados a contionuación</p>
+
+              <ul>
                 <li>Google: Como parte de sus plataformas de AdSense (publicidad) y Analytics (métricas de uso del sitio)</li>
                 <li>Disqus: Como parte del sistema de comentarios presente en las fichas de producto y cotizaciones del sitio.</li>
               </ul>
