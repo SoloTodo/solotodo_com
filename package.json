@@ -18,7 +18,7 @@
     "change-case": "^3.1.0",
     "chart.js": "^2.8.0",
     "devcert": "^1.0.0",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "file-loader": "^3.0.1",
     "handlebars": "^4.1.0",
     "history": "^4.7.2",
