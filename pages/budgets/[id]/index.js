@@ -69,14 +69,14 @@ class Budget extends React.Component {
             <div className="content-card">
               <div className="row">
                 <div className="col-12">
-                  <h3>¡Aprende a armar tu PC!</h3>
+                  <h3>¡Arma un PC gamer por 500 - 600 lucas!</h3>
                 </div>
               </div>
               <div className="row d-flex justify-content-center mb-2">
                 <iframe
                   width={`${videoWidth}`}
                   height={`${videoHeight}`}
-                  src="https://www.youtube.com/embed/tj18TbXYfs4"
+                  src="https://www.youtube.com/embed/29-2Qkm61aY"
                   frameBorder="0"
                   allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen/>
