@@ -16,6 +16,11 @@ export default class Footer extends React.Component {
               <a className="font-weight-bold">Términos y condiciones</a>
             </Link>
           </p>
+          <p>
+            <Link href='/privacy_policy'>
+              <a className="font-weight-bold">Política de privacidad</a>
+            </Link>
+          </p>
         </div>
 
         <div className="col-12 col-md-5">
